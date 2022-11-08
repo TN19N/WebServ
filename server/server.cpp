@@ -1,25 +1,27 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <signal.h>
-#include <string.h>
+#include <string>
 #include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
+#include "../includes/helper.hpp"
 
-#define PORT "3490" // the port to listen to
-#define BACKLOG 10   // pending connections queue max size
+#define PORT "8080" // the port to listen to
 
 int main(void)
 {
-	struct addrinfo hints, *servInfo;
-	struct sockaddr_storage *theirAddr; // connector's address information
+	struct addrinfo hint, *servInfo;
 	int rv;
+	int sockfd;
 
-	memset(&hints, 0, sizeof hints);
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
+	memset(&hint, 0, sizeof(hint));
+	hint.ai_family = PF_INET;
+	hint.ai_socktype = SOCK_STREAM;
+	hint.ai_protocol = IPPROTO_TCP;
+	hint.ai_flags = AI_ADDRCONFIG | AI_PASSIVE;
 
-	if ((rv = getaddrinfo(NULL, PORT, &hints, &servInfo)) != 0)
+	if ((rv = getaddrinfo(NULL, PORT, &hint, &servInfo)) != 0)
 	{
 		std::cerr << "getaddrinfo: " << gai_strerror(rv) << std::endl;
 		return 0;
@@ -27,25 +29,23 @@ int main(void)
 
 	for (auto ptr = servInfo; ptr; ptr = ptr->ai_next)
 	{
-		std::cout << "-------------------------------" << std::endl;
-		std::cout << "ai_flags: " << ptr->ai_flags << std::endl;
-		std::cout << "ai_family: " << ptr->ai_family << std::endl;
-		std::cout << "ai_socktype: " << ptr->ai_socktype << std::endl;
-		std::cout << "ai_protocol: " << ptr->ai_protocol << std::endl;
-		std::cout << "ai_addrlen: " << ptr->ai_addrlen << std::endl;
-		if (ptr->ai_canonname)
-			std::cout << "ai_canonname: " << ptr->ai_canonname << std::endl;
-		else
-			std::cout << "ai_canonname: (NULL)" << std::endl;
-		if (ptr->ai_family == PF_INET)
+		printInfo(ptr);
+		if ((sockfd = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol)) == -1)
 		{
-			struct add		
+			perror("server: socket()");
+			continue;
 		}
-		else if (ptr->ai_family == PF_INET6)
+		printf("|sockfd: %d|\n", sockfd);
+		if (bind(sockfd, ptr->ai_addr, ptr->ai_addrlen) == -1)
 		{
-			
+			perror("server: bind()");
+			close(sockfd);
+			continue;
 		}
+		break;
 	}
 
-	freeaddrinfo(servInfo);
+	//freeaddrinfo(servInfo);
+	servInfo = NULL;
+	system("leaks server.out");
 }
