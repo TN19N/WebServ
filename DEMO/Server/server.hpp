@@ -140,10 +140,13 @@ public:
                     buffer[numberOfBytes] = '\0';
                     
                     request += buffer;
-                    if (numberOfBytes != 0 && buffer[numberOfBytes - 1] == '\n')
+                    if (request.find(EOF) != std::string::npos)
                     {
-                        std::cout << "[Server][" + clientName + "][request]: " << request << std::endl;
+                        if (!clientName.size())
+                            clientName = request.substr(0, request.find(EOF));
+                        std::cout << "[Server][" + clientName + "][request]: " << request.substr(0, request.find(EOF)) << std::endl;
                         respones = "server received the request (states: 200OK)";
+                        respones += EOF;
                         while (respones.size())
                         {
                             if ((numberOfBytes = send(newfd, respones.c_str(), respones.size(), 0)) == -1)
@@ -154,7 +157,7 @@ public:
                             }
                             respones.erase(0, numberOfBytes);
                         }
-                        request.clear();
+                        request.erase(0, request.find(EOF) + 1);
                     }
                 }
             }

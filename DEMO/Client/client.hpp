@@ -88,12 +88,13 @@ public:
         {
             if (request.empty())
             {
-                std::cout << "[request]>\n";
+                std::cout << "[request]>";
                 std::getline(std::cin, request);
                 if (std::cin.eof())
                     break;
             }
-            
+
+            request += EOF;
             while (request.size())
             {
                 if ((numberOfBytes = send(__sockfd_, request.c_str(), request.size(), 0)) == -1)
@@ -103,8 +104,7 @@ public:
                 }
                 request.erase(0, numberOfBytes);
             }
-
-            
+          
             while (true)
             {
                 if ((numberOfBytes = recv(__sockfd_, buffer, MAXDATASIZE - 1, 0)) == -1)
@@ -119,11 +119,12 @@ public:
                 buffer[numberOfBytes] = '\0';
                 
                 respones += buffer;
-                if (numberOfBytes != 0 && buffer[numberOfBytes - 1] == '\n')
+                if (respones.find(EOF) != std::string::npos)
                 {
-                    std::cout << "[Client][" + __name_ + "][respones]: " << respones << std::endl;
-                    respones.clear();
-                    break;
+                    std::cout << "[Client][" + __name_ + "][respones]: " << respones.substr(0, respones.find(EOF)) << std::endl;
+                    respones.erase(0, respones.find(EOF) + 1);
+                    if (respones.empty())
+                        break;
                 }
             }
         }

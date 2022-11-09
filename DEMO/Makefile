@@ -11,4 +11,6 @@ client:
 clean:
 	rm -rf server.out client.out
 
-.PHONY: all clean
+re: clean all
+
+.PHONY: all server client clean
