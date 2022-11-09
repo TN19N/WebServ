@@ -3,10 +3,12 @@
 
 int main()
 {
-    try {
+    try 
+    {
         Server server(8080, SOCK_STREAM, AF_INET);
         server.startListening();
-    } catch (const std::exception& e)
+    } 
+    catch (const std::exception& e)
     {
         std::cout << e.what() << std::endl;
     }

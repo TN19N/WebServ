@@ -1,9 +1,14 @@
+CFLAGS = -Wall -Wextra -Werror -std=c++98
+
 all: server client
 
 server:
-	cd server && c++ -std=c++98 server.cpp -o ../server.out
+	cd Server && c++ $(CFLAGS) server.cpp -o ../server.out
 
 client:
-	cd client && c++ -std=c++98 client.cpp -o ../client.out
+	cd Client && c++ $(CFLAGS) client.cpp -o ../client.out
 
-.PHONY: all server client
+clean:
+	rm -rf server.out client.out
+
+.PHONY: all clean

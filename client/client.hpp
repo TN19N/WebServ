@@ -17,10 +17,10 @@ class Client
 private:
     std::string         __host_;
     int                 __port_;
-    int                 __ipType_;
     int                 __sockType_;
-    int                 __sockfd_;
+    int                 __ipType_;
     std::string         __name_;
+    int                 __sockfd_;
 
     class ClientCrash : public std::exception
     {
@@ -38,7 +38,7 @@ public:
         : __host_(host),
           __port_(port),
           __sockType_(sockType),
-          __ipType_(__ipType_),
+          __ipType_(ipType),
           __name_(name),
           __sockfd_(-1)
     {
@@ -51,20 +51,20 @@ public:
         {
             int rv;
             if ((rv = getaddrinfo(__host_.c_str(), std::to_string(__port_).c_str(), &hints, &addrInfo)) != 0)
-                throw(ClientCrash("Client[" + __name_ + "]: getaddrinfo(): " + gai_strerror(rv)));
+                throw(ClientCrash("[Client][" + __name_ + "]: getaddrinfo(): " + gai_strerror(rv)));
         }
 
         for (struct addrinfo *__p = addrInfo; __p; __p = __p->ai_next)
         {
             if ((__sockfd_ = socket(__p->ai_family, __p->ai_socktype, __p->ai_protocol)) == -1)
             {
-                perror(("Client[" + __name_ + "]: socket()").c_str());
+                perror(("[Client][" + __name_ + "]: socket()").c_str());
                 continue;
             }
             if (connect(__sockfd_, __p->ai_addr, __p->ai_addrlen) == -1)
             {
                 close(__sockfd_); __sockfd_ = -1;
-                perror(("Client[" + __name_ + "]: connect()").c_str());
+                perror(("[Client][" + __name_ + "]: connect()").c_str());
                 continue;
             }
             break;
@@ -74,21 +74,21 @@ public:
             freeaddrinfo(addrInfo);
         
         if (__sockfd_ == -1)
-            throw(ClientCrash("Client[" + __name_ + "]: failed to connect()"));
+            throw(ClientCrash("[Client][" + __name_ + "]: failed to connect()"));
     };
 
     void startConnecting(void)
     {
         std::string request = __name_;
+        std::string respones;
         char        buffer[MAXDATASIZE];
         int         numberOfBytes;
-        bool        sendName = true;
 
         while (true)
         {
-            if (!sendName)
+            if (request.empty())
             {
-                std::cout << ">\n";
+                std::cout << "[request]>\n";
                 std::getline(std::cin, request);
                 if (std::cin.eof())
                     break;
@@ -99,16 +99,37 @@ public:
                 if ((numberOfBytes = send(__sockfd_, request.c_str(), request.size(), 0)) == -1)
                 {
                     close(__sockfd_);
-                    throw(ClientCrash("Client[" + __name_ + "]: send()" + strerror(errno)));
+                    throw(ClientCrash("[Client][" + __name_ + "]: send()" + strerror(errno)));
                 }
                 request.erase(0, numberOfBytes);
             }
-            if (sendName)
-                sendName = false;
+
+            
+            while (true)
+            {
+                if ((numberOfBytes = recv(__sockfd_, buffer, MAXDATASIZE - 1, 0)) == -1)
+                    throw(ClientCrash("[Client][" + __name_ + "]: recv()" + strerror(errno)));
+
+                if (numberOfBytes == 0)
+                {
+                    close(__sockfd_);
+                    throw(ClientCrash("[client][" + __name_ + "]: connection closed from server side"));
+                }
+
+                buffer[numberOfBytes] = '\0';
+                
+                respones += buffer;
+                if (numberOfBytes != 0 && buffer[numberOfBytes - 1] == '\n')
+                {
+                    std::cout << "[Client][" + __name_ + "][respones]: " << respones << std::endl;
+                    respones.clear();
+                    break;
+                }
+            }
         }
 
         close(__sockfd_);
-        std::cout << "Client[" + __name_ + "]: connection closed" << std::endl;
+        std::cout << "[Client][" + __name_ + "]: connection closed" << std::endl;
     }
 };
 
