@@ -3,46 +3,41 @@
 # include <iostream>
 
 // print all information about the addrinfo struct
-void printAddrInfo(const struct addrinfo *current, std::ostream &out) {
-    out << "ai_socktype: ";
+void printAddrInfo(const struct addrinfo *current) {
+    // type of the socket
+    std::cout << "ai_socktype: ";
     if (current->ai_socktype == SOCK_STREAM) {
-        out << "SOCK_STREAM" << std::endl;
+        std::cout << "SOCK_STREAM" << std::endl;
     } else if (current->ai_socktype == SOCK_DGRAM) {
-        out << "SOCK_DGRAM" << std::endl;
-    } else {
-        out << " ? " << std::endl;
+        std::cout << "SOCK_DGRAM" << std::endl;
     }
-
-    out << "ai_family: ";
+    // type of the network (ipv4 - ipv6)
+    std::cout << "ai_family: ";
     if (current->ai_family == AF_INET) {
-        out << "AF_INET" << std::endl;
+        std::cout << "AF_INET" << std::endl;
     } else if (current->ai_family == AF_INET6) {
-        out << "AF_INET6" << std::endl;
-    } else {
-        out << " ? " << std::endl;
+        std::cout << "AF_INET6" << std::endl;
     }
-
-    out << "ai_protocol: ";
+    // type of the protocol (TCP - UDP)
+    std::cout << "ai_protocol: ";
     if (current->ai_protocol == IPPROTO_TCP) {
-        out << "IPPROTO_TCP" << std::endl;
+        std::cout << "IPPROTO_TCP" << std::endl;
     } else if (current->ai_protocol == IPPROTO_UDP) {
-        out << "IPPROTO_UDP" << std::endl;
-    } else {
-        out << " ? " << std::endl;
+        std::cout << "IPPROTO_UDP" << std::endl;
     }
-
-    out << "ai_addrlen: " << current->ai_addrlen << std::endl;
-
-    out << "ai_canonname: ";
+    // addr struct length
+    std::cout << "ai_addrlen: " << current->ai_addrlen << std::endl;
+    // the canonical name of the specified hostname
+    std::cout << "ai_canonname: ";
     if (current->ai_canonname != NULL) {
-        out << current->ai_canonname << std::endl;
+        std::cout << current->ai_canonname << std::endl;
     } else {
-        out << "NULL" << std::endl;
+        std::cout << "NULL" << std::endl;
     }
-
+    // ai_addr struct infos
     in_port_t port;
     char      ipstr[INET6_ADDRSTRLEN];
-    out << "ai_addr: ";
+    std::cout << "ai_addr: ";
     if (current->ai_family == AF_INET) {
         struct sockaddr_in *ipv4 = (struct sockaddr_in *) current->ai_addr;
         inet_ntop(AF_INET, &(ipv4->sin_addr), ipstr, INET_ADDRSTRLEN);
@@ -51,10 +46,6 @@ void printAddrInfo(const struct addrinfo *current, std::ostream &out) {
         struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *) current->ai_addr;
         inet_ntop(AF_INET6, &(ipv6->sin6_addr), ipstr, INET6_ADDRSTRLEN);
         port = ntohs(ipv6->sin6_port);
-    } else {
-        port = -1;
-        ipstr[0] = '?';
-        ipstr[1] = '\0';
     }
-    out << "(Port : " << port << ") (Ip : " << ipstr << ")" << std::endl;
+    std::cout << "(Port : " << port << ") (Ip : " << ipstr << ")" << std::endl;
 }

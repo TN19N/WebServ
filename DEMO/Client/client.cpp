@@ -13,8 +13,8 @@ int main(int argc, char **argv) {
     struct addrinfo hints, *res, *current;
 
     // check the number of arguments
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " [ hostname ? _ ] [ (port | service) ? _ ]" << std::endl;
+    if (argc != 5) {
+        std::cerr << "Usage: " << argv[0] << " [ hostname ? _ ] [ (port | service) ? _ ] [ socket type (S | D) ] [ network type (4 | 6) ] " << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -25,25 +25,13 @@ int main(int argc, char **argv) {
     // make sure the struct is empty
     memset(&hints, 0, sizeof(hints));
     // fill the hints
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_family = (argv[4][0] == '4' ? AF_INET : (argv[4][0] == '6' ? AF_INET6 : AF_UNSPEC));
+    hints.ai_socktype = (argv[3][0] == 'S' ? SOCK_STREAM : (argv[3][0] == 'D' ? SOCK_DGRAM : 0));
 
     if ((status = getaddrinfo(hostname, port, &hints, &res)) != 0) {
         std::cerr << "ERROR : getaddrinfo() : " << gai_strerror(status) << std::endl;
         exit(EXIT_FAILURE);
     }
-
-    # ifdef DEBUG
-    std::cerr << "----------------------------------------" << std::endl;
-    std::cerr << "DEBUG : " << std::endl;
-    std::cerr << "----------------------------------------" << std::endl;
-    for (current = res; current != NULL; current = current->ai_next) {
-        printAddrInfo(current, std::cerr);
-        if (current->ai_next != NULL) {
-            std::cerr << "----------------------------------------" << std::endl;
-        }
-    }
-    # endif
 
     for (current = res; current != NULL; current = current->ai_next) {
         // create the socket
@@ -52,17 +40,19 @@ int main(int argc, char **argv) {
             continue;
         }
 
-        // connect to the server
-        if (connect(sockfd, current->ai_addr, current->ai_addrlen) == -1) {
-            std::cerr << "ERROR : connect() : " << strerror(errno) << std::endl;
-            close(sockfd);
-            continue;
+        // connect to the server (STREAM_SOCKET)
+        if (current->ai_socktype == SOCK_STREAM) {
+            if (connect(sockfd, current->ai_addr, current->ai_addrlen) == -1) {
+                std::cerr << "ERROR : connect() : " << strerror(errno) << std::endl;
+                close(sockfd);
+                continue;
+            }
         }
 
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "Connected successfully to : " << std::endl;
         std::cout << "----------------------------------------" << std::endl;
-        printAddrInfo(current, std::cout);
+        printAddrInfo(current);
         break;
     }
 
@@ -75,6 +65,17 @@ int main(int argc, char **argv) {
         std::string input;
         std::cout << ">> "; 
         std::getline(std::cin, input);
+        if (current->ai_socktype == SOCK_STREAM) {
+            if (send(sockfd, input.c_str(), input.size(), 0) == -1) {
+                std::cerr << "ERROR : send() : " << strerror(errno) << std::endl;
+                break; 
+            }
+        } else if (current->ai_socktype == SOCK_DGRAM) {
+            if (sendto(sockfd, input.c_str(), input.size(), 0, current->ai_addr, current->ai_addrlen) == -1) {
+                std::cerr << "ERROR : sendto() : " << strerror(errno) << std::endl;
+                break;
+            }
+        }
     }
 
     // close the socket
