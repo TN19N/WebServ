@@ -30,7 +30,7 @@ $(BUILDDIR)/%.o : $(SRCSDIR)/%.cpp
 clean :
 	@ echo "$(COLOUR_RED) Cleaning ... $(COLOUR_END)"
 	@ rm -rf $(BUILDDIR)/*.o $(BUILDDIR)/*/*.o
-	@ echo "$(COLOUR_RED) Done! $(COLOUR_END)"
+	@ echo "$(COLOUR_BLUE) Done! $(COLOUR_END)"
 
 .PHONY : fclean
 fclean : clean
