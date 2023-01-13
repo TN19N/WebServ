@@ -1,2 +1,0 @@
-### Resources
- * https://beej.us

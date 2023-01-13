@@ -1,1 +1,0 @@
-print("Kolchi Howa Hadak")
