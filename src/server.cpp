@@ -68,7 +68,11 @@ void Server::setName(const std::vector<std::string>& directiveArgs) {
 }
 
 void Server::addLocation(const std::vector<std::string>& directiveArgs) {
-    this->locations.push_back(Location(directiveArgs));
+    try {
+        this->locations.push_back(Location(directiveArgs));
+    } catch (const std::invalid_argument& e) {
+        throw e;
+    }
 }
 
 Server::~Server() {

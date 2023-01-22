@@ -1,10 +1,6 @@
 # ifndef LOCATION_HPP
 # define LOCATION_HPP
 
-/**
- * class Location - represents a location block in a server block
- */
-
 # include <string>
 # include <vector>
 
@@ -20,7 +16,7 @@ class Location {
         // getters
         const std::string& getMatch() const;
         const std::string& getIndex() const;
-        const std::string& getRoot() const;
+        const std::string& getRoot()  const;
 
         // setters
         void setIndex(const std::vector<std::string>& directiveArgs);

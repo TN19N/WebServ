@@ -5,10 +5,6 @@
 
 # include "server.hpp"
 
-/**
- * class WebServ - represents the whole web server
- */
-
 class WebServ {
     public :
         static std::vector<Server> servers;
