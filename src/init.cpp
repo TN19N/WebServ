@@ -18,6 +18,7 @@ static void panic(const std::string& msg) {
 void init() {
 
     # ifdef DEBUG_SERVER_INIT 
+        std::cerr << " ------------------------------------------ " << std::endl;
         std::cerr << "DEBUG_SERVER_INIT:" << std::endl;
     # endif
 

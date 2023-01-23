@@ -4,6 +4,9 @@
 // DEBUG
 // # define DEBUG_CONFIG_FILE_PARSER
 // # define DEBUG_SERVER_INIT
+# define DEBUG_ACCEPT_CONNECTION
+# define DEBUG_CLOSE_CONNECTION
+# define DEBUG_READ_REQUEST
 
 // general
 # define WHITE_SPACES "\t\n\v\f\r "
@@ -44,7 +47,8 @@
 # define INDEX_DIRECTIVE_LEVEL 2
 
 // values
-# define MAX_PORT 65535
-# define BACKLOG  10
+# define MAX_PORT      65535
+# define BACKLOG       10
+# define READ_BUF_SIZE 102424
 
 # endif

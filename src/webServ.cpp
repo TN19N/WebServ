@@ -3,10 +3,12 @@
 # include <iostream>
 # include <unistd.h>
 # include <string>
+# include <algorithm>
 
 # include "server.hpp"
 # include "webServ.hpp"
 # include "init.hpp"
+# include "connections.hpp"
 
 // init static members
 std::vector<Server>         WebServ::servers;
@@ -30,6 +32,7 @@ void WebServ::clear() {
 void WebServ::run() {
     init();
 
+    int listenerMaxFd = WebServ::pollFds.back().fd;
     int num_events = 0;
     while (true) {
         if ((num_events = poll(WebServ::pollFds.data(), WebServ::pollFds.size(), -1)) == -1) {
@@ -39,6 +42,11 @@ void WebServ::run() {
         for (size_t i = 0; i < WebServ::pollFds.size() && num_events != 0; ++i) {
             if (WebServ::pollFds[i].revents & POLLIN) {
                 --num_events;
+                if (WebServ::pollFds[i].fd <= listenerMaxFd) {
+                    acceptConnection(WebServ::pollFds[i].fd);
+                } else {
+                    readRequest(WebServ::pollFds[i].fd);
+                }
             }
         }
     }
