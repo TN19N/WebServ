@@ -2,7 +2,8 @@
 # define DEFINITIONS_HPP
 
 // DEBUG
-# define DEBUG_CONFIG_FILE_PARSER
+// # define DEBUG_CONFIG_FILE_PARSER
+// # define DEBUG_SERVER_INIT
 
 // general
 # define WHITE_SPACES "\t\n\v\f\r "
@@ -44,5 +45,6 @@
 
 // values
 # define MAX_PORT 65535
+# define BACKLOG  10
 
 # endif

@@ -10,8 +10,14 @@
 # include "server.hpp"
 # include "location.hpp"
 
+static std::ifstream   configFile;
+
 static void panic(const std::string& msg) {
     std::cerr << "webserv: invalid config file : " << msg << std::endl;
+    if (configFile.is_open() == true) {
+        configFile.close();
+    }
+    WebServ::clear();
     exit(EXIT_FAILURE);
 }
 
@@ -55,7 +61,6 @@ static void addNewDirective(const std::vector<std::string>& directive, const siz
 
     const std::string&             directiveName = directive.front();
     const std::vector<std::string> directiveArgs(directive.begin() + 1, directive.end());
-    Server&                        currentServer = WebServ::servers.back();
 
     if (directiveName == HOST_DIRECTIVE) {
         if (level != HOST_DIRECTIVE_LEVEL) {
@@ -98,7 +103,7 @@ static void addNewDirective(const std::vector<std::string>& directive, const siz
 }
 
 void parseConfigFile(const std::string& configFilePath) {
-    std::ifstream configFile(configFilePath);
+    configFile.open(configFilePath);
     if (configFile.is_open() == false) {
         panic(configFilePath + " (" + strerror(errno) + ").");
     }
@@ -120,6 +125,7 @@ void parseConfigFile(const std::string& configFilePath) {
                 break;
             case '}' :
                 if (token.find_first_not_of(WHITE_SPACES) != std::string::npos || level == 0) {
+                    configFile.close();
                     panic("unexpected '}'.");
                 }
                 passDirectives.clear();
@@ -139,10 +145,15 @@ void parseConfigFile(const std::string& configFilePath) {
         panic("unexpected end of file.");
     }
 
+    if (WebServ::servers.empty() == true) {
+        panic("no server defined.");
+    }
+
     configFile.close();
 
     # ifdef DEBUG_CONFIG_FILE_PARSER // DEBUG ----------------------------------------
-        for (int i = 0; i < WebServ::servers.size(); ++i) {
+        std::cerr << "DEBUG_CONFIG_FILE_PARSER : " << std::endl;
+        for (size_t i = 0; i < WebServ::servers.size(); ++i) {
             std::cerr << " ---------------------------------------- " << std::endl;
             Server& server = WebServ::servers[i];
             std::cerr << "Server :: " << std::endl;
@@ -150,7 +161,7 @@ void parseConfigFile(const std::string& configFilePath) {
             std::cerr << "  port: " << server.getPort() << std::endl;
             std::cerr << "  name: " << server.getName() << std::endl;
             std::vector<Location>& locations = server.getLocations();
-            for (int j = 0; j < locations.size(); ++j) {
+            for (size_t j = 0; j < locations.size(); ++j) {
                 Location& location = locations[j];
                 std::cerr << "  Location :: " << std::endl;
                 std::cerr << "    match: " << location.getMatch() << std::endl;

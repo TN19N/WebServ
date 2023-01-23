@@ -2,6 +2,7 @@
 
 # include "definitions.hpp"
 
+# include "webServ.hpp"
 # include "parser.hpp"
 
 int main(int argc, char** argv) {
@@ -11,4 +12,8 @@ int main(int argc, char** argv) {
     }
 
     parseConfigFile(argc == 2 ? argv[1] : DEFAULT_CONFIG_FILE);
+
+    WebServ::run();
+
+    exit(EXIT_SUCCESS);
 }
