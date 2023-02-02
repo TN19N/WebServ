@@ -1,8 +1,7 @@
 # include <iostream>
 
-# include "parser.hpp"
-# include "context.hpp"
 # include "definitions.hpp"
+# include "webServ.hpp"
 
 int main(int argc, char** argv) {
     if (argc > 2) {
@@ -10,8 +9,7 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
 
-    Context* mainContext = new Context();
-    parseConfigFile(argc == 2 ? argv[1] : DEFAULT_CONFIG_FILE, mainContext);
+    Webserv webserv(argc == 2 ? argv[1] : DEFAULT_CONFIG_FILE);
 
-    
+    webserv.run();
 }

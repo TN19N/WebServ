@@ -9,4 +9,7 @@ const std::vector<std::string> split(const std::string& str, const std::string& 
 // config file
 void parseConfigFile(const std::string& configFilePath, Context* mainContext);
 
+// mime types
+void loadMimeTypes(const std::string& mimeTypesFilePath, std::map<std::string, std::string>& mimeType);
+
 # endif

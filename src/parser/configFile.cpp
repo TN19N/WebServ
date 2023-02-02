@@ -77,7 +77,7 @@ void parseConfigFile(const std::string& configFilePath, Context* mainContext) {
                 break;
             case NEW_LINE :
                 ++line;
-            default : 
+            default :
                 token += c;
         }
         c = configFile.get();

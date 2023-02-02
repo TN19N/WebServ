@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3
 # --------------------------------------------------------------
 SRCS = $(SRC_DIR)/main.cpp \
 	   $(SRC_DIR)/context.cpp \
+	   $(SRC_DIR)/webServ.cpp \
        $(SRC_DIR)/parser/configFile.cpp \
 	   $(SRC_DIR)/parser/utils.cpp
 # --------------------------------------------------------------

@@ -2,14 +2,13 @@
 # include <string>
 # include <vector>
 # include <arpa/inet.h>
+# include <algorithm>
 
 # include "context.hpp"
 # include "definitions.hpp"
 # include "parser.hpp"
 
-Context::Context()
-    : parent(nullptr)
-{
+Context::Context() : parent(nullptr) {
     this->args.push_back(MAIN_CONTEXT);
 }
 
@@ -115,6 +114,9 @@ void Context::addDirective(const std::vector<std::string>& tokens) {
         } else if (ROOT_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(ROOT_DIRECTIVE) + "' directive");
         }
+        if (directiveArgs.front().front() != '/') {
+            throw std::invalid_argument("invalid argument for '" + std::string(ROOT_DIRECTIVE) + "' directive");
+        }
     } else if (directiveType == AUTOINDEX_DIRECTIVE) { // AUTOINDEX DIRECTIVE ------------------------------------------------
         if (AUTOINDEX_DIRECTIVE_POS(this->getType())) {
             throw std::invalid_argument("'" + std::string(AUTOINDEX_DIRECTIVE) + "' directive not allowed here");
@@ -126,6 +128,12 @@ void Context::addDirective(const std::vector<std::string>& tokens) {
             throw std::invalid_argument("'" + std::string(ALLOWED_METHODS_DIRECTIVE) + "' directive not allowed here");
         } else if (ALLOWED_METHODS_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(ALLOWED_METHODS_DIRECTIVE) + "' directive");
+        }
+        std::vector<std::string> supportedMethods = split(SUPPORTED_METHODS, WHITE_SPACE);
+        for (size_t i = 0; i < directiveArgs.size(); ++i) {
+            if (std::find(supportedMethods.begin(), supportedMethods.end(), directiveArgs[i]) == supportedMethods.end()) {
+                throw std::invalid_argument("invalid argument for '" + std::string(ALLOWED_METHODS_DIRECTIVE) + "' directive");
+            }
         } 
     } else if (directiveType == UPLOAD_PATH_DIRECTIVE) { // UPLOAD_PATH DIRECTIVE --------------------------------------------
         if (UPLOAD_PATH_DIRECTIVE_POS(this->getType())) {
@@ -133,11 +141,19 @@ void Context::addDirective(const std::vector<std::string>& tokens) {
         } else if (UPLOAD_PATH_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(UPLOAD_PATH_DIRECTIVE) + "' directive");
         }
+        if (directiveArgs.front().front() != '/') {
+            throw std::invalid_argument("invalid argument for '" + std::string(UPLOAD_PATH_DIRECTIVE) + "' directive");
+        }
     } else if (directiveType == CGI_DIRECTIVE) { // CGI DIRECTIVE ------------------------------------------------------------
         if (CGI_DIRECTIVE_POS(this->getType())) {
             throw std::invalid_argument("'" + std::string(CGI_DIRECTIVE) + "' directive not allowed here");
         } else if (CGI_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(CGI_DIRECTIVE) + "' directive");
+        }
+        for (size_t i = 0; i < directiveArgs.size(); ++i) {
+            if (directiveArgs[i].front() != '.' || std::count(directiveArgs[i].begin(), directiveArgs[i].end(), '.') != 1) {
+                throw std::invalid_argument("invalid argument for '" + std::string(CGI_DIRECTIVE) + "' directive");
+            }
         }
     } else if (directiveType == REDIRECT_DIRECTIVE) { // REDIRECT DIRECTIVE --------------------------------------------------
         if (REDIRECT_DIRECTIVE_POS(this->getType())) {
@@ -145,11 +161,23 @@ void Context::addDirective(const std::vector<std::string>& tokens) {
         } else if (REDIRECT_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(REDIRECT_DIRECTIVE) + "' directive");
         }
+
+        char *end = nullptr;
+        size_t statusCode = std::strtol(directiveArgs.front().c_str(), &end, 10);
+        if (*end != '\0' || statusCode < MIN_STATUS_CODE || statusCode > MAX_STATUS_CODE || directiveArgs.front().size() != 3) {
+            throw std::invalid_argument("invalid argument for '" + std::string(REDIRECT_DIRECTIVE) + "' directive");
+        }
     } else if (directiveType == BODY_SIZE_DIRECTIVE) { // BODY_SIZE DIRECTIVE ------------------------------------------------
         if (BODY_SIZE_DIRECTIVE_POS(this->getType())) {
             throw std::invalid_argument("'" + std::string(BODY_SIZE_DIRECTIVE) + "' directive not allowed here");
         } else if (BODY_SIZE_DIRECTIVE_ARGS(directiveArgs.size())) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(BODY_SIZE_DIRECTIVE) + "' directive");
+        }
+
+        char *end = nullptr;
+        size_t bodySize = std::strtol(directiveArgs.front().c_str(), &end, 10);
+        if (*end != 'M' || *(end + 1) != '\0' || bodySize < 0) {
+            throw std::invalid_argument("invalid argument for '" + std::string(BODY_SIZE_DIRECTIVE) + "' directive");
         }
     } else if (directiveType == ERROR_PAGE_DIRECTIVE) { // ERROR_PAGE DIRECTIVE ----------------------------------------------
         if (ERROR_PAGE_DIRECTIVE_POS(this->getType())) {
@@ -158,6 +186,11 @@ void Context::addDirective(const std::vector<std::string>& tokens) {
             throw std::invalid_argument("invalid number of arguments for '" + std::string(ERROR_PAGE_DIRECTIVE) + "' directive");
         }
         for (size_t i = 0; i < directiveArgs.size(); i += 2) {
+            char *end = nullptr;
+            size_t statusCode = std::strtol(directiveArgs[i].c_str(), &end, 10);
+            if (*end != '\0' || statusCode < MIN_STATUS_CODE || statusCode > MAX_STATUS_CODE || directiveArgs[i].size() != 3 || directiveArgs[i + 1].front() != '/') {
+                throw std::invalid_argument("invalid argument for '" + std::string(REDIRECT_DIRECTIVE) + "' directive");
+            }
             this->directives[directiveArgs[i]] = std::vector<std::string> (directiveArgs.begin() + i + 1, directiveArgs.begin() + i + 2);
         }
         return;

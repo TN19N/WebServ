@@ -2,8 +2,10 @@
 # define DEFINITIONS_HPP
 
 # define DEBUG_CONFIG_FILE_PARSER
+# define DEBUG_MIME_TYPES_PARSER
 
-# define DEFAULT_CONFIG_FILE "default.cfg"
+# define DEFAULT_CONFIG_FILE "./default.cfg"
+# define MIME_TYPES_FILE_PATH "./mime.types"
 
 # define WHITE_SPACE " \t\n\r\f\v"
 # define NEW_LINE    '\n'
@@ -65,10 +67,14 @@
 # define DEFAULT_NAME                ""
 # define DEFAULT_INDEX               "index.html index.htm index.php"
 # define DEFAULT_ROOT                "/var/www/html"
-# define DEFAULT_AUTOINDEX           "on"
+# define DEFAULT_AUTOINDEX           "off"
 # define DEFAULT_ALLOWED_METHODS     "GET POST DELETE"
 # define DEFAULT_BODY_SIZE           "1M"
 
 # define MAX_PORT                    65535
+# define MAX_STATUS_CODE             599
+# define MIN_STATUS_CODE             100
+
+# define SUPPORTED_METHODS           "GET POST DELETE"
 
 # endif
