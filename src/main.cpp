@@ -1,19 +1,17 @@
 # include <iostream>
 
-# include "definitions.hpp"
-
-# include "webServ.hpp"
 # include "parser.hpp"
+# include "context.hpp"
+# include "definitions.hpp"
 
 int main(int argc, char** argv) {
     if (argc > 2) {
-        std::cerr << "webserv: usage: webserv [config_file]" << std::endl;
+        std::cerr << "webserv: Usage: webserv [config_file]." << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    parseConfigFile(argc == 2 ? argv[1] : DEFAULT_CONFIG_FILE);
+    Context* mainContext = new Context();
+    parseConfigFile(argc == 2 ? argv[1] : DEFAULT_CONFIG_FILE, mainContext);
 
-    WebServ::run();
-
-    exit(EXIT_SUCCESS);
+    
 }
