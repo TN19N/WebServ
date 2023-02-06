@@ -4,7 +4,7 @@ OBJ_DIR = $(BUILD_DIR)/obj
 BIN_DIR = $(BUILD_DIR)/bin
 INCLUDE_DIR = ./include
 
-NAME = $(BIN_DIR)/webserv
+NAME = $(BIN_DIR)/webserv.exe
 
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
