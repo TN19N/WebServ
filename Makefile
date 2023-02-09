@@ -1,52 +1,68 @@
-SRC_DIR = ./src
-BUILD_DIR = ./build
-OBJ_DIR = $(BUILD_DIR)/obj
-BIN_DIR = $(BUILD_DIR)/bin
-INCLUDE_DIR = ./include
+#  Compiler
+CC := c++
 
-NAME = $(BIN_DIR)/webserv.exe
+# Directories
+SRC_DIR := ./src
+BUILD_DIR := ./build
+TARGET_DIR := $(BUILD_DIR)/bin
+OBJ_DIR := $(BUILD_DIR)/obj
+INCLUDE_DIR := ./include
 
-CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+# The Target Binary Program
+TARGET := $(TARGET_DIR)/webserv.exe
 
-# ----------------------------------------------
-SRC_FILES = $(SRC_DIR)/core/webserv.cpp
-# ----------------------------------------------
+# extentions
+SRC_EXT := cpp
+OBJ_EXT := o
 
-OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+# Flags
+CFLAGS := -Wall -Wextra -Werror -std=c++98
 
-# Colors
-RED = \033[0;31m
-GREEN = \033[0;32m
-END = \033[0m
+# Sources
+# -------------------------------------------------------------
+SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
+		$(SRC_DIR)/core/webserv.$(SRC_EXT) \
+        $(SRC_DIR)/core/context.$(SRC_EXT) \
+		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT)
+# -------------------------------------------------------------
+OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
+
+# colors
+RED := \033[0;31m
+GREEN := \033[0;32m
+END := \033[0m
 
 .PHONY: all
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += -g3 -fsanitize=address
-debug: $(NAME)
+debug: CFLAGS += -g -fsanitize=address -D DEBUG
+debug: $(TARGET)
 
 .PHONY: release
-release: $(NAME)
+release: $(TARGET)
 
-$(NAME): $(OBJ_FILES)
-	@ echo "$(GREEN)Compiling...$(END)"
-	@ $(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) -I $(INCLUDE_DIR)
+.PHONY: run
+run: debug
+	@ ./$(TARGET) $(ARGS)
+
+$(TARGET) : $(OBJS)
+	@ echo "$(GREEN)Compiling ...$(END)"
+	@ $(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 	@ echo "$(GREEN)Done!$(END)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@ $(CC) $(CFLAGS) -c $< -o $@ -I $(INCLUDE_DIR)
+$(OBJ_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT)
+	@ $(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)
 
 .PHONY: clean
 clean:
-	@ echo "$(RED)Cleaning...$(END)"
-	@ rm -rf $(OBJ_FILES)
+	@ echo "$(RED)Cleaning ...$(END)"
+	@ rm -rf $(OBJS)
 	@ echo "$(RED)Done!$(END)"
 
 .PHONY: fclean
 fclean: clean
-	@ rm -rf $(NAME)
+	@ rm -rf $(TARGET)
 
 .PHONY: re
 re: fclean all
