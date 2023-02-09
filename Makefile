@@ -27,6 +27,7 @@ SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
 
+
 # colors
 RED := \033[0;31m
 GREEN := \033[0;32m
