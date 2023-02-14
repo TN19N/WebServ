@@ -22,6 +22,7 @@ class Context {
         const std::vector<std::string>&                                 getArgs()       const;
         const std::string&                                              getName()       const;
         const std::map<const std::string, std::vector<std::string> >&   getDirectives() const;
+        const std::vector<std::string>&                                 getDirective(const std::string& key) const;
         const std::vector<Context*>&                                    getChildren()   const;
         const Context*                                                  getParent()     const;
         Context*                                                        getParent();
