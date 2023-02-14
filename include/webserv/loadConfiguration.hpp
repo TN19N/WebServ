@@ -74,7 +74,7 @@ const Context* loadConfiguration(const std::string& configFilePath, Context* con
 # define WITE_SPACES    " \t\r\n\v\f"
 # define NEW_LINE       '\n'
 
-# define MAX_DEPTH  10
+# define MAX_DEPTH  100
 
 # define MAX_PORT   65535
 # define MIN_PORT   0

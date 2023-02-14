@@ -5,7 +5,7 @@
 
 Context::Context(const std::vector<std::string>& args, Context* parent) 
     : args(args), 
-      parent(parent) 
+    parent(parent) 
 {
     if (parent != nullptr) {
         this->directives = parent->getDirectives();
@@ -30,6 +30,10 @@ const std::string& Context::getName() const {
 
 const std::map<const std::string, std::vector<std::string> >& Context::getDirectives() const {
     return this->directives;
+}
+
+const std::vector<std::string>& Context::getDirective(const std::string& key) const {
+    return this->directives.at(key);
 }
 
 const std::vector<Context*>& Context::getChildren() const {

@@ -23,7 +23,8 @@ CFLAGS := -Wall -Wextra -Werror -std=c++98
 SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
 		$(SRC_DIR)/core/webserv.$(SRC_EXT) \
         $(SRC_DIR)/core/context.$(SRC_EXT) \
-		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT)
+		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT) \
+		$(SRC_DIR)/core/init.$(SRC_EXT)
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
 

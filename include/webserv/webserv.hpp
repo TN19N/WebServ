@@ -2,20 +2,23 @@
 # define WEBSERV_HPP
 
 # include <string>
+# include <vector>
+# include <poll.h>
 
 # include "webserv/context.hpp"
 
 class WebServer {
     public :
-        static const WebServer& getInstance(const std::string& configFilePath);
-        void run() const;
+        static WebServer& getInstance(const std::string& configFilePath);
+        void run();
 
     private:
-        static const WebServer* instance;
+        static WebServer* instance;
         WebServer(const std::string& configFilePath);
         ~WebServer();
 
-        const Context* const configuration;
+        const Context* const        configuration;
+        std::vector<struct pollfd>  fds;
 };
 
 # endif

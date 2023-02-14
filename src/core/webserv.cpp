@@ -1,6 +1,13 @@
+# include <stdexcept>
+# include <string>
+# include <poll.h>
+# include <iostream>
+# include <unistd.h>
+
 # include "webserv/webserv.hpp"
 # include "webserv/loadConfiguration.hpp"
-
+# include "webserv/context.hpp"
+# include "webserv/init.hpp"
 
 # ifdef DEBUG
 # include <iostream>
@@ -28,7 +35,7 @@ static void display(const Context* context, const size_t level) {
 # endif
 
 // static member initialization
-const WebServer* WebServer::instance = nullptr;
+WebServer* WebServer::instance = nullptr;
 
 WebServer::WebServer(const std::string& configFilePath) 
     : configuration(loadConfiguration(configFilePath, nullptr, 1)) 
@@ -39,21 +46,47 @@ WebServer::WebServer(const std::string& configFilePath)
     # endif
 }
 
-const WebServer& WebServer::getInstance(const std::string& configFilePath) {
+WebServer& WebServer::getInstance(const std::string& configFilePath) {
     if (WebServer::instance == nullptr) {
         try {
             WebServer::instance = new WebServer(configFilePath);
         } catch (const std::exception& e) {
-            throw std::runtime_error("initialization failed: " + std::string(e.what()));
+            throw std::runtime_error("loading configuration failed: " + std::string(e.what()));
         }
     }
     return *(WebServer::instance);
 }
 
-void WebServer::run() const {
-    // while (true);
+void WebServer::run() {
+    try {
+        init(this->configuration, this->fds);
+    } catch (const std::exception& e) {
+        delete this;
+        throw std::runtime_error("servers initialization failed: " + std::string(e.what()));
+    }
+
+    int pollResult = -1;
+    while (true) {
+        if ((pollResult = poll(this->fds.data(), this->fds.size(), -1)) == -1) {
+            delete this;
+            throw std::runtime_error("poll failed '" + std::string(strerror(errno)) + "'");
+        }
+
+        for (size_t i = 0; i < this->fds.size() && pollResult > 0; ++i) {
+            if (this->fds[i].revents & POLLIN) {
+                --pollResult;
+                std::cerr << " tring tring ..." << std::endl;
+            }
+        }
+    }
+
+    std::cout << "webserv stoped" << std::endl;
+    delete this;
 }
 
 WebServer::~WebServer() {
+    for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
+        close(it->fd);
+    }
     delete this->configuration;
 }
