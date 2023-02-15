@@ -8,6 +8,7 @@
 # include "webserv/loadConfiguration.hpp"
 # include "webserv/context.hpp"
 # include "webserv/init.hpp"
+# include "webserv/http.hpp"
 
 # ifdef DEBUG
 # include <iostream>
@@ -58,8 +59,10 @@ WebServer& WebServer::getInstance(const std::string& configFilePath) {
 }
 
 void WebServer::run() {
+    size_t serversCount = 0;
+
     try {
-        init(this->configuration, this->fds);
+        serversCount = init(this->configuration, this->fds);
     } catch (const std::exception& e) {
         delete this;
         throw std::runtime_error("servers initialization failed: " + std::string(e.what()));
@@ -72,10 +75,19 @@ void WebServer::run() {
             throw std::runtime_error("poll failed '" + std::string(strerror(errno)) + "'");
         }
 
-        for (size_t i = 0; i < this->fds.size() && pollResult > 0; ++i) {
+        for (size_t i = 0; i < this->fds.size() && pollResult > 0; ++i) { 
             if (this->fds[i].revents & POLLIN) {
                 --pollResult;
-                std::cerr << " tring tring ..." << std::endl;
+                if (i < serversCount) {
+                    acceptConnection(this->fds[i].fd, this->fds, this->clients);
+                } else {
+                    // TODO: handle client request
+                    Client* client = this->clients[i - serversCount];
+                    char buffer[1024];
+                    ssize_t readResult = recv(client->getFd(), buffer, 1024, 0);
+                    buffer[readResult] = '\0';
+                    std::cout << buffer << std::endl;
+                }
             }
         }
     }
@@ -88,5 +100,9 @@ WebServer::~WebServer() {
     for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
         close(it->fd);
     }
+    for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
+        delete *it;
+    }
+    clients.clear();
     delete this->configuration;
 }

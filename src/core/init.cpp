@@ -6,10 +6,10 @@
 # include <vector>
 # include <unistd.h>
 # include <sys/errno.h>
+# include <iostream>
 
 # ifdef DEBUG
 # include <arpa/inet.h>
-# include <iostream>
 # endif
 
 # include "webserv/context.hpp"
@@ -17,7 +17,7 @@
 
 # define BACKLOG 25
 
-static void startServers(const Context* context, std::vector<struct pollfd>& fds) {
+static void startServers(const Context* context, std::vector<struct pollfd>& fds, size_t& serversCounter) {
     if (context->getName() == SERVER_CONTEXT) {
         struct addrinfo hints, *res, *ptr;
         int             status, sockfd;
@@ -40,6 +40,7 @@ static void startServers(const Context* context, std::vector<struct pollfd>& fds
             }
             if (bind(sockfd, ptr->ai_addr, ptr->ai_addrlen) == -1) {
                 close(sockfd);
+                std::cerr << "webserv: warning: bind: " << strerror(errno) << std::endl;
                 continue;
             }
             break;
@@ -49,6 +50,7 @@ static void startServers(const Context* context, std::vector<struct pollfd>& fds
             fd.fd = sockfd;
             fd.events = POLLIN;
             fds.push_back(fd);
+            ++serversCounter;
 
             if (listen(sockfd, BACKLOG) == -1) {
                 freeaddrinfo(res);
@@ -96,17 +98,21 @@ static void startServers(const Context* context, std::vector<struct pollfd>& fds
     }
 
     for (std::vector<Context*>::const_iterator it = context->getChildren().begin(); it != context->getChildren().end(); ++it) {
-        startServers(*it, fds);
+        startServers(*it, fds, serversCounter);
     }
 }
 
-void init(const Context* configuration, std::vector<struct pollfd>& fds) {
+size_t init(const Context* configuration, std::vector<struct pollfd>& fds) {
+    size_t serversCounter = 0;
+
     const std::vector<Context*>& children = configuration->getChildren();
     for (std::vector<Context*>::const_iterator it = children.begin(); it != children.end(); ++it) {
-        startServers(*it, fds);
+        startServers(*it, fds, serversCounter);
     }
 
     if (fds.empty() == true) {
         throw std::runtime_error("No server to start");
     }
+
+    return serversCounter;
 }
