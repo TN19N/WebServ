@@ -16,7 +16,7 @@ SRC_EXT := cpp
 OBJ_EXT := o
 
 # Flags
-CFLAGS := -Wall -Wextra -Werror -std=c++98
+CFLAGS := #-Wall -Wextra -Werror -std=c++98
 
 # Sources
 # -------------------------------------------------------------
@@ -24,10 +24,11 @@ SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
 		$(SRC_DIR)/core/webserv.$(SRC_EXT) \
         $(SRC_DIR)/core/context.$(SRC_EXT) \
 		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT) \
-		$(SRC_DIR)/core/init.$(SRC_EXT)
+		$(SRC_DIR)/core/init.$(SRC_EXT) \
+		$(SRC_DIR)/http/client.$(SRC_EXT) \
+		$(SRC_DIR)/http/acceptConnection.$(SRC_EXT)
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
-
 
 # colors
 RED := \033[0;31m

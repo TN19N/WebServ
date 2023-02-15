@@ -6,6 +6,7 @@
 # include <poll.h>
 
 # include "webserv/context.hpp"
+# include "webserv/client.hpp"
 
 class WebServer {
     public :
@@ -17,8 +18,9 @@ class WebServer {
         WebServer(const std::string& configFilePath);
         ~WebServer();
 
-        const Context* const        configuration;
-        std::vector<struct pollfd>  fds;
+        const Context* const    configuration;
+        std::vector<pollfd>     fds;
+        std::vector<Client*>    clients;
 };
 
 # endif
