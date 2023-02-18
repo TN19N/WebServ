@@ -6,8 +6,6 @@
 # include <arpa/inet.h>
 # include <algorithm>
 
-# include <iostream> // TODO: remove
-
 # include "webserv/context.hpp"
 # include "webserv/loadConfiguration.hpp"
 

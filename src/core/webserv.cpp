@@ -59,10 +59,8 @@ WebServer& WebServer::getInstance(const std::string& configFilePath) {
 }
 
 void WebServer::run() {
-    size_t serversCount = 0;
-
     try {
-        serversCount = init(this->configuration, this->fds);
+        init(this->configuration, this->listeners);
     } catch (const std::exception& e) {
         delete this;
         throw std::runtime_error("servers initialization failed: " + std::string(e.what()));
@@ -97,12 +95,12 @@ void WebServer::run() {
 }
 
 WebServer::~WebServer() {
-    for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
-        close(it->fd);
-    }
     for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
         delete *it;
     }
     clients.clear();
+    for (std::vector<int>::iterator it = this->listeners.begin(); it != this->listeners.end(); ++it) {
+        close(*it);
+    }
     delete this->configuration;
 }

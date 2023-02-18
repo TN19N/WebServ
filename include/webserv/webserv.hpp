@@ -19,6 +19,7 @@ class WebServer {
         ~WebServer();
 
         const Context* const    configuration;
+
         std::vector<pollfd>     fds;
         std::vector<Client*>    clients;
 };

@@ -17,7 +17,7 @@
 
 # define BACKLOG 25
 
-static void startServers(const Context* context, std::vector<struct pollfd>& fds, size_t& serversCounter) {
+static void startServers(const Context* context, std::vector<int>& listeners); {
     if (context->getName() == SERVER_CONTEXT) {
         struct addrinfo hints, *res, *ptr;
         int             status, sockfd;
@@ -47,10 +47,7 @@ static void startServers(const Context* context, std::vector<struct pollfd>& fds
         }
 
         if (ptr != NULL) {
-            fd.fd = sockfd;
-            fd.events = POLLIN;
-            fds.push_back(fd);
-            ++serversCounter;
+            listeners.push_back(sockfd);
 
             if (listen(sockfd, BACKLOG) == -1) {
                 freeaddrinfo(res);
@@ -102,15 +99,15 @@ static void startServers(const Context* context, std::vector<struct pollfd>& fds
     }
 }
 
-size_t init(const Context* configuration, std::vector<struct pollfd>& fds) {
+void init(const Context* configuration, std::vector<int>& listeners) {
     size_t serversCounter = 0;
 
     const std::vector<Context*>& children = configuration->getChildren();
     for (std::vector<Context*>::const_iterator it = children.begin(); it != children.end(); ++it) {
-        startServers(*it, fds, serversCounter);
+        startServers(*it, listeners);
     }
 
-    if (fds.empty() == true) {
+    if (listeners.empty() == true) {
         throw std::runtime_error("No server to start");
     }
 

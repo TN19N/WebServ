@@ -8,11 +8,12 @@ class Client {
     private:
         int                     fd;
         struct sockaddr_storage addr;
-        std::string             buffer;
     public:
         Client(const int fd, const struct sockaddr_storage& addr);
 
         const int& getFd() const;
+
+        ~Client();
 };
 
 # endif
