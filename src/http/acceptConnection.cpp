@@ -1,12 +1,12 @@
 # include <sys/socket.h>
 # include <vector>
 # include <poll.h>
+# include <iostream>
 
 # include "webserv/client.hpp"
 
 # ifdef DEBUG
 # include <arpa/inet.h>
-# include <iostream>
 # endif
 
 void acceptConnection(int listenFd, std::vector<pollfd>& fds, std::vector<Client*>& clients) {
@@ -22,6 +22,7 @@ void acceptConnection(int listenFd, std::vector<pollfd>& fds, std::vector<Client
     struct pollfd clientPollFd;
     clientPollFd.fd = clientFd;
     clientPollFd.events = POLLIN;
+    clientPollFd.revents = 0;
     fds.push_back(clientPollFd);
 
     clients.push_back(new Client(clientFd, clientAddr));

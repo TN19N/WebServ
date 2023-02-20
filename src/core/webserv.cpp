@@ -59,8 +59,9 @@ WebServer& WebServer::getInstance(const std::string& configFilePath) {
 }
 
 void WebServer::run() {
+    size_t serversCount = 0;
     try {
-        init(this->configuration, this->listeners);
+        serversCount = init(this->configuration, this->fds);
     } catch (const std::exception& e) {
         delete this;
         throw std::runtime_error("servers initialization failed: " + std::string(e.what()));
@@ -79,14 +80,29 @@ void WebServer::run() {
                 if (i < serversCount) {
                     acceptConnection(this->fds[i].fd, this->fds, this->clients);
                 } else {
-                    // TODO: handle client request
-                    Client* client = this->clients[i - serversCount];
-                    char buffer[1024];
-                    ssize_t readResult = recv(client->getFd(), buffer, 1024, 0);
-                    buffer[readResult] = '\0';
-                    std::cout << buffer << std::endl;
+                    receiveRequest(this->clients[i - serversCount], this->fdsToClose);
                 }
             }
+        }
+
+        // close fds
+        while (this->fdsToClose.empty() == false) {
+            for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
+                if (it->fd == this->fdsToClose.back()) {
+                    this->fds.erase(it);
+                    break;
+                }
+            }
+            for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
+                if ((*it)->getFd() == this->fdsToClose.back()) {
+                    delete (*it);
+                    this->clients.erase(it);
+                    break;
+                }
+            }
+
+            close(this->fdsToClose.back());
+            this->fdsToClose.pop_back();
         }
     }
 
@@ -95,12 +111,15 @@ void WebServer::run() {
 }
 
 WebServer::~WebServer() {
+    // clear clients
     for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
         delete *it;
     }
     clients.clear();
-    for (std::vector<int>::iterator it = this->listeners.begin(); it != this->listeners.end(); ++it) {
-        close(*it);
+    // close and clear poll fds
+    for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
+        close(it->fd);
     }
+    fds.clear();
     delete this->configuration;
 }

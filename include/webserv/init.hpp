@@ -3,6 +3,6 @@
 
 # include "webserv/context.hpp"
 
-void init(const Context* configuration, std::vector<int>& listeners);
+size_t init(const Context* configuration, std::vector<pollfd>& fds);
 
 # endif
