@@ -3,4 +3,6 @@
 
 void acceptConnection(int listenFd, std::vector<pollfd>& fds, std::vector<Client*>& clients);
 
+void receiveRequest(Client* client, std::vector<int>& fdsToClose);
+
 # endif

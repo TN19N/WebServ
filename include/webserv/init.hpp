@@ -3,6 +3,6 @@
 
 # include "webserv/context.hpp"
 
-size_t init(const Context* configuration, std::vector<struct pollfd>& fds);
+size_t init(const Context* configuration, std::vector<pollfd>& fds);
 
 # endif
