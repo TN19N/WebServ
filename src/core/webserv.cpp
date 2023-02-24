@@ -69,39 +69,40 @@ void WebServer::run() {
 
     int pollResult = -1;
     while (true) {
+        std::vector<const Client*> clientsToRemove;
         if ((pollResult = poll(this->fds.data(), this->fds.size(), -1)) == -1) {
             delete this;
             throw std::runtime_error("poll failed '" + std::string(strerror(errno)) + "'");
         }
 
-        for (size_t i = 0; i < this->fds.size() && pollResult > 0; ++i) { 
+        for (size_t i = 0; i < this->fds.size() && pollResult > 0; ++i) {
             if (this->fds[i].revents & POLLIN) {
                 --pollResult;
                 if (i < serversCount) {
-                    acceptConnection(this->fds[i].fd, this->fds, this->clients);
+                    HTTP::acceptConnection(this->fds[i].fd, this->fds, this->clients);
                 } else {
-                    receiveRequest(this->clients[i - serversCount], this->fdsToClose);
+                    HTTP::requestHandler(this->clients[i - serversCount], clientsToRemove);
                 }
             }
         }
 
         // close fds
-        while (this->fdsToClose.empty() == false) {
+        while (clientsToRemove.empty() == false) {
             for (std::vector<pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
-                if (it->fd == this->fdsToClose.back()) {
+                if (it->fd == clientsToRemove.back()->getFd()) {
                     this->fds.erase(it);
                     break;
                 }
             }
             for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
-                if ((*it)->getFd() == this->fdsToClose.back()) {
+                if ((*it) == clientsToRemove.back()) {
                     delete (*it);
                     this->clients.erase(it);
                     break;
                 }
             }
 
-            close(this->fdsToClose.back());
+            close(this->clientsToRemove.back());
             this->fdsToClose.pop_back();
         }
     }

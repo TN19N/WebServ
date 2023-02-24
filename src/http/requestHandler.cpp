@@ -1,0 +1,64 @@
+# define BUFFER_SIZE 4096
+
+# include <iostream>
+# include <string>
+# include <vector>
+# include <iostream>
+# include <map>
+
+# ifdef DEBUG
+# include <arpa/inet.h>
+# endif
+
+# include "webserv/client.hpp"
+# include "webserv/context.hpp"
+# include "webserv/request.hpp"
+# include "webserv/http.hpp"
+
+static const std::string getDefaultErrorPage(const int& statusCode) {
+    return (
+        "<!DOCTYPE html>\n"
+        "<html>\n"
+        "   <head>\n"
+        "       <title>" + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + "</title>\n"
+        "   </head>\n"
+        "   <body>\n"
+        "       <h1>" + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + "</h1>\n"
+        "       <hr>\n"
+        "       webserv/1.0.0\n"
+        "   </body>\n"
+        "</html>\n"
+    );
+}
+
+static void readRequest(Client* client) {
+    char buffer[BUFFER_SIZE];
+    int  bytesReceived = 0;
+    switch (bytesReceived = recv(client->getFd(), buffer, BUFFER_SIZE, 0)) {
+        case -1 :   
+            throw 500;
+        case 0 :
+            throw throw 404;
+        default :
+            client->addBuffer(buffer, bytesReceived);
+    }
+}
+
+void HTTP::requestHandler(Client* client, std::vector<const Client>& fdsToClose) {
+    while (true) {
+        try {
+            readRequest(client);
+        } catch (const int& statusCode) {
+            while (true) {
+                try {
+                    if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode))) {
+                        fdsToClose.push_back(client->getFd())
+                    }
+                    break;
+                } catch (const int& newStatusCode) {
+                    statusCode = newStatusCode;
+                }
+            }
+        }
+    }
+}
