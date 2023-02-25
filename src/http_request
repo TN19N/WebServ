@@ -1,0 +1,25 @@
+POST /test.php?jawad=chakir&chakir=jawad HTTP/1.1
+Host: foo.example:1337
+Content-Type: application/x-www-form-urlencoded
+Accept-Charset: jawad.chakir_test_test
+Accept-Encoding: jawad.chakir_test_test
+Accept-Language: jawad.chakir_test_test
+Authorization: jawad.chakir_test_test
+Expect: jawad.chakir_test_test
+From: jawad.chakir_test_test
+If-Match: jawad.chakir_test_test
+If-Modified-Since: jawad.chakir_test_test
+If-None-Match: jawad.chakir_test_test
+If-Range: jawad.chakir_test_test
+If-Unmodified-Since: jawad.chakir_test_test
+Max-Forwards: jawad.chakir_test_test
+Proxy-Authorization: jawad.chakir_test_test
+Range: jawad.chakir_test_test
+Referer: jawad.chakir_test_test
+TE: jawad.chakir_test_test
+User-Agent: kkk
+User-Agent: kkk
+Content-Length: 1337
+Transfer-Encoding: chunked
+
+field1=value1&field2=value2
