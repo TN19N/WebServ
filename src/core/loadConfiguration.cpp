@@ -73,13 +73,6 @@ static Context* addNewContext(const std::vector<std::string>& args, Context* cur
         if (contextArgs[0].front() != '/') {
             throw std::runtime_error("invalid location '" + contextArgs[0] + "' in '" + contextName + "' context");
         }
-        if (contextArgs[0].back() != '/') {
-            std::vector<std::string> newArgs = args;
-            newArgs[1] += '/';
-            Context* newContext = addNewContext(newArgs, currentContext);
-            currentContext->addChild(newContext);
-            return newContext;
-        }
     } else if (contextName == TYPES_CONTEXT) {
         checkRequirements(TYPES_CONTEXT_ARGS(contextArgs.size()), TYPES_CONTEXT_PARENT(currentContext->getName()), contextName, "context");
     } else {
