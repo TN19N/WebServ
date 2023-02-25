@@ -7,12 +7,12 @@
 
 static const std::string getConnectionState(const int& statusCode) {
     switch (statusCode) {
-        case 400: return "close";
-        default:  return "keep-alive"; 
+        case 404: return "close";
+        default:  return "keep-alive";
     }
 }
 
-static void sendString(const std::string& str) {
+static void sendString(const Client* client, const std::string& str) {
     int bytesSent = 0;
     int totalBytesSent = 0;
 
@@ -24,19 +24,19 @@ static void sendString(const std::string& str) {
     }
 }
 
-const bool HTTP::sendResponse(const Client* client, const int& statusCode, const std::string& body = "", const std::map<std::string, std::string>& headers = std::map<std::string, std::string>()) {
+const bool HTTP::sendResponse(const Client* client, const int& statusCode, const std::string& body, const std::map<std::string, std::string>& headers) {
     std::string connectionState = getConnectionState(statusCode);
 
-    sendString("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF);
-    sendString("Server: webserv/1.0.0" + CRLF);
-    sendString("Date: " + HTTP::getHttpDate() + CRLF);
-    sendString("Connection: " + connectionState + CRLF);
+    sendString(client, "HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF);
+    sendString(client, std::string("Server: webserv/1.0.0") + CRLF);
+    sendString(client, "Date: " + HTTP::getHttpDate() + CRLF);
+    sendString(client, "Connection: " + connectionState + CRLF);
 
     for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it) {
-        sendString(it->first + ": " + it->second + CRLF);
+        sendString(client, it->first + ": " + it->second + CRLF);
     }
 
-    sendString(CRLF + body);
+    sendString(client, CRLF + body);
 
     return (connectionState == "close");
 }

@@ -83,6 +83,5 @@ void HTTP::acceptConnection(int listenFd, std::vector<pollfd>& fds, std::vector<
         std::cerr << "sin6_addr: " << inet_ntop(AF_INET6, &addr->sin6_addr, ip, INET6_ADDRSTRLEN) << std::endl;
         std::cerr << "sin6_scope_id: " << int(addr->sin6_scope_id) << std::endl;
     }
-    std::cerr << " ------------------------------------------------------ " << std::endl;
     # endif
 }

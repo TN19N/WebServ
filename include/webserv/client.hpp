@@ -16,14 +16,14 @@ class Client {
     public:
         Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer);
 
-        // getters
         const int&                     getFd() const;
         const struct sockaddr_storage& getAddr() const;
         const struct sockaddr_storage& getPeer() const;
         const std::string&             getBuffer() const;
         const Request*                 getRequest() const;
 
-        void addBuffer(char *buf, int len);
+        void    newRequest(Request* request);
+        void    addBuffer(char *buf, int len);
 
         ~Client();
 };

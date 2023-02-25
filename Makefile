@@ -30,6 +30,7 @@ SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
 		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/statusCodeHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/responseHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/tools.$(SRC_EXT)
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))

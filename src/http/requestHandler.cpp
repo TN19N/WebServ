@@ -38,27 +38,30 @@ static void readRequest(Client* client) {
         case -1 :   
             throw 500;
         case 0 :
-            throw throw 404;
+            throw "close connection";
         default :
             client->addBuffer(buffer, bytesReceived);
     }
 }
 
-void HTTP::requestHandler(Client* client, std::vector<const Client>& fdsToClose) {
-    while (true) {
-        try {
-            readRequest(client);
-        } catch (const int& statusCode) {
-            while (true) {
-                try {
-                    if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode))) {
-                        fdsToClose.push_back(client->getFd())
-                    }
-                    break;
-                } catch (const int& newStatusCode) {
-                    statusCode = newStatusCode;
+void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToRemove) {
+    try {
+        readRequest(client);
+        if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
+            client->newRequest(nullptr);
+        }
+    } catch (int statusCode) {
+        while (true) {
+            try {
+                if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode)) == true) {
+                    clientsToRemove.push_back(client);
                 }
+                break;
+            } catch (const int& newStatusCode) {
+                statusCode = newStatusCode;
             }
         }
+    } catch (...) {
+        clientsToRemove.push_back(client);
     }
 }

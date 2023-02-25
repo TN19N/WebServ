@@ -96,14 +96,13 @@ void WebServer::run() {
             }
             for (std::vector<Client*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it) {
                 if ((*it) == clientsToRemove.back()) {
+                    close((*it)->getFd());
                     delete (*it);
                     this->clients.erase(it);
                     break;
                 }
             }
-
-            close(this->clientsToRemove.back());
-            this->fdsToClose.pop_back();
+            clientsToRemove.pop_back();
         }
     }
 
