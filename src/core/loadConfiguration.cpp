@@ -189,7 +189,11 @@ static void addNewDirective(const std::vector<std::string>& args, Context* curre
         loadConfiguration(directiveArgs[0], currentContext, depth + 1);
         return ;
     } else if (currentContext->getName()  == TYPES_CONTEXT) {
-        // types just have to be added to the context
+        std::vector<std::string> mimeType = split(directiveName, WITE_SPACES);
+        for (size_t i = 0; i < directiveArgs.size(); ++i) {
+            currentContext->addDirective(directiveArgs[i], mimeType);
+        }
+        return ;
     } else {
         throw std::runtime_error("unknown directive '" + directiveName + "'");
     }

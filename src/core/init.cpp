@@ -7,6 +7,7 @@
 # include <unistd.h>
 # include <sys/errno.h>
 # include <iostream>
+# include <fcntl.h>
 
 # ifdef DEBUG
 # include <arpa/inet.h>
@@ -33,10 +34,15 @@ static void startServers(const Context* context, std::vector<pollfd>& fds, size_
         if ((status = getaddrinfo(host.c_str(), port.c_str(), &hints, &res)) != 0) {
             throw std::runtime_error("getaddrinfo: " + std::string(gai_strerror(status)));
         }
-
         for (ptr = res; ptr != NULL; ptr = ptr->ai_next) {
             if ((sockfd = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol)) == -1) {
                 continue;
+            }
+            int yes = 1;
+            if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+                close(sockfd);
+                freeaddrinfo(res);
+                throw std::runtime_error("setsockopt: " + std::string(strerror(errno)));
             }
             if (bind(sockfd, ptr->ai_addr, ptr->ai_addrlen) == -1) {
                 close(sockfd);
@@ -57,6 +63,11 @@ static void startServers(const Context* context, std::vector<pollfd>& fds, size_
             if (listen(sockfd, BACKLOG) == -1) {
                 freeaddrinfo(res);
                 throw std::runtime_error("listen: " + std::string(strerror(errno)));
+            }
+
+            if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) {
+                freeaddrinfo(res);
+                throw std::runtime_error("fcntl: " + std::string(strerror(errno)));
             }
 
             # ifdef DEBUG
