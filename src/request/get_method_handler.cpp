@@ -3,7 +3,9 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-#include "request.hpp"
+#include "../../include/webserv/request.hpp"
+#include "../../include/webserv/context.hpp"
+#include "../../include/webserv/loadConfiguration.hpp"
 
 void get_method_handler(const Context *location, Request &request)
 {
