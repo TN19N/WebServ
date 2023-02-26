@@ -3,7 +3,7 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-#include "../../include/webserv/request.hpp"
+#include "../../include/webserv/http.hpp"
 
 static int __strcmp_(const char *s1, const char *s2)
 {
@@ -201,7 +201,7 @@ static void __check_basic_bad_request_errors(Request *request)
 		request->content_length = __parse_content_length_(header->second.c_str());
 }
 
-Request* request_parser(const std::string &_buffer)
+Request* HTTP::request_parser(const std::string &_buffer)
 {
 	Request		*request;
 	char		*key, *path, *buffer, *save_buffer;
@@ -254,4 +254,3 @@ Request* request_parser(const std::string &_buffer)
 	
 	return request;
 }
-

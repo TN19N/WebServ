@@ -1,10 +1,13 @@
 # ifndef REQUEST_HPP
 # define REQUEST_HPP
 
+//#ifdef DEBUG_JCHAKIR
+	#include <iostream>
+//#endif
+
 # include <string>
 # include <map>
 #include <vector>
-#include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -27,9 +30,5 @@ public:
 	int				content_length;
 	bool			is_chunked;
 };
-
-Request * request_parser(const std::string &_buffer);
-void request_handler(char *buffer, Request &request);
-void get_method_handler(const Context *server, Request &request);
 
 # endif
