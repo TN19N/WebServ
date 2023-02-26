@@ -28,7 +28,6 @@ public:
 	bool			is_chunked;
 };
 
-
 void request_handler(char *buffer, Request &request);
 void request_parser(char *buffer, Request &request);
 void get_method_handler(const Context *server, Request &request);

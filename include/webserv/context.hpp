@@ -14,11 +14,9 @@ class Context {
     public:
         Context(const std::vector<std::string>& args, Context* parent);
 
-        // setters
         void addDirective(const std::string& key, const std::vector<std::string>& value);
         void addChild(Context* child);
 
-        // getters
         const std::vector<std::string>&                                 getArgs()       const;
         const std::string&                                              getName()       const;
         const std::map<const std::string, std::vector<std::string> >&   getDirectives() const;

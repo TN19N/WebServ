@@ -5,7 +5,7 @@
 
 Context::Context(const std::vector<std::string>& args, Context* parent) 
     : args(args), 
-    parent(parent) 
+    parent(parent)
 {
     if (parent != nullptr) {
         this->directives = parent->getDirectives();
