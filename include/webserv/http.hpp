@@ -14,13 +14,14 @@
 namespace HTTP {
     void    acceptConnection(int listenFd, std::vector<pollfd>& fds, std::vector<Client*>& clients);
     // request handler
+	void requestHandler(Client* client, std::vector<const Client*>& clientsToRemove);
 	Request * request_parser(const std::string &_buffer);
 	void get_method_handler(const Context *server, Request &request);
 	
 	// response handler
     const bool  sendResponse(const Client* client, const int& statusCode, const std::string& body = "", const std::map<std::string, std::string>& headers = std::map<std::string, std::string>());
     void    responseHandler(Client* client, Request* request, const Context* const configuration);
-    const Context*  blockMatchAlgorithm(Client* client, Request* request, const Context* const configuration);
+    const Context*  blockMatchAlgorithm(Client* client, const Request* request, const Context* const configuration);
     // status code
     const std::string   getStatusCodeMessage(int statusCode);
     // tools

@@ -236,7 +236,7 @@ Request* HTTP::request_parser(const std::string &_buffer)
 	
 	delete save_buffer;
 
-#ifdef DEBUG_JCHAKIR
+#ifdef DEBUG_REQUEST_PARSER
 	std::cout << "-------------------------- Request Data ---------------------\n" ;
 	std::cout << "                  =========  Headers   ==========\n" ;
 	for (Headers::const_iterator begin = request->headers.begin(), end = request->headers.end(); begin != end; ++begin)

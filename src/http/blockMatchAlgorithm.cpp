@@ -67,7 +67,7 @@ static int __strcmp_(const char *s1, const char *s2)
 	return *s1 - *s2;
 }
 
-static const Context* __get_match_server_context_(std::vector<const Context*> &servers, std::string &host)
+static const Context* __get_match_server_context_(std::vector<const Context*> &servers, const std::string &host)
 {
 	std::map<const std::string, std::vector<std::string> >::const_iterator d_begin, d_end;
 	std::vector<std::string>::const_iterator begin, end;
@@ -86,7 +86,7 @@ static const Context* __get_match_server_context_(std::vector<const Context*> &s
 	return servers[0];
 }
 
-static const Context* __get_match_location_context_(const std::vector<Context*> &locations, std::string &path)
+static const Context* __get_match_location_context_(const std::vector<Context*> &locations, const std::string &path)
 {
 	int		character;
 	std::map<std::string, const Context*, std::greater<std::string> > locate;
@@ -111,16 +111,15 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	throw "no match any location: Forbidden";
 }
 
-static const Context* __get_location_context_(Request *request, std::vector<const Context*> &servers)
+static const Context* __get_location_context_(const Request *request, std::vector<const Context*> &servers)
 {
-//#ifdef DEBUG_JCHAKIR
+#ifdef DEBUG_GET_LOCATION
 	try
 	{
-//#endif
+#endif
 		const Context *server = __get_match_server_context_(servers, request->headers.find("Host")->second);
 		const Context *location = __get_match_location_context_(server->getChildren(), request->path);
-		request->path = location->getDirectives().find(ROOT_DIRECTIVE)->second + request->path;
-//#ifdef DEBUG_JCHAKIR
+#ifdef DEBUG_GET_LOCATION
 		std::cout << "====================== LOCATION DIRECTIVE ==================\n" ;
 		std::cout << "Path: " << request->path << '\n';
 		std::cout << "Location: " << location->getArgs()[0] << "   " << location->getArgs()[1] << '\n' ;
@@ -132,24 +131,23 @@ static const Context* __get_location_context_(Request *request, std::vector<cons
 				std::cout << *bg << "  ";
 			std::cout << '\n' ;
 		}
-//#endif
+#endif
 	return location;
-//#ifdef DEBUG_JCHAKIR
+#ifdef DEBUG_GET_LOCATION
 	}
 	catch (const char *error)
 	{
 		std::cout << "Error: " << error << '\n';
+		return nullptr;
 	}
-//#endif
-	return nullptr;
+#endif
 }
 
-const Context* HTTP::blockMatchAlgorithm(Client* client, Request* request, const Context* const configuration) {
+const Context* HTTP::blockMatchAlgorithm(Client* client, const Request* request, const Context* const configuration) {
     std::vector<const Context*> servers;
 
     for (std::vector<Context*>::const_iterator it = configuration->getChildren().begin(); it != configuration->getChildren().end(); ++it) {
         isValidServer(*it, client, servers);
     }
-
-    return __get_location_context_(servers);
+    return __get_location_context_(request, servers);
 }

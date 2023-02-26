@@ -49,11 +49,12 @@ void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToR
         readRequest(client);
         if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
             client->newRequest(request_parser(client->getBuffer()));
+			blockMatchAlgorithm(client, client->getRequest())
         }
     } catch (int statusCode) {
         while (true) {
             try {
-                if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode)) == true) {
+                if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode))) {
                     clientsToRemove.push_back(client);
                 }
                 break;
