@@ -4,7 +4,7 @@
 # include <sys/socket.h>
 # include <string>
 
-# include "request.hpp"
+# include "webserv/request.hpp"
 
 class Client {
     private:
@@ -13,8 +13,9 @@ class Client {
         struct sockaddr_storage peer;
         std::string             buffer;
         Request*                request;
+        const Client*           cgiClient;
     public:
-        Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer);
+        Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer, const Client* cgiClient = nullptr);
 
         const int&                     getFd() const;
         const struct sockaddr_storage& getAddr() const;

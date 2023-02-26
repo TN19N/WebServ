@@ -6,11 +6,12 @@
 # include <arpa/inet.h>
 # endif
 
-Client::Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer)
+Client::Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer, const Client* cgiClient)
     : fd(fd), 
     addr(addr),
     peer(peer),
-    request(nullptr)
+    request(nullptr),
+    cgiClient(cgiClient)
 {}
 
 const int& Client::getFd() const {

@@ -28,8 +28,4 @@ public:
 	bool			is_chunked;
 };
 
-Request * request_parser(const std::string &_buffer);
-void request_handler(char *buffer, Request &request);
-void get_method_handler(const Context *server, Request &request);
-
 # endif

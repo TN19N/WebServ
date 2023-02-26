@@ -3,9 +3,10 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-#include "../../include/webserv/request.hpp"
-#include "../../include/webserv/context.hpp"
-#include "../../include/webserv/loadConfiguration.hpp"
+# include "webserv/request.hpp"
+# include "webserv/context.hpp"
+# include "webserv/loadConfiguration.hpp"
+# include "webserv/http.hpp"
 
 static int __strcmp_(const char *s1, const char *s2)
 {
@@ -58,7 +59,7 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	throw "no match any location: Forbidden";
 }
 
-void request_handler(char *buffer, Request &request, std::vector<const Context*> &servers)
+void HTTP::request_handler(Request &request, std::vector<const Context*> &servers)
 {
 	const Context* server = __get_match_server_context_(servers, request.headers.find("Host")->second);
 	const Context* location = __get_match_location_context_(server->getChildren(), request.path);

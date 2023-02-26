@@ -46,7 +46,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += -g -fsanitize=address -D DEBUG_JCHAKIR
+debug: CFLAGS += -g -fsanitize=address -D DEBUG
 debug: $(TARGET)
 
 .PHONY: release

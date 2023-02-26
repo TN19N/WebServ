@@ -44,12 +44,15 @@ static void readRequest(Client* client) {
     }
 }
 
-void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToRemove) {
+void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
     try {
         readRequest(client);
         if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
             client->newRequest(request_parser(client->getBuffer()));
         }
+        // add body
+        // if body is done
+        // HTTP::blockMatchAlgorithm(client, client->getRequest(), )
     } catch (int statusCode) {
         while (true) {
             try {

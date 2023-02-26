@@ -54,7 +54,7 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
     }
 }
 
-const Context* HTTP::blockMatchAlgorithm(Client* client, Request* request, const Context* const configuration) {
+const Context* HTTP::blockMatchAlgorithm(Client* client, const Request* request, const Context* const configuration) {
     std::vector<const Context*> servers;
 
     for (std::vector<Context*>::const_iterator it = configuration->getChildren().begin(); it != configuration->getChildren().end(); ++it) {
