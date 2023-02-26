@@ -1,10 +1,13 @@
 # ifndef REQUEST_HPP
 # define REQUEST_HPP
 
+//#ifdef DEBUG_JCHAKIR
+	#include <iostream>
+//#endif
+
 # include <string>
 # include <map>
 #include <vector>
-#include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/time.h>

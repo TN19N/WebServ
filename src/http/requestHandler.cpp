@@ -48,7 +48,7 @@ void HTTP::requestHandler(Client* client, const Context* const configuration, st
     try {
         readRequest(client);
         if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
-            client->newRequest(request_parser(client->getBuffer()));
+            client->newRequest(HTTP::request_parser(client->getBuffer()));
         }
         // add body
         // if body is done

@@ -255,4 +255,3 @@ Request* HTTP::request_parser(const std::string &_buffer)
 	
 	return request;
 }
-
