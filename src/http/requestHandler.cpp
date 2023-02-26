@@ -10,10 +10,10 @@
 # include <arpa/inet.h>
 # endif
 
-# include "webserv/client.hpp"
-# include "webserv/context.hpp"
-# include "webserv/request.hpp"
-# include "webserv/http.hpp"
+# include "../../include/webserv/client.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/request.hpp"
+# include "../../include/webserv/http.hpp"
 
 static const std::string getDefaultErrorPage(const int& statusCode) {
     return (
@@ -48,7 +48,7 @@ void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToR
     try {
         readRequest(client);
         if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
-            client->newRequest(nullptr);
+            client->newRequest(request_parser(client->getBuffer()));
         }
     } catch (int statusCode) {
         while (true) {

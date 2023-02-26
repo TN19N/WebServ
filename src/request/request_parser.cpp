@@ -12,6 +12,18 @@ static int __strcmp_(const char *s1, const char *s2)
 	return *s1 - *s2;
 }
 
+static char *__buffer_duplicate_(const char *_buffer, size_t len)
+{
+	char *buffer, *save_buffer;
+	
+	buffer = new char[len + 1];
+	save_buffer = buffer;
+	while (*_buffer)
+		*buffer++ = *_buffer++;
+	*buffer = '\0';
+	return save_buffer;
+}
+
 static int __parse_content_length_(const char *str)
 {
 	const char 	*checker = str;
@@ -163,58 +175,83 @@ static char *__get_header_value_(char * &buffer)
 	return save_buffer;
 }
 
-static void __check_basic_bad_request_errors(Request &request)
+static void __check_basic_bad_request_errors(Request *request)
 {
 	std::string::size_type pos;
 	Headers::iterator	header;
 	
-	header = request.headers.find("Host");
-	if (header == request.headers.end())
+	header = request->headers.find("Host");
+	if (header == request->headers.end())
 		throw 400;
 	pos = header->second.rfind(':');
 	if (pos != std::string::npos)
 		header->second = header->second.substr(0, pos);
-	request.is_chunked = false;
-	header = request.headers.find("Transfer-Encoding") ;
-	if (header != request.headers.end())
+	request->is_chunked = false;
+	header = request->headers.find("Transfer-Encoding") ;
+	if (header != request->headers.end())
 	{
 		if (header->second != "chunked")
 			throw 501;
-		request.is_chunked = true;
+		request->is_chunked = true;
 	}
-	header =  request.headers.find("Content-Length");
-	if (header == request.headers.end())
-		request.content_length = -1;
+	header =  request->headers.find("Content-Length");
+	if (header == request->headers.end())
+		request->content_length = -1;
 	else
-		request.content_length = __parse_content_length_(header->second.c_str());
+		request->content_length = __parse_content_length_(header->second.c_str());
 }
 
-void request_parser(char *buffer, Request &request)
+Request* request_parser(const std::string &_buffer)
 {
-	char 				*key, *path;
+	Request		*request;
+	char		*key, *path, *buffer, *save_buffer;
 	
-	request.method = __get_request_method_(buffer) ;
+	request = new Request;
+	buffer = __buffer_duplicate_(_buffer.c_str(), _buffer.length());
+	save_buffer = buffer;
+	request->method = __get_request_method_(buffer) ;
 	path = __get_requested_path_(buffer);
 	if (path[0] != '/')
 		throw 400;
-	request.query = __get_query_from_path_(path);
-	request.path = path;
-	request.extension = __get_extension_from_path_(path);
+	request->query = __get_query_from_path_(path);
+	request->path = path;
+	request->extension = __get_extension_from_path_(path);
 	__check_request_protocol_(buffer);
 	if (*buffer == '\r')
 		throw 400;
 	while (*buffer && *buffer != '\r')
 	{
 		key = buffer;
-		if ( ! request.headers[__get_header_key_(buffer)].empty())
+		if ( ! request->headers[__get_header_key_(buffer)].empty())
 		{
 			if (__strcmp_(key, "Host") == 0)
 				throw 400;
 		}
-		request.headers[key] = __get_header_value_(buffer);
+		request->headers[key] = __get_header_value_(buffer);
 	}
 	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
 	__check_basic_bad_request_errors(request);
-	request.body = buffer + 2;
+	request->body = buffer + 2;
+	
+	delete save_buffer;
+
+#ifdef DEBUG_JCHAKIR
+	std::cout << "-------------------------- Request Data ---------------------\n" ;
+	std::cout << "                  =========  Headers   ==========\n" ;
+	for (Headers::const_iterator begin = request->headers.begin(), end = request->headers.end(); begin != end; ++begin)
+		std::cout << begin->first << ": " << begin->second << '\n';
+	std::cout << "                  =========  Path   ==========\n" ;
+	std::cout << request->path << '\n';
+	std::cout << "                  =========  Extension   ==========\n" ;
+	std::cout << request->extension << '\n';
+	std::cout << "                  =========  Query   ==========\n" ;
+	std::cout << request->query << '\n';
+	std::cout << "                  =========  Body   ==========\n" ;
+	std::cout << request->body << '\n' ;
+	std::cout << "-------------------------- ====== ---------------------\n" ;
+#endif
+	
+	return request;
 }
+
