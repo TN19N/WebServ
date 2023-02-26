@@ -3,17 +3,33 @@
 
 # include <string>
 # include <map>
+#include <vector>
+#include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <limits.h>
+#include <fstream>
+#include <ios>
+#include "context.hpp"
 
-class Request {
-    private:
-        std::string                        body;
-        std::map<std::string, std::string> headers;
-        std::string                        method;
-        std::string                        path;
-        std::string                        query;
-        std::string                        protocol;
+typedef std::map<std::string, std::string> Headers;
+class Request
+{
+public:
+	std::string		method;
+	std::string		path;
+	std::string		query;
+	std::string		protocol;
+	Headers			headers;
+	std::string		body;
+	std::string		extension;
+	int				content_length;
+	bool			is_chunked;
 };
 
-// request handler
+Request * request_parser(const std::string &_buffer);
+void request_handler(char *buffer, Request &request);
+void get_method_handler(const Context *server, Request &request);
 
 # endif
