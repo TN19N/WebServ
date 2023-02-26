@@ -1,7 +1,7 @@
 # ifndef LOADCONFIGURATION_HPP
 # define LOADCONFIGURATION_HPP
 
-# include "webserv/context.hpp"
+# include "context.hpp"
 
 const Context* loadConfiguration(const std::string& configFilePath, Context* configuration, const size_t depth);
 

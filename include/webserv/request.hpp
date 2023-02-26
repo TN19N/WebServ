@@ -15,6 +15,7 @@ public:
 	std::string		protocol;
 	Headers			headers;
 	std::string		body;
+	std::string		extension;
 	int				content_length;
 	bool			is_chunked;
 };

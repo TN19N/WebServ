@@ -7,22 +7,11 @@
 
 int main()
 {
-	Request	req;
-	char	*data;
-	int		fd;
-
-	data = new char[13371];
-	fd = open("./http_request", O_RDONLY);
-	data[read(fd, data, 13370)] = '\0';
-	try
-	{
-		request_handler(data, req);
-		for (Headers::iterator b = req.headers.begin(), e = req.headers.end(); b != e; ++b)
-			std::cout << b->first << ": " << b->second << '\n' ;
-	}
-	catch (int error)
-	{
-		std::cerr << "Error: " << error << '\n' ;
-	}
-	std::cout << "\nHost: " << req.headers.find("Host")->second << '\n';
+	std::ifstream file;
+	
+	file.open("./core");
+	if (file.good())
+		std::cout << "is file\n";
+	else
+		std::cout << "is directory\n";
 }

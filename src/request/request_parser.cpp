@@ -67,7 +67,7 @@ static char *__get_request_method_(char * &buffer)
 	 return save_buffer ;
 }
 
-static char *__get_requested_path_(char * & buffer)
+static char *__get_requested_path_(char * &buffer)
 {
 	char *save_buffer = buffer;
 	
@@ -82,40 +82,54 @@ static char *__get_requested_path_(char * & buffer)
 	return save_buffer;
 }
 
-static const char *__get_query_from_path_(char *path)
+static char *__get_query_from_path_(char *path)
 {
 	while (*path && *path != '?')
 		++path;
 	if (*path == '\0')
-		return "";
+		return path;
 	*path = '\0';
 	return path + 1;
 }
 
+static const char *__get_extension_from_path_(const char *path)
+{
+	while (*path)
+		++path;
+	while (*path != '/' && *path != '.')
+		--path;
+	if (*path == '.' && *(path-1) != '/')
+		return path;
+	return "";
+}
+
 static void __check_request_protocol_(char * &buffer)
 {
-	if (__strcmp_(buffer, "HTTP/1.1") == '\n')
+	if (__strcmp_(buffer, "HTTP/1.1") == '\r')
 		buffer += 9;
 	else if (__strcmp_(buffer, "HTTP/1.1") == ' ')
 	{
 		buffer += 9;
 		while (*buffer == ' ')
 			++buffer;
-		if (*buffer != '\n')
+		if (*buffer != '\r')
 			throw 400;
 		++buffer;
 	}
 	else
 		throw 400;
+	if (*buffer != '\n')
+		throw 400;
+	++buffer;
 }
 
 static char *__get_header_key_(char * &buffer)
 {
 	char *save_buffer = buffer;
 	
-	while (*buffer && *buffer != ':' && !__is_space_(*buffer))
+	while (*buffer && *buffer != ':' && !__is_space_(*buffer) && *buffer != '\r')
 		++buffer;
-	if (*buffer == '\0' || __is_space_(*buffer))
+	if (*buffer == '\0' || __is_space_(*buffer) || *buffer == '\r')
 		throw 400;
 	*buffer = '\0';
 	++buffer;
@@ -129,7 +143,7 @@ static char *__get_header_value_(char * &buffer)
 	__skipp_spaces_(buffer);
 	save_buffer = buffer;
 	end_of_value = buffer;
-	while (*buffer && *buffer != '\n')
+	while (*buffer && *buffer != '\r')
 	{
 		end_of_value = buffer;
 		if (__is_space_(*buffer))
@@ -137,7 +151,7 @@ static char *__get_header_value_(char * &buffer)
 		else
 			++buffer;
 	}
-	if (*buffer == '\0')
+	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
 	if (end_of_value == save_buffer)
 		throw 400;
@@ -145,7 +159,7 @@ static char *__get_header_value_(char * &buffer)
 		*end_of_value = '\0';
 	else
 		*(++end_of_value) = '\0';
-	++buffer;
+	buffer += 2;
 	return save_buffer;
 }
 
@@ -185,10 +199,11 @@ void request_parser(char *buffer, Request &request)
 		throw 400;
 	request.query = __get_query_from_path_(path);
 	request.path = path;
+	request.extension = __get_extension_from_path_(path);
 	__check_request_protocol_(buffer);
-	if (*buffer == '\n')
+	if (*buffer == '\r')
 		throw 400;
-	while (*buffer && *buffer != '\n')
+	while (*buffer && *buffer != '\r')
 	{
 		key = buffer;
 		if ( ! request.headers[__get_header_key_(buffer)].empty())
@@ -198,8 +213,8 @@ void request_parser(char *buffer, Request &request)
 		}
 		request.headers[key] = __get_header_value_(buffer);
 	}
-	if (*buffer == '\0')
+	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
-	request.body = buffer + 1;
 	__check_basic_bad_request_errors(request);
+	request.body = buffer + 2;
 }

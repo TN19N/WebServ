@@ -14,6 +14,7 @@
 #include <sys/time.h>
 #include <limits.h>
 #include <fstream>
+#include <ios>
 
 #include "../../include/webserv/request.hpp"
 #include "../../include/webserv/context.hpp"
