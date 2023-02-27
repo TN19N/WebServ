@@ -1,6 +1,4 @@
 # include <string>
-# include <iostream>
-# include <sys/socket.h>
 
 # include "webserv/http.hpp"
 

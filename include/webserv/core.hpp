@@ -1,9 +1,5 @@
-# ifndef LOADCONFIGURATION_HPP
-# define LOADCONFIGURATION_HPP
-
-# include "context.hpp"
-
-const Context* loadConfiguration(const std::string& configFilePath, Context* configuration, const size_t depth);
+# ifndef CORE_HPP
+# define CORE_HPP
 
 # define MAIN_CONTEXT       "main"
 # define HTTP_CONTEXT       "http"
@@ -87,5 +83,21 @@ const Context* loadConfiguration(const std::string& configFilePath, Context* con
 # define MIN_SIZE  0
 
 # define SUPPORTED_METHODS "GET POST DELETE"
+
+# include <string>
+# include <vector>
+# include <poll.h>
+
+# include "webserv/context.hpp"
+
+namespace CORE {
+
+// configuration file parser ***********************************************************************************
+const Context* loadConfiguration(const std::string& configFilePath, Context* configuration, const size_t depth);
+
+// server initialization *************************************************
+size_t init(const Context* const configuration, std::vector<pollfd>& fds);
+
+} // namespace CORE
 
 # endif

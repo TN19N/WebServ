@@ -6,17 +6,11 @@
 # include <iostream>
 # include <string.h>
 
-# include "webserv/loadConfiguration.hpp"
+# include "webserv/core.hpp"
 # include "webserv/request.hpp"
 # include "webserv/client.hpp"
 # include "webserv/context.hpp"
 # include "webserv/http.hpp"
-
-#include "../../include/webserv/request.hpp"
-#include "../../include/webserv/context.hpp"
-#include "../../include/webserv/loadConfiguration.hpp"
-# include "../../include/webserv/http.hpp"
-
 
 static void isValidServer(const Context* context,  const Client* client, std::vector<const Context*>& servers) {
     if (context->getName() == SERVER_CONTEXT) {

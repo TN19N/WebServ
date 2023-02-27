@@ -7,7 +7,7 @@
 # include <algorithm>
 
 # include "webserv/context.hpp"
-# include "webserv/loadConfiguration.hpp"
+# include "webserv/core.hpp"
 
 static std::vector<std::string> split(const std::string& str, const std::string& delimiters) {
     std::vector<std::string> tokens;
@@ -23,10 +23,9 @@ static std::vector<std::string> split(const std::string& str, const std::string&
 
 static Context* loadContext(const std::vector<std::string>& args, Context* parent) {
     Context* context = new Context(args, parent);
-
+    
     const std::string& contextName = args.front();
 
-    // load default directives for this context
     if (contextName == MAIN_CONTEXT) {
         context->addDirective(INDEX_DIRECTIVE, split(DEFAULT_INDEX, WITE_SPACES));
         context->addDirective(ROOT_DIRECTIVE, split(DEFAULT_ROOT, WITE_SPACES));

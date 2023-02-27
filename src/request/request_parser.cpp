@@ -1,8 +1,3 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 2/21/23 at 1:37 PM.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
 # include "webserv/request.hpp"
 # include "webserv/http.hpp"
 
@@ -52,7 +47,7 @@ static bool __is_space_(char c)
 		return true;
 	return false;
 }
-static void __skipp_spaces_(char * &buffer)
+static void __skip_spaces_(char * &buffer)
 {
 	while (*buffer == ' ' || *buffer == '\t')
 		++buffer;
@@ -64,20 +59,20 @@ static char *__get_request_method_(char * &buffer)
 {
 	char *save_buffer = buffer;
 	
-	 if (__strcmp_(buffer, "GET") == ' ')
-		 buffer += 3;
-	 else if (__strcmp_(buffer, "POST") == ' ')
-		 buffer += 4;
-	 else if (__strcmp_(buffer, "DELETE") == ' ')
-		 buffer += 6;
-	 else
-		 throw 501;
-	 
-	 *buffer = '\0';
-	 ++buffer;
-	 while (*buffer == ' ')
-		 ++buffer;
-	 return save_buffer ;
+	if (__strcmp_(buffer, "GET") == ' ')
+		buffer += 3;
+	else if (__strcmp_(buffer, "POST") == ' ')
+		buffer += 4;
+	else if (__strcmp_(buffer, "DELETE") == ' ')
+		buffer += 6;
+	else
+		throw 501;
+
+	*buffer = '\0';
+	++buffer;
+	while (*buffer == ' ')
+		++buffer;
+	return save_buffer ;
 }
 
 static char *__get_requested_path_(char * &buffer)
@@ -153,14 +148,14 @@ static char *__get_header_value_(char * &buffer)
 {
 	char *save_buffer, *end_of_value;
 
-	__skipp_spaces_(buffer);
+	__skip_spaces_(buffer);
 	save_buffer = buffer;
 	end_of_value = buffer;
 	while (*buffer && *buffer != '\r')
 	{
 		end_of_value = buffer;
 		if (__is_space_(*buffer))
-			__skipp_spaces_(buffer);
+			__skip_spaces_(buffer);
 		else
 			++buffer;
 	}

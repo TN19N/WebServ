@@ -14,7 +14,7 @@
 # endif
 
 # include "webserv/context.hpp"
-# include "webserv/loadConfiguration.hpp"
+# include "webserv/core.hpp"
 
 # define BACKLOG 25
 
@@ -115,7 +115,7 @@ static void startServers(const Context* context, std::vector<pollfd>& fds, size_
     }
 }
 
-size_t init(const Context* configuration, std::vector<pollfd>& fds) {
+size_t CORE::init(const Context* configuration, std::vector<pollfd>& fds) {
     size_t serversCounter = 0;
 
     const std::vector<Context*>& children = configuration->getChildren();

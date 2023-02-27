@@ -4,8 +4,8 @@
 # include "webserv/context.hpp"
 
 Context::Context(const std::vector<std::string>& args, Context* parent) 
-    : args(args), 
-    parent(parent)
+    :   args(args), 
+        parent(parent)
 {
     if (parent != nullptr) {
         this->directives = parent->getDirectives();

@@ -5,13 +5,11 @@
 # include <unistd.h>
 
 # include "webserv/webserv.hpp"
-# include "webserv/loadConfiguration.hpp"
+# include "webserv/core.hpp"
 # include "webserv/context.hpp"
-# include "webserv/init.hpp"
 # include "webserv/http.hpp"
 
 # ifdef DEBUG
-# include <iostream>
 static void display(const Context* context, const size_t level) {
     const std::vector<std::string>& args = context->getArgs();
     std::cerr << std::string(level, '\t');
@@ -39,7 +37,7 @@ static void display(const Context* context, const size_t level) {
 WebServer* WebServer::instance = nullptr;
 
 WebServer::WebServer(const std::string& configFilePath) 
-    : configuration(loadConfiguration(configFilePath, nullptr, 1)) 
+    : configuration(CORE::loadConfiguration(configFilePath, nullptr, 1)) 
 {
     # ifdef DEBUG
     std::cerr << " --------------------- configuration --------------------- " << std::endl;
@@ -61,7 +59,7 @@ WebServer& WebServer::getInstance(const std::string& configFilePath) {
 void WebServer::run() {
     size_t serversCount = 0;
     try {
-        serversCount = init(this->configuration, this->fds);
+        serversCount = CORE::init(this->configuration, this->fds);
     } catch (const std::exception& e) {
         delete this;
         throw std::runtime_error("servers initialization failed: " + std::string(e.what()));

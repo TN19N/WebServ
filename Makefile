@@ -26,7 +26,7 @@ SRCS := $(SRC_DIR)/main.$(SRC_EXT) \
 		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT) \
 		$(SRC_DIR)/core/init.$(SRC_EXT) \
 		$(SRC_DIR)/http/client.$(SRC_EXT) \
-		$(SRC_DIR)/http/acceptConnection.$(SRC_EXT) \
+		$(SRC_DIR)/http/connectionHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/statusCodeHandler.$(SRC_EXT) \

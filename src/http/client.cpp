@@ -37,6 +37,10 @@ const Request* Client::getRequest() const {
     return this->request;
 }
 
+const Client* Client::getCgiClient() const {
+    return this->cgiClient;
+}
+
 void Client::newRequest(Request* request) {
     this->request = request;
 }

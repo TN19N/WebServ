@@ -22,6 +22,7 @@ class Client {
         const struct sockaddr_storage& getPeer() const;
         const std::string&             getBuffer() const;
         const Request*                 getRequest() const;
+        const Client*                  getCgiClient() const;
 
         void    newRequest(Request* request);
         void    addBuffer(char *buf, int len);
