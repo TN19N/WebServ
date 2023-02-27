@@ -5,3 +5,5 @@
 *.o
 *.out
 test.cpp
+CMakeLists.txt
+cmake-build-debug

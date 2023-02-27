@@ -1,4 +1,4 @@
-# define BUFFER_SIZE 4096
+# define BUFFER_SIZE 480
 
 # include <iostream>
 # include <string>
@@ -44,13 +44,44 @@ static void readRequest(Client* client) {
     }
 }
 
-void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToRemove) {
+static void __read_body_from_client_(Client* client, size_t size)
+{
+	char buffer[size + 1];
+	int  bytesReceived;
+	
+	if (size == 0)
+		return;
+	switch (bytesReceived = recv(client->getFd(), buffer, size, 0)) {
+		case -1 :
+			throw 500;
+		case 0 :
+			throw "close connection";
+		default :
+			if (bytesReceived != size)
+				throw 400;
+			buffer[bytesReceived] = '\0';
+			client->getRequest()->body = client->getRequest()->body + (buffer);
+	}
+}
+
+static void __read_request_body_(Client* client)
+{
+	if (client->getRequest()->method != "POST")
+		return;
+	__read_body_from_client_(client, client->getRequest()->content_length - client->getRequest()->body.length());
+}
+
+void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
     try {
         readRequest(client);
-        if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos) {
-            client->newRequest(request_parser(client->getBuffer()));
-			blockMatchAlgorithm(client, client->getRequest())
+        if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos)
+		{
+            client->newRequest(HTTP::request_parser(client->getBuffer()));
         }
+        // add body
+		__read_request_body_(client);
+        // if body is done
+//         HTTP::blockMatchAlgorithm(client, client->getRequest(), configuration);
     } catch (int statusCode) {
         while (true) {
             try {
@@ -64,5 +95,6 @@ void HTTP::requestHandler(Client* client, std::vector<const Client*>& clientsToR
         }
     } catch (...) {
         clientsToRemove.push_back(client);
+		std::cout << client->getRequest()->body << '\n';
     }
 }

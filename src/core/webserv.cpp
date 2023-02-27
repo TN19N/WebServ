@@ -81,7 +81,7 @@ void WebServer::run() {
                 if (i < serversCount) {
                     HTTP::acceptConnection(this->fds[i].fd, this->fds, this->clients);
                 } else {
-                    HTTP::requestHandler(this->clients[i - serversCount], clientsToRemove);
+                    HTTP::requestHandler(this->clients[i - serversCount], this->configuration, clientsToRemove);
                 }
             }
         }

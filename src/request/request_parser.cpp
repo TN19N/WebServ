@@ -3,7 +3,8 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-#include "../../include/webserv/http.hpp"
+# include "webserv/request.hpp"
+# include "webserv/http.hpp"
 
 static int __strcmp_(const char *s1, const char *s2)
 {
@@ -157,20 +158,19 @@ static char *__get_header_value_(char * &buffer)
 	end_of_value = buffer;
 	while (*buffer && *buffer != '\r')
 	{
-		end_of_value = buffer;
 		if (__is_space_(*buffer))
 			__skipp_spaces_(buffer);
 		else
+		{
 			++buffer;
+			end_of_value = buffer;
+		}
 	}
 	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
 	if (end_of_value == save_buffer)
 		throw 400;
-	if (__is_space_(*end_of_value))
-		*end_of_value = '\0';
-	else
-		*(++end_of_value) = '\0';
+	*end_of_value = '\0';
 	buffer += 2;
 	return save_buffer;
 }
@@ -196,7 +196,7 @@ static void __check_basic_bad_request_errors(Request *request)
 	}
 	header =  request->headers.find("Content-Length");
 	if (header == request->headers.end())
-		request->content_length = -1;
+		request->content_length = 0;
 	else
 		request->content_length = __parse_content_length_(header->second.c_str());
 }
@@ -205,7 +205,7 @@ Request* HTTP::request_parser(const std::string &_buffer)
 {
 	Request		*request;
 	char		*key, *path, *buffer, *save_buffer;
-	
+
 	request = new Request;
 	buffer = __buffer_duplicate_(_buffer.c_str(), _buffer.length());
 	save_buffer = buffer;
@@ -232,10 +232,13 @@ Request* HTTP::request_parser(const std::string &_buffer)
 	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
 	__check_basic_bad_request_errors(request);
-	request->body = buffer + 2;
-	
+	buffer += 2;
+	key = buffer;
+	for (size_t i = 0; i < request->content_length && *key; ++i, ++key) ;
+	*key = '\0';
+	request->body = buffer;
 	delete save_buffer;
-
+	
 #ifdef DEBUG_REQUEST_PARSER
 	std::cout << "-------------------------- Request Data ---------------------\n" ;
 	std::cout << "                  =========  Headers   ==========\n" ;

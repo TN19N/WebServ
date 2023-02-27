@@ -32,7 +32,7 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
             throw 500;
         }
 
-        struct sockaddr_storage serverAddr = *(struct sockaddr_storage*)res->ai_addr;    
+        struct sockaddr_storage serverAddr = *(struct sockaddr_storage*)res->ai_addr;
 
         if (addr.ss_family == serverAddr.ss_family) {
             if (addr.ss_family == AF_INET) {
@@ -99,6 +99,8 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	
 	for (begin = locate.begin(), end = locate.end(); begin != end; ++begin)
 	{
+		if (begin->first == "/")
+			return begin->second;
 		character = __strcmp_(path.c_str(), begin->first.c_str());
 		if (character == 0)
 		{
@@ -138,7 +140,7 @@ static const Context* __get_location_context_(const Request *request, std::vecto
 	catch (const char *error)
 	{
 		std::cout << "Error: " << error << '\n';
-		return nullptr;
+		throw ;
 	}
 #endif
 }
