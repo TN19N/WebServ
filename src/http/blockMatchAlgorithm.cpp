@@ -16,6 +16,7 @@
 #include "../../include/webserv/context.hpp"
 #include "../../include/webserv/loadConfiguration.hpp"
 # include "../../include/webserv/http.hpp"
+# include <arpa/inet.h>
 
 
 static void isValidServer(const Context* context,  const Client* client, std::vector<const Context*>& servers) {
@@ -24,31 +25,73 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
         const std::string port = context->getDirective("port").front();
 
         const struct sockaddr_storage& addr = client->getPeer();
-
-        struct addrinfo *res;
-
-        if (getaddrinfo(host.c_str(), port.c_str(), NULL, &res)  == -1) {
+	
+		std::cerr << "------------------- adddr -------------------" << std::endl;
+		if (addr.ss_family == AF_INET) {
+			struct sockaddr_in* addr1 = (struct sockaddr_in*)&addr;
+			char ip[INET_ADDRSTRLEN];
+			std::cerr << "sin_len: " << int(addr1->sin_len) << std::endl;
+			std::cerr << "sin_family: " << int(addr1->sin_family) << std::endl;
+			std::cerr << "sin_port: " << ntohs(addr1->sin_port) << std::endl;
+			std::cerr << "sin_addr: " << inet_ntop(AF_INET, &addr1->sin_addr, ip, INET_ADDRSTRLEN) << std::endl;
+		} else if (addr.ss_family == AF_INET6) {
+			struct sockaddr_in6* addr1 = (struct sockaddr_in6*)&addr;
+			char ip[INET6_ADDRSTRLEN];
+			std::cerr << "sin6_len: " << int(addr1->sin6_len) << std::endl;
+			std::cerr << "sin6_family: " << int(addr1->sin6_family) << std::endl;
+			std::cerr << "sin6_port: " << ntohs(addr1->sin6_port) << std::endl;
+			std::cerr << "sin6_flowinfo: " << int(addr1->sin6_flowinfo) << std::endl;
+			std::cerr << "sin6_addr: " << inet_ntop(AF_INET6, &addr1->sin6_addr, ip, INET6_ADDRSTRLEN) << std::endl;
+			std::cerr << "sin6_scope_id: " << int(addr1->sin6_scope_id) << std::endl;
+		}
+	
+		struct addrinfo *res, hints;
+		
+		memset(&hints, 0, sizeof hints);
+		hints.ai_family = AF_UNSPEC;
+		hints.ai_socktype = SOCK_STREAM;
+		
+		
+		std::cerr << "Host: " << host << ", Port: " << port << std::endl;
+        if (getaddrinfo(host.c_str(), port.c_str(), &hints, &res)  == -1) {
             std::cerr << "webserv: warning: getaddrinfo: " << strerror(errno) << std::endl;
             throw 500;
         }
-
-        struct sockaddr_storage serverAddr = *(struct sockaddr_storage*)res->ai_addr;
-
-        if (addr.ss_family == serverAddr.ss_family) {
-            if (addr.ss_family == AF_INET) {
+	
+		std::cerr << "------------------- res -------------------" << std::endl;
+		if (res->ai_addr->sa_family == AF_INET) {
+			struct sockaddr_in* addr1 = (struct sockaddr_in*)&res->ai_addr;
+			char ip[INET_ADDRSTRLEN];
+			std::cerr << "sin_len: " << int(addr1->sin_len) << std::endl;
+			std::cerr << "sin_family: " << int(addr1->sin_family) << std::endl;
+			std::cerr << "sin_port: " << ntohs(addr1->sin_port) << std::endl;
+			std::cerr << "sin_addr: " << inet_ntop(AF_INET, &addr1->sin_addr, ip, INET_ADDRSTRLEN) << std::endl;
+		} else if (res->ai_addr->sa_family == AF_INET6) {
+			struct sockaddr_in6* addr1 = (struct sockaddr_in6*)&res->ai_addr;
+			char ip[INET6_ADDRSTRLEN];
+			std::cerr << "sin6_len: " << int(addr1->sin6_len) << std::endl;
+			std::cerr << "sin6_family: " << int(addr1->sin6_family) << std::endl;
+			std::cerr << "sin6_port: " << ntohs(addr1->sin6_port) << std::endl;
+			std::cerr << "sin6_flowinfo: " << int(addr1->sin6_flowinfo) << std::endl;
+			std::cerr << "sin6_addr: " << inet_ntop(AF_INET6, &addr1->sin6_addr, ip, INET6_ADDRSTRLEN) << std::endl;
+			std::cerr << "sin6_scope_id: " << int(addr1->sin6_scope_id) << std::endl;
+		}
+		
+        if (res->ai_addr->sa_family == addr.ss_family) {
+            if (res->ai_addr->sa_family == AF_INET) {
                 struct sockaddr_in* addr4 = (struct sockaddr_in*)&addr;
-                struct sockaddr_in* serverAddr4 = (struct sockaddr_in*)&serverAddr;
+                struct sockaddr_in* serverAddr4 = (struct sockaddr_in*)&res->ai_addr;
                 if (addr4->sin_port == serverAddr4->sin_port) {
                     if (addr4->sin_addr.s_addr == serverAddr4->sin_addr.s_addr || serverAddr4->sin_addr.s_addr == INADDR_ANY) {
                         servers.push_back(context);
                     }
                 }
-            } else if (addr.ss_family == AF_INET6) {
+            } else if (res->ai_addr->sa_family == AF_INET6) {
                 struct sockaddr_in6* addr6 = (struct sockaddr_in6*)&addr;
-                struct sockaddr_in6* serverAddr6 = (struct sockaddr_in6*)&serverAddr;
+                struct sockaddr_in6* serverAddr6 = (struct sockaddr_in6*)&res->ai_addr;
                 if (addr6->sin6_port == serverAddr6->sin6_port) {
                     if (memcmp(&(addr6->sin6_addr.__u6_addr), &(serverAddr6->sin6_addr), 16) == 0 || memcmp(&(serverAddr6->sin6_addr), &(in6addr_any), 16) == 0) {
-                        servers.push_back(context);
+						servers.push_back(context);
                     }
                 }
             }
@@ -74,8 +117,8 @@ static const Context* __get_match_server_context_(std::vector<const Context*> &s
 	
 	for (size_t i = 0; i < servers.size(); ++i)
 	{
-		d_begin = servers[i]->getDirectives().find(NAME_DIRECTIVE);
-		d_end = servers[i]->getDirectives().end();
+		d_begin = (servers[i])->getDirectives().find(NAME_DIRECTIVE);
+		d_end = (servers[i])->getDirectives().end();
 		if (d_begin != d_end)
 		{
 			for (begin = d_begin->second.begin(), end = d_end->second.end(); begin != end; ++begin)

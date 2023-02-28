@@ -68,7 +68,10 @@ static void __read_request_body_(Client* client)
 {
 	if (client->getRequest()->method != "POST")
 		return;
-	__read_body_from_client_(client, client->getRequest()->content_length - client->getRequest()->body.length());
+	if (client->getRequest()->is_chunked)
+		std::cout << "Is Chunked\n";
+	else
+		__read_body_from_client_(client, client->getRequest()->content_length - client->getRequest()->body.length());
 }
 
 void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
@@ -81,7 +84,7 @@ void HTTP::requestHandler(Client* client, const Context* const configuration, st
         // add body
 		__read_request_body_(client);
         // if body is done
-//         HTTP::blockMatchAlgorithm(client, client->getRequest(), configuration);
+         HTTP::blockMatchAlgorithm(client, client->getRequest(), configuration);
     } catch (int statusCode) {
         while (true) {
             try {
