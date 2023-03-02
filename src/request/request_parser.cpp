@@ -175,10 +175,10 @@ static char *__get_header_value_(char * &buffer)
 	return save_buffer;
 }
 
-static void __check_basic_bad_request_errors(Request *request)
+static void __fill_request_and_check_basic_bad_errors(Request *request)
 {
-	std::string::size_type pos;
-	Headers::iterator	header;
+	std::string::size_type	pos;
+	Headers::iterator		header;
 	
 	header = request->headers.find("Host");
 	if (header == request->headers.end())
@@ -186,7 +186,7 @@ static void __check_basic_bad_request_errors(Request *request)
 	pos = header->second.rfind(':');
 	if (pos != std::string::npos)
 		header->second = header->second.substr(0, pos);
-	request->is_chunked = false;
+	request->ready_to_response = request->method != "POST";
 	header = request->headers.find("Transfer-Encoding") ;
 	if (header != request->headers.end())
 	{
@@ -195,9 +195,7 @@ static void __check_basic_bad_request_errors(Request *request)
 		request->is_chunked = true;
 	}
 	header =  request->headers.find("Content-Length");
-	if (header == request->headers.end())
-		request->content_length = 0;
-	else
+	if (header != request->headers.end())
 		request->content_length = __parse_content_length_(header->second.c_str());
 }
 
@@ -231,29 +229,13 @@ Request* HTTP::request_parser(const std::string &_buffer)
 	}
 	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
-	__check_basic_bad_request_errors(request);
+	__fill_request_and_check_basic_bad_errors(request);
 	buffer += 2;
 	key = buffer;
 	for (size_t i = 0; i < request->content_length && *key; ++i, ++key) ;
 	*key = '\0';
 	request->body = buffer;
 	delete save_buffer;
-	
-#ifdef DEBUG_REQUEST_PARSER
-	std::cout << "-------------------------- Request Data ---------------------\n" ;
-	std::cout << "                  =========  Headers   ==========\n" ;
-	for (Headers::const_iterator begin = request->headers.begin(), end = request->headers.end(); begin != end; ++begin)
-		std::cout << begin->first << ": " << begin->second << '\n';
-	std::cout << "                  =========  Path   ==========\n" ;
-	std::cout << request->path << '\n';
-	std::cout << "                  =========  Extension   ==========\n" ;
-	std::cout << request->extension << '\n';
-	std::cout << "                  =========  Query   ==========\n" ;
-	std::cout << request->query << '\n';
-	std::cout << "                  =========  Body   ==========\n" ;
-	std::cout << request->body << '\n' ;
-	std::cout << "-------------------------- ====== ---------------------\n" ;
-#endif
-	
+
 	return request;
 }

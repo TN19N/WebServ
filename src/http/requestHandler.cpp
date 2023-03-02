@@ -1,4 +1,4 @@
-# define BUFFER_SIZE 480
+# define BUFFER_SIZE 40
 
 # include <iostream>
 # include <string>
@@ -50,24 +50,25 @@ static void __read_body_from_client_(Client* client, size_t size)
 	int  bytesReceived;
 	
 	if (size == 0)
+	{
+		client->getRequest()->ready_to_response = true;
 		return;
+	}
 	switch (bytesReceived = recv(client->getFd(), buffer, size, 0)) {
 		case -1 :
 			throw 500;
 		case 0 :
 			throw "close connection";
 		default :
-			if (bytesReceived != size)
-				throw 400;
 			buffer[bytesReceived] = '\0';
-			client->getRequest()->body = client->getRequest()->body + (buffer);
+			client->getRequest()->body = client->getRequest()->body + buffer;
+			if (bytesReceived == size)
+				client->getRequest()->ready_to_response = true;
 	}
 }
 
 static void __read_request_body_(Client* client)
 {
-	if (client->getRequest()->method != "POST")
-		return;
 	if (client->getRequest()->is_chunked)
 		std::cout << "Is Chunked\n";
 	else
@@ -76,15 +77,20 @@ static void __read_request_body_(Client* client)
 
 void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
     try {
-        readRequest(client);
+		if (client->getRequest() == nullptr || client->getRequest()->missing_headers)
+        	readRequest(client);
         if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos)
 		{
             client->newRequest(HTTP::request_parser(client->getBuffer()));
+			client->getRequest()->missing_headers = false;
         }
-        // add body
-		__read_request_body_(client);
-        // if body is done
-         HTTP::blockMatchAlgorithm(client, client->getRequest(), configuration);
+		if (client->getRequest() != nullptr)
+		{
+			if ( ! client->getRequest()->ready_to_response)
+				__read_request_body_(client);
+			if (client->getRequest()->ready_to_response)
+				HTTP::request_handler(client, configuration);
+		}
     } catch (int statusCode) {
         while (true) {
             try {
@@ -98,6 +104,5 @@ void HTTP::requestHandler(Client* client, const Context* const configuration, st
         }
     } catch (...) {
         clientsToRemove.push_back(client);
-		std::cout << client->getRequest()->body << '\n';
     }
 }

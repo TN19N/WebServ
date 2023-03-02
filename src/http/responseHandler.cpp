@@ -31,6 +31,8 @@ const bool HTTP::sendResponse(const Client* client, const int& statusCode, const
     sendString(client, std::string("Server: webserv/1.0.0") + CRLF);
     sendString(client, "Date: " + HTTP::getHttpDate() + CRLF);
     sendString(client, "Connection: " + connectionState + CRLF);
+	sendString(client, "Content-Lenght: " + std::to_string(body.size()) + CRLF);
+	sendString(client, std::string("Content-Type: text/html") + CRLF);
 
     for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it) {
         sendString(client, it->first + ": " + it->second + CRLF);
@@ -39,8 +41,4 @@ const bool HTTP::sendResponse(const Client* client, const int& statusCode, const
     sendString(client, CRLF + body);
 
     return (connectionState == "close");
-}
-
-void HTTP::responseHandler(Client* client, Request* request, const Context* const configuration) {
-    const Context* context = blockMatchAlgorithm(client, request, configuration);
 }

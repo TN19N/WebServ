@@ -17,9 +17,10 @@
 #include "context.hpp"
 
 typedef std::map<std::string, std::string> Headers;
-class Request
+struct Request
 {
-public:
+	Request() : content_length(0), is_chunked(false), missing_headers(true), ready_to_response(false) {}
+	
 	std::string		method;
 	std::string		path;
 	std::string		query;
@@ -27,8 +28,11 @@ public:
 	Headers			headers;
 	std::string		body;
 	std::string		extension;
-	int				content_length;
+	size_t 			content_length;
+	int				cgi;
 	bool			is_chunked;
+	bool			missing_headers;
+	bool			ready_to_response;
 };
 
 # endif

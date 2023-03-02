@@ -21,10 +21,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/response/cgi.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/default.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/default.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/request/get_method_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/get_method_handler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/request/request_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/request_handler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/request/request_parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/request_parser.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +179,15 @@
       <workItem from="1677494517954" duration="9133000" />
       <workItem from="1677517702221" duration="5195000" />
       <workItem from="1677526792473" duration="2092000" />
-      <workItem from="1677576155810" duration="4563000" />
+      <workItem from="1677576155810" duration="5507000" />
+      <workItem from="1677587869867" duration="5625000" />
+      <workItem from="1677596816793" duration="8723000" />
+      <workItem from="1677610460469" duration="4332000" />
+      <workItem from="1677668506774" duration="3000" />
+      <workItem from="1677671480457" duration="9882000" />
+      <workItem from="1677696597706" duration="8531000" />
+      <workItem from="1677754723752" duration="407000" />
+      <workItem from="1677761333952" duration="3000" />
     </task>
     <servers />
   </component>
