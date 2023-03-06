@@ -5,3 +5,4 @@
 *.o
 *.out
 test.cpp
+./build/debug/*.trace
