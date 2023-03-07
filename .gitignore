@@ -1,9 +1,0 @@
-.vscode/
-*.DS_Store
-*.swp
-*.exe
-*.o
-*.out
-test.cpp
-CMakeLists.txt
-cmake-build-debug
