@@ -44,10 +44,10 @@ static void readRequest(Client* client) {
     }
 }
 
-static void __read_body_from_client_(Client* client, size_t size)
+static void __read_content_length_body_(Client* client, size_t size)
 {
-	char buffer[size + 1];
-	int  bytesReceived;
+	char	buffer[size + 1];
+	ssize_t	bytesReceived;
 	
 	if (size == 0)
 	{
@@ -67,21 +67,51 @@ static void __read_body_from_client_(Client* client, size_t size)
 	}
 }
 
+static void __parse_chunked_body_(const char *chunked, std::string& body)
+{
+
+
+}
+
+static void __read_chunked_body_(Client* client)
+{
+	std::string	body;
+	char		buffer[BUFFER_SIZE + 1];
+	ssize_t		bytesReceived;
+	
+	switch (bytesReceived = recv(client->getFd(), buffer, BUFFER_SIZE, 0))
+	{
+		case -1 :
+			throw 500;
+		case 0 :
+			throw "close connection";
+		default :
+			buffer[bytesReceived] = '\0';
+			client->getRequest()->body.append(buffer);
+	}
+	if (client->getRequest()->body.find(END_CHUNKED) != std::string::npos)
+	{
+		__parse_chunked_body_(client->getRequest()->body.c_str(), body);
+		client->getRequest()->body = body;
+		client->getRequest()->ready_to_response = true;
+	}
+}
+
 static void __read_request_body_(Client* client)
 {
 	if (client->getRequest()->is_chunked)
-		std::cout << "Is Chunked\n";
+		__read_chunked_body_(client);
 	else
-		__read_body_from_client_(client, client->getRequest()->content_length - client->getRequest()->body.length());
+		__read_content_length_body_(client, client->getRequest()->content_length - client->getRequest()->body.length());
 }
 
 void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
     try {
 		if (client->getRequest() == nullptr || client->getRequest()->missing_headers)
         	readRequest(client);
-        if (client->getRequest() == nullptr && client->getBuffer().find("\r\n\r\n") != std::string::npos)
+        if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
 		{
-            client->newRequest(HTTP::request_parser(client->getBuffer()));
+            client->newRequest(HTTP::request_parser(client));
 			client->getRequest()->missing_headers = false;
         }
 		if (client->getRequest() != nullptr)

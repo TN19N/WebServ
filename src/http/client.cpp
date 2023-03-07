@@ -29,6 +29,8 @@ const std::string& Client::getBuffer() const {
     return this->buffer;
 }
 
+void Client::setBuffer(const char *buff) { buffer = buff; }
+
 void Client::addBuffer(char *buf, int len) {
     this->buffer.append(buf, len);
 }

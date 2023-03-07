@@ -12,12 +12,14 @@
 #include "loadConfiguration.hpp"
 
 # define CRLF "\r\n"
+# define END_HEADERS "\r\n\r\n"
+# define END_CHUNKED "0\r\n\r\n"
 
 namespace HTTP {
     void    acceptConnection(int, std::vector<pollfd>&, std::vector<Client*>&);
     // request handler
     void    requestHandler(Client*, const Context*, std::vector<const Client*>&);
-    Request* request_parser(const std::string&);
+    Request* request_parser(Client*);
 	void request_handler(Client*, const Context*);
     const Context* blockMatchAlgorithm(const Client*, const Context*);
 	void get_method_handler(const Context*, Client*);

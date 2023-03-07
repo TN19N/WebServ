@@ -199,13 +199,13 @@ static void __fill_request_and_check_basic_bad_errors(Request *request)
 		request->content_length = __parse_content_length_(header->second.c_str());
 }
 
-Request* HTTP::request_parser(const std::string &_buffer)
+Request* HTTP::request_parser(Client *client)
 {
 	Request		*request;
 	char		*key, *path, *buffer, *save_buffer;
 
 	request = new Request;
-	buffer = __buffer_duplicate_(_buffer.c_str(), _buffer.length());
+	buffer = __buffer_duplicate_(client->getBuffer().c_str(), client->getBuffer().length());
 	save_buffer = buffer;
 	request->method = __get_request_method_(buffer) ;
 	path = __get_requested_path_(buffer);
@@ -231,10 +231,17 @@ Request* HTTP::request_parser(const std::string &_buffer)
 		throw 400;
 	__fill_request_and_check_basic_bad_errors(request);
 	buffer += 2;
-	key = buffer;
-	for (size_t i = 0; i < request->content_length && *key; ++i, ++key) ;
-	*key = '\0';
-	request->body = buffer;
+	if (request->is_chunked)
+	{
+		client->setBuffer(buffer);
+	}
+	else
+	{
+		key = buffer;
+		for (size_t i = 0; i < request->content_length && *key; ++i, ++key) ;
+		*key = '\0';
+		client->setBuffer("");
+	}
 	delete save_buffer;
 
 	return request;

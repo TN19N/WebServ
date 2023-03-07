@@ -15,7 +15,7 @@ class Client {
         Request*                request;
         const Client*           cgiClient;
     public:
-        Client(const int fd, const struct sockaddr_storage& addr, const struct sockaddr_storage& peer, const Client* cgiClient = nullptr);
+        Client(int, const struct sockaddr_storage&, const struct sockaddr_storage&, const Client* = nullptr);
 
         const int&                     getFd() const;
         const struct sockaddr_storage& getAddr() const;
@@ -23,8 +23,9 @@ class Client {
         const std::string&             getBuffer() const;
         Request*                 getRequest() const;
 
-        void    newRequest(Request* request);
-        void    addBuffer(char *buf, int len);
+        void    newRequest(Request*);
+        void    addBuffer(char *, int);
+		void	setBuffer(const char *) ;
 
         ~Client();
 };

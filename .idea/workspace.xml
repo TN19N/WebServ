@@ -21,17 +21,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/response/cgi.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/default.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/default.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/client.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/client.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/request/get_method_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/get_method_handler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/request/request_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/request_handler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/request/request_parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/request/request_parser.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,7 +183,12 @@
       <workItem from="1677671480457" duration="9882000" />
       <workItem from="1677696597706" duration="8531000" />
       <workItem from="1677754723752" duration="407000" />
-      <workItem from="1677761333952" duration="3000" />
+      <workItem from="1677761333952" duration="4172000" />
+      <workItem from="1677777367994" duration="1517000" />
+      <workItem from="1677785121513" duration="2330000" />
+      <workItem from="1677840983242" duration="3212000" />
+      <workItem from="1677850071380" duration="4582000" />
+      <workItem from="1678184837721" duration="1093000" />
     </task>
     <servers />
   </component>

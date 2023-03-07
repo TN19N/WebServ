@@ -24,7 +24,7 @@ static void sendString(const Client* client, const std::string& str) {
     }
 }
 
-const bool HTTP::sendResponse(const Client* client, const int& statusCode, const std::string& body, const std::map<std::string, std::string>& headers) {
+bool HTTP::sendResponse(const Client* client, const int& statusCode, const std::string& body, const std::map<std::string, std::string>& headers) {
     std::string connectionState = getConnectionState(statusCode);
 
     sendString(client, "HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF);
