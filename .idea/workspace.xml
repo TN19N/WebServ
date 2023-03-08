@@ -10,9 +10,7 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="webserv" targetName="webserv" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -41,12 +39,6 @@
       <change afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/http/connectionHandler.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/http/get_method_handler.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/keep/blockMatchAlgorithm.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/keep/cgi.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/keep/http.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/keep/request.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/keep/responseHandler.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/http/request_handler.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/http/request_parser.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/http/statusCodeHandler.cpp" afterDir="false" />
@@ -55,6 +47,11 @@
       <change afterPath="$PROJECT_DIR$/www/.gitKeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/keep/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/keep/cgi.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/cgi.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/keep/http.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/keep/request.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/keep/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,34 +75,12 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MakefileLocalSettings">
-    <option name="availableProjects">
-      <map>
-        <entry>
-          <key>
-            <ExternalProjectPojo>
-              <option name="name" value="webserv" />
-              <option name="path" value="$PROJECT_DIR$" />
-            </ExternalProjectPojo>
-          </key>
-          <value>
-            <list>
-              <ExternalProjectPojo>
-                <option name="name" value="webserv" />
-                <option name="path" value="$PROJECT_DIR$" />
-              </ExternalProjectPojo>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="projectSyncType">
-      <map>
-        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
-      </map>
-    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -151,9 +126,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="webserv" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="webserv" TARGET_NAME="webserv" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="webserv" RUN_TARGET_NAME="webserv">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -228,6 +203,59 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="7ef1c4ae-20ba-4b09-85b1-300ed72aabd8">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/jchakir" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
