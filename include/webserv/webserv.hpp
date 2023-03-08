@@ -15,12 +15,12 @@ class Webserv {
     private:
         const Context* const configuration;
 
-        std::vector<pollfd>             fds;
-        std::vector<struct addrinfo*>   serversAddress;
-
+        std::vector<int>                serversSocketFd;
         std::vector<Client*>            clients;
 
         void startServers();
+
+        void removeClient(const Client* client);
     public:
         Webserv(const std::string& configFile);
 

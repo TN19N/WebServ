@@ -10,15 +10,7 @@
 			(allowed_method) : GET POST DELETE 
 			(autoindex) : off 
 			(client_max_body_size) : 1M 
-			(host) : 0.0.0.0 
-			(index) : index.html index.htm index.php 
-			(port) : 8080 
-			(root) : /var/www/html 
-		[server] :: 
-			(allowed_method) : GET POST DELETE 
-			(autoindex) : off 
-			(client_max_body_size) : 1M 
-			(host) : 0.0.0.0 
+			(host) : localhost 
 			(index) : index.html index.htm index.php 
 			(port) : 8080 
 			(root) : /var/www/html 
@@ -33,15 +25,15 @@ ai_addr:
 	sin_len: 16
 	sin_family: 2
 	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
-ai_next: 0
+ai_next: 1
 -------------------------- new Client --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 53062
+	sin_port: 51042
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -49,14 +41,14 @@ ai_addr:
 	sin_len: 16
 	sin_family: 2
 	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 53062
+	sin_port: 51042
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- new Client --------------------------
@@ -64,7 +56,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 53067
+	sin_port: 51047
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -72,172 +64,34 @@ ai_addr:
 	sin_len: 16
 	sin_family: 2
 	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 53067
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53068
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53068
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53074
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53074
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53075
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53075
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53076
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53076
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53077
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53077
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53078
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 53078
+	sin_port: 51047
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- Leaks --------------------------
-Process:         webserv.exe [44388]
+Process:         webserv.exe [33001]
 Path:            /Volumes/VOLUME/*/webserv.exe
-Load Address:    0x10ca71000
+Load Address:    0x108067000
 Identifier:      webserv.exe
 Version:         ???
 Code Type:       X86-64
-Parent Process:  sh [44387]
+Parent Process:  sh [33000]
 
-Date/Time:       2023-03-06 15:53:44.509 +0100
-Launch Time:     2023-03-06 15:52:09.867 +0100
-OS Version:      Mac OS X 10.14.6 (18G8022)
+Date/Time:       2023-03-08 16:12:44.410 +0100
+Launch Time:     2023-03-08 16:05:23.520 +0100
+OS Version:      Mac OS X 10.14.6 (18G103)
 Report Version:  7
 Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
 Analysis Tool Version:  Xcode 11.3.1 (11C505)
 ----
 
 leaks Report Version: 4.0
-Process 44388: 205 nodes malloced for 28 KB
-Process 44388: 0 leaks for 0 total leaked bytes.
+Process 33001: 231 nodes malloced for 66 KB
+Process 33001: 0 leaks for 0 total leaked bytes.
 

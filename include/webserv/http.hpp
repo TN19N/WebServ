@@ -10,12 +10,23 @@
 
 namespace HTTP {
 
-// * Connection Handler ********************************************************************************************************************
-void acceptConnection(const int serverFd, std::vector<pollfd>& fds, std::vector<Client*>& clients, const struct sockaddr* serverAddr);
+// * Connection Handler ***********************************************************************
 void closeConnection(std::vector<pollfd>& fds, const int index, std::vector<Client*>& clients);
+void acceptConnection(const int serverFd, std::vector<Client*>& clients);
 
-// * Status Code Handler ********************************************************************************************************************
+// * Status Code Handler ************************************
 const std::string getStatusCodeMessage(const int statusCode);
+
+// * Response Handler ******************
+const bool sendResponse(Client* client);
+
+// * Request Handler ***************
+void requestHandler(Client* client);
+
+// * Tools **********************************************************************************
+Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);
+const std::string getDefaultErrorPage(const int statusCode);
+const std::string getHttpDate();
 
 } // namespace HTTP
 
