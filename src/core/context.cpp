@@ -3,9 +3,9 @@
 # include <map>
 # include <sys/socket.h>
 
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
-# include "webserv/core.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/configuration.hpp"
+# include "../../include/webserv/core.hpp"
 
 # define WHITE_SPACE " \t\r\n\v\f"
 

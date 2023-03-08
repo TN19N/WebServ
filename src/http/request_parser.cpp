@@ -5,13 +5,7 @@
 
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
-
-static int __strcmp_(const char *s1, const char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{ ++s1; ++s2; }
-	return *s1 - *s2;
-}
+# include "../../include/webserv/client.hpp"
 
 static char *__buffer_duplicate_(const char *_buffer, size_t len)
 {
@@ -64,11 +58,11 @@ static char *__get_request_method_(char * &buffer)
 {
 	char *save_buffer = buffer;
 	
-	 if (__strcmp_(buffer, "GET") == ' ')
+	 if (HTTP::__strcmp_(buffer, "GET") == ' ')
 		 buffer += 3;
-	 else if (__strcmp_(buffer, "POST") == ' ')
+	 else if (HTTP::__strcmp_(buffer, "POST") == ' ')
 		 buffer += 4;
-	 else if (__strcmp_(buffer, "DELETE") == ' ')
+	 else if (HTTP::__strcmp_(buffer, "DELETE") == ' ')
 		 buffer += 6;
 	 else
 		 throw 501;
@@ -118,9 +112,9 @@ static const char *__get_extension_from_path_(const char *path)
 
 static void __check_request_protocol_(char * &buffer)
 {
-	if (__strcmp_(buffer, "HTTP/1.1") == '\r')
+	if (HTTP::__strcmp_(buffer, "HTTP/1.1") == '\r')
 		buffer += 9;
-	else if (__strcmp_(buffer, "HTTP/1.1") == ' ')
+	else if (HTTP::__strcmp_(buffer, "HTTP/1.1") == ' ')
 	{
 		buffer += 9;
 		while (*buffer == ' ')
@@ -178,7 +172,7 @@ static char *__get_header_value_(char * &buffer)
 static void __fill_request_and_check_basic_bad_errors(Request *request)
 {
 	std::string::size_type	pos;
-	Headers::iterator		header;
+	std::map<std::string, std::string>::iterator		header;
 	
 	header = request->headers.find("Host");
 	if (header == request->headers.end())
@@ -186,20 +180,21 @@ static void __fill_request_and_check_basic_bad_errors(Request *request)
 	pos = header->second.rfind(':');
 	if (pos != std::string::npos)
 		header->second = header->second.substr(0, pos);
-	request->ready_to_response = request->method != "POST";
+	if (request->method != "POST")
+		request->state = REQUEST_READY;
 	header = request->headers.find("Transfer-Encoding") ;
 	if (header != request->headers.end())
 	{
 		if (header->second != "chunked")
 			throw 501;
-		request->is_chunked = true;
+		request->isChunked = true;
 	}
 	header =  request->headers.find("Content-Length");
 	if (header != request->headers.end())
-		request->content_length = __parse_content_length_(header->second.c_str());
+		request->contentLength = __parse_content_length_(header->second.c_str());
 }
 
-static void __parse_and_fill_request_headers(char * &buffer, Headers &headers)
+static void __parse_and_fill_request_headers(char * &buffer, std::map<std::string, std::string> &headers)
 {
 	char		*key;
 	
@@ -208,7 +203,7 @@ static void __parse_and_fill_request_headers(char * &buffer, Headers &headers)
 		key = buffer;
 		if ( ! headers[__get_header_key_(buffer)].empty())
 		{
-			if (__strcmp_(key, "Host") == 0)
+			if (HTTP::__strcmp_(key, "Host") == 0)
 				throw 400;
 		}
 		headers[key] = __get_header_value_(buffer);
@@ -220,7 +215,7 @@ static void __parse_and_fill_request_headers(char * &buffer, Headers &headers)
 Request* HTTP::request_parser(Client *client)
 {
 	Request		*request;
-	char		*key, *path, *buffer, *save_buffer;
+	char		*path, *buffer, *save_buffer;
 
 	request = new Request;
 	buffer = __buffer_duplicate_(client->getBuffer().c_str(), client->getBuffer().length());
@@ -238,18 +233,7 @@ Request* HTTP::request_parser(Client *client)
 	__parse_and_fill_request_headers(buffer, request->headers);
 	__fill_request_and_check_basic_bad_errors(request);
 	buffer += 2;
-	if (request->is_chunked)
-	{
-		client->setBuffer(buffer);
-	}
-	else
-	{
-		path = buffer;
-		for (size_t i = 0; i < request->content_length && *path; ++i, ++path) ;
-		*path = '\0';
-		client->setBuffer("");
-	}
+	client->getBuffer() = buffer;
 	delete save_buffer;
-
 	return request;
 }

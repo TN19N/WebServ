@@ -8,12 +8,14 @@
 # include <netdb.h>
 # include <map>
 # include <set>
+# include <algorithm>
 
-# include "webserv/webserv.hpp"
-# include "webserv/core.hpp"
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
-# include "webserv/http.hpp"
+# include "../../include/webserv/webserv.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/configuration.hpp"
+# include "../../include/webserv/http.hpp"
+# include "../../include/webserv/client.hpp"
 
 # define BIND_REPETITION 5
 
@@ -56,11 +58,23 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
     }
     return false;
 }
+
+static bool errorHandler(const int statusCode, Client* client) {
+    if (client->getState() == SENDING_RESPONSE) {
+        return true;
+    } else {
+        client->setResponse(new Response(statusCode, CLOSE_CONNECTION));
+        client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+        client->switchState();
+        return false;
+    }
+}
 // *************************************************************************************************************************************************************************************
 
 // * Methods ***************************************************************************************************************************************************************************
 void Webserv::startServers() {
     const std::vector<Context*>& contexts = this->configuration->getChildren();
+    std::vector<struct addrinfo*> serversAddress;
 
     for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
         if ((*context)->getName() == HTTP_CONTEXT) {
@@ -81,10 +95,9 @@ void Webserv::startServers() {
                         throw std::runtime_error("getaddrinfo() : " + std::string(gai_strerror(errno)));
                     }
 
-                    // give priority to IPv4
                     if (res->ai_family == AF_INET6) {
                         struct addrinfo* tmp = res;
-                        while (tmp->ai_next != NULL && tmp->ai_next->ai_family == AF_INET6) {
+                        while (tmp->ai_next != NULL && tmp->ai_next->ai_family != AF_INET) {
                             tmp = tmp->ai_next;
                         }
                         if (tmp->ai_next != NULL) {
@@ -95,9 +108,9 @@ void Webserv::startServers() {
                         }
                     }
 
-                    this->serversAddress.push_back(res);
+                    serversAddress.push_back(res);
 
-                    if (isInRange(res->ai_addr, this->serversAddress, (context - contexts.begin()))) {
+                    if (isInRange(res->ai_addr, serversAddress, (context - contexts.begin()))) {
                         freeaddrinfo(res->ai_next);
                         continue;
                     }
@@ -136,10 +149,7 @@ void Webserv::startServers() {
                         throw std::runtime_error("listen() : " + std::string(strerror(errno)));
                     }
 
-                    struct pollfd fd;
-                    fd.fd = sockfd;
-                    fd.events = POLLIN;
-                    this->fds.push_back(fd);
+                    this->serversSocketFd.push_back(sockfd);
 
                     # ifdef DEBUG
                     std::cout << "-------------------------- new Server --------------------------" << std::endl;
@@ -151,6 +161,16 @@ void Webserv::startServers() {
             }
         }
     }
+
+    for (size_t i = 0; i < serversAddress.size(); ++i) {
+        serversAddress[i]->ai_next = NULL;
+        freeaddrinfo(serversAddress[i]);
+    }
+}
+
+void Webserv::removeClient(const Client* client) {
+    this->clients.erase(std::find(this->clients.begin(), this->clients.end(), client));
+    delete client;
 }
 
 void Webserv::run() {
@@ -167,36 +187,47 @@ void Webserv::run() {
     std::cerr << "**********************************" << std::endl;
     std::cerr << RESET;
 
-    size_t serversCount = this->fds.size();
     int    pollResult = 0;
-
     while (Webserv::webservState == WEB_SERV_RUNNING) {
-        if ((pollResult = poll(this->fds.begin().base(), this->fds.size(), -1)) == -1) {
+        std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
+
+        if ((pollResult = poll(fds.data(), fds.size(), -1)) == -1) {
             if (errno == EINTR) {
                 continue;
             }
             throw std::runtime_error("poll() : " + std::string(strerror(errno)));
         }
 
-        for (int i = this->fds.size() - 1; i >= 0; --i) {
+        for (int i = 0; i < fds.size() && pollResult > 0; ++i) {
             try {
-                if (this->fds[i].revents & POLLHUP) {
-                    HTTP::closeConnection(this->fds, i, this->clients);
-                } else if (this->fds[i].revents & POLLIN) {
-                    if (i < serversCount) {
-                        HTTP::acceptConnection(this->fds[i].fd, this->fds, this->clients, this->serversAddress[i]->ai_addr);
+                --pollResult;
+                if (fds[i].revents & POLLHUP) {
+                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
+                } else if (fds[i].revents & POLLIN) {
+                    if (i < this->serversSocketFd.size()) {
+                        HTTP::acceptConnection(fds[i].fd, this->clients);
                     } else {
-                        // read request
+                        HTTP::requestHandler(HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration);
                     }
-                } else if (this->fds[i].revents & POLLOUT) {
-                    // send response
+                } else if (fds[i].revents & POLLOUT) {
+                    Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+                    if (HTTP::sendResponse(client)) {
+                        if (client->isCgi()) {
+                            client->switchState();
+                        } else {
+                            Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
+                        }
+                    }
+                } else {
+                    ++pollResult;
                 }
             } catch (const int statusCode) {
-                Client* client = CORE::getClientWithFd(this->fds[i].fd, this->clients);
-                if (client->getResponse() == nullptr) {
-                    HTTP::closeConnection(this->fds, i, this->clients);
-                } else {
-                    // send error response
+                if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
+                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
+                }
+            } catch (const std::exception& e) {
+                if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
+                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
                 }
             }
         }
@@ -206,13 +237,10 @@ void Webserv::run() {
 
 // * Destructor ************************************************************************************************************************************************************************
 Webserv::~Webserv() {
-    for (std::vector<pollfd>::const_iterator it = this->fds.begin(); it != this->fds.end(); ++it) {
-        close(it->fd);
+    for (size_t i = 0; i < this->serversSocketFd.size(); ++i) {
+        close(this->serversSocketFd[i]);
     }
-    for (std::vector<struct addrinfo*>::const_iterator it = this->serversAddress.begin(); it != this->serversAddress.end(); ++it) {
-        (*it)->ai_next = NULL;
-        freeaddrinfo((*it));
-    }
+
     delete this->configuration;
 }
 // *************************************************************************************************************************************************************************************

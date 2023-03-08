@@ -3,9 +3,9 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-# include "webserv/context.hpp"
-# include "webserv/loadConfiguration.hpp"
-# include "keep/http.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/loadConfiguration.hpp"
+# include "../../include/webserv/http.hpp"
 
 void HTTP::get_method_handler(const Context *location, Client *client)
 {

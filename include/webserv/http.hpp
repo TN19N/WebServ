@@ -6,16 +6,34 @@
 # include <poll.h>
 # include <sys/socket.h>
 
-# include "webserv/client.hpp"
+# include "client.hpp"
+# include "context.hpp"
 
-namespace HTTP {
+# define END_CHUNKED "0\r\n\r\n"
+# define END_HEADERS "\r\n\r\n"
 
-// * Connection Handler ********************************************************************************************************************
-void acceptConnection(const int serverFd, std::vector<pollfd>& fds, std::vector<Client*>& clients, const struct sockaddr* serverAddr);
-void closeConnection(std::vector<pollfd>& fds, const int index, std::vector<Client*>& clients);
-
-// * Status Code Handler ********************************************************************************************************************
-const std::string getStatusCodeMessage(const int statusCode);
+namespace HTTP
+{
+	// * Connection Handler ***********************************************************************
+	void closeConnection(std::vector<pollfd>& fds, const int index, std::vector<Client*>& clients);
+	void acceptConnection(const int serverFd, std::vector<Client*>& clients);
+	
+	// * Status Code Handler ************************************
+	const std::string getStatusCodeMessage(const int statusCode);
+	
+	// * Response Handler ******************
+	const bool sendResponse(Client* client);
+	
+	// * Request Handler ***************
+	Request* request_parser(Client *client);
+	const Context* blockMatchAlgorithm(const Client* client, const Context* const configuration);
+	void requestHandler(Client* client, const Context* const configuration);
+	
+	// * Tools **********************************************************************************
+	Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);
+	const std::string getDefaultErrorPage(const int statusCode);
+	const std::string getHttpDate();
+	int __strcmp_(const char *s1, const char *s2);
 
 } // namespace HTTP
 

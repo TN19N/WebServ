@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------
 
 # include "../../include/webserv/http.hpp"
+# include "../../include/webserv/context.hpp.hpp"
 
 void HTTP::request_handler(Client* client, const Context* configuration)
 {

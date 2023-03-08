@@ -1,3 +1,4 @@
+
 # define BUFFER_SIZE 40
 
 # include <iostream>
@@ -10,40 +11,22 @@
 # include <arpa/inet.h>
 # endif
 
-# include "webserv/client.hpp"
-# include "webserv/context.hpp"
-# include "keep/request.hpp"
-# include "keep/http.hpp"
-
-static const std::string getDefaultErrorPage(const int& statusCode) {
-    return (
-        "<!DOCTYPE html>\n"
-        "<html>\n"
-        "   <head>\n"
-        "       <title>" + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + "</title>\n"
-        "   </head>\n"
-        "   <body>\n"
-        "       <h1>" + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + "</h1>\n"
-        "       <hr>\n"
-        "       webserv/1.0.0\n"
-        "   </body>\n"
-        "</html>\n"
-    );
-}
+# include "../../include/webserv/client.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/request.hpp"
+# include "../../include/webserv/http.hpp"
 
 static void readRequest(Client* client) {
     char buffer[BUFFER_SIZE];
     int  bytesReceived = 0;
-    switch (bytesReceived = recv(client->getFd(), buffer, BUFFER_SIZE, 0)) {
+    switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0)) {
         case -1 :   
             throw 500;
-        case 0 :
-            throw "close connection";
         default :
-            client->addBuffer(buffer, bytesReceived);
+            client->getBuffer().append(buffer, bytesReceived);
     }
 }
-
+/*
 static void __read_content_length_body_(Client* client, size_t size)
 {
 	char	buffer[size + 1];
@@ -51,7 +34,7 @@ static void __read_content_length_body_(Client* client, size_t size)
 	
 	if (size == 0)
 	{
-		client->getRequest()->ready_to_response = true;
+		client->getRequest()-> = true;
 		return;
 	}
 	switch (bytesReceived = recv(client->getFd(), buffer, size, 0)) {
@@ -63,7 +46,7 @@ static void __read_content_length_body_(Client* client, size_t size)
 			buffer[bytesReceived] = '\0';
 			client->getRequest()->body = client->getRequest()->body + buffer;
 			if (bytesReceived == size)
-				client->getRequest()->ready_to_response = true;
+				client->getRequest()->readyToResponse = true;
 	}
 }
 
@@ -93,46 +76,33 @@ static void __read_chunked_body_(Client* client)
 	{
 		__parse_chunked_body_(client->getRequest()->body.c_str(), body);
 		client->getRequest()->body = body;
-		client->getRequest()->ready_to_response = true;
+		client->getRequest()->readyToResponse = true;
 	}
 }
 
 static void __read_request_body_(Client* client)
 {
-	if (client->getRequest()->is_chunked)
+	if (client->getRequest()->isChunked)
 		__read_chunked_body_(client);
 	else
-		__read_content_length_body_(client, client->getRequest()->content_length - client->getRequest()->body.length());
+		__read_content_length_body_(client, client->getRequest()->contentLength - client->getRequest()->body.length());
 }
-
-void HTTP::requestHandler(Client* client, const Context* const configuration, std::vector<const Client*>& clientsToRemove) {
-    try {
-		if (client->getRequest() == nullptr || client->getRequest()->missing_headers)
-        	readRequest(client);
-        if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
-		{
-            client->newRequest(HTTP::request_parser(client));
-			client->getRequest()->missing_headers = false;
-        }
-		if (client->getRequest() != nullptr)
-		{
-			if ( ! client->getRequest()->ready_to_response)
-				__read_request_body_(client);
-			if (client->getRequest()->ready_to_response)
-				HTTP::request_handler(client, configuration);
-		}
-    } catch (int statusCode) {
-        while (true) {
-            try {
-                if (HTTP::sendResponse(client, statusCode, getDefaultErrorPage(statusCode))) {
-                    clientsToRemove.push_back(client);
-                }
-                break;
-            } catch (const int& newStatusCode) {
-                statusCode = newStatusCode;
-            }
-        }
-    } catch (...) {
-        clientsToRemove.push_back(client);
-    }
+*/
+void HTTP::requestHandler(Client* client, const Context* const configuration)
+{
+	readRequest(client);
+	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
+		client->newRequest(HTTP::request_parser(client));
+	if (client->getRequest() != nullptr)
+	{
+#ifdef DEBUG
+		for (std::map<std::string, std::string>::const_iterator b = client->getRequest()->headers.begin(),
+				e = client->getRequest()->headers.end(); b != e; ++b)
+			std::cout << b->first << ": " << b->second << '\n';
+#endif
+		if (client->getRequest()->state == READING_BODY)
+			__read_request_body_(client);
+		if (client->getRequest()->state == REQUEST_READY)
+			HTTP::request_handler(client, configuration);
+	}
 }

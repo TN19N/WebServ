@@ -2,15 +2,16 @@
 # include <vector>
 # include <signal.h>
 # include <sys/errno.h>
+# include <poll.h>
 # ifdef DEBUG
 # include <iostream>
 # include <arpa/inet.h>
 # include <netdb.h>
 # endif
 
-# include "webserv/core.hpp"
-# include "webserv/webserv.hpp"
-# include "webserv/client.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/webserv.hpp"
+# include "../../include/webserv/client.hpp"
 
 // * DEBUG ****************************************************************************************************************************
 # ifdef DEBUG
@@ -123,20 +124,37 @@ void CORE::listenToSignals() {
     }
 }
 
-Client* CORE::getClientWithFd(const int fd, const std::vector<Client*>& clients) {
-    for (size_t i = 0; i < clients.size(); ++i) {
-        if (clients[i]->getType() == USER_CLIENT) {
-            if (clients[i]->getFd() == fd) {
-                return clients[i];
-            }
-        } else if (clients[i]->getType() == CGI_CLIENT) {
-            if (clients[i]->getPipeFd()[READ_END] == fd) {
-                return clients[i];
-            } else if (clients[i]->getPipeFd()[WRITE_END] == fd) {
-                return clients[i];
-            }
+# include <iostream> // TODO: remove
+
+const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients) {
+    std::vector<pollfd> fds(serversSocketFd.size() + clients.size());
+
+    for (size_t i = 0; i < serversSocketFd.size(); ++i) {
+        fds[i].fd = serversSocketFd[i];
+        fds[i].events = POLLIN;
+    }
+
+    for (size_t i = serversSocketFd.size(); i < fds.size(); ++i) {
+        Client *client = clients[i - serversSocketFd.size()];
+        switch (client->getState()) {
+            case RIDING_REQUEST :
+                fds[i].fd = client->getFdOf(READ_END);
+                fds[i].events = POLLIN | POLLHUP;
+                break;
+            case SENDING_RESPONSE :
+                fds[i].fd = client->getFdOf(WRITE_END);
+                fds[i].events = POLLOUT | POLLHUP;
+                break;
+            case SENDING_REQUEST :
+                fds[i].fd = client->getFdOf(WRITE_END);
+                fds[i].events = POLLIN | POLLHUP;
+                break;
+            case RIDING_RESPONSE :
+                fds[i].fd = client->getFdOf(READ_END);
+                fds[i].events = POLLOUT | POLLHUP;
         }
     }
-    return nullptr; // never be reached (i hope so :D)
+
+    return fds;
 }
 // *************************************************************************************************************************************

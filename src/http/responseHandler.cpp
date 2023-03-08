@@ -1,44 +1,44 @@
-# include <string>
-# include <map>
-# include <iostream>
 
-# include "keep/http.hpp"
-# include "webserv/client.hpp"
+# include <unistd.h>
 
-static const std::string getConnectionState(const int& statusCode) {
-    switch (statusCode) {
-        case 404: return "close";
-        default:  return "keep-alive";
-    }
-}
+# include "../../include/webserv/response.hpp"
+# include "../../include/webserv/http.hpp"
+# include "../../include/webserv/client.hpp"
 
-static void sendString(const Client* client, const std::string& str) {
-    int bytesSent = 0;
-    int totalBytesSent = 0;
+# define SEND_BUFFER_SIZE 4096UL
 
-    while (totalBytesSent < str.size()) {
-        if ((bytesSent = send(client->getFd(), (str.c_str() + totalBytesSent), (str.size() - totalBytesSent), 0)) == -1) {
-            throw 500;
+const bool HTTP::sendResponse(Client* client) {
+    int res = 0;
+
+    if (client->isCgi()) {
+        Request* request = client->getRequest();
+
+        if (request->body.empty() == false) {
+            if ((res = write(client->getFdOf(WRITE_END), request->body.c_str(), std::min(SEND_BUFFER_SIZE, request->body.length()))) == -1) {
+                throw 500;
+            }
+            request->body.erase(0, res);
         }
-        totalBytesSent += bytesSent;
+
+        if (request->body.empty() == true) {
+            return true;
+        }
+    } else {
+        Response* response = client->getResponse();
+
+        if (response->buffer.empty() == false) {
+            if ((res = send(client->getFdOf(WRITE_END), response->buffer.c_str(), std::min(SEND_BUFFER_SIZE, response->buffer.length()), 0)) == -1) {
+                throw 500;
+            }
+            response->buffer.erase(0, res);
+        }
+
+        if (response->buffer.empty() == true) {
+            if (response->keepAlive == false) {
+                return true;
+            }
+        }
     }
-}
 
-bool HTTP::sendResponse(const Client* client, const int& statusCode, const std::string& body, const std::map<std::string, std::string>& headers) {
-    std::string connectionState = getConnectionState(statusCode);
-
-    sendString(client, "HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF);
-    sendString(client, std::string("Server: webserv/1.0.0") + CRLF);
-    sendString(client, "Date: " + HTTP::getHttpDate() + CRLF);
-    sendString(client, "Connection: " + connectionState + CRLF);
-	sendString(client, "Content-Lenght: " + std::to_string(body.size()) + CRLF);
-	sendString(client, std::string("Content-Type: text/html") + CRLF);
-
-    for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it) {
-        sendString(client, it->first + ": " + it->second + CRLF);
-    }
-
-    sendString(client, CRLF + body);
-
-    return (connectionState == "close");
+    return false;
 }

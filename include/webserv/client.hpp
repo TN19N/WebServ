@@ -4,51 +4,69 @@
 # include <cstddef>
 # include <sys/socket.h>
 # include <string>
+# include <poll.h>
 
-# include "webserv/request.hpp"
-# include "webserv/response.hpp"
-
-# define USER_CLIENT 0
-# define CGI_CLIENT  1
+# include "request.hpp"
+# include "response.hpp"
 
 # define READ_END  0
 # define WRITE_END 1
 
+# define RIDING_REQUEST   0
+# define SENDING_RESPONSE 1
+# define RIDING_RESPONSE  2
+# define SENDING_REQUEST  3
+
 class Client {
     private:
-        const int                       fd;
+        const int                       socketFd;
         const struct sockaddr_storage   clientAddr;
-        const struct sockaddr*          peerAddr;
+        const struct sockaddr_storage   peerAddr;
         int                             pipeFd[2];
 
         Request*                        request;
         Response*                       response;
 
-        bool                            type;
         Client*                         cgiToClient;
         Client*                         clientToCgi;
 
         std::string                     buffer;
+
+        int                             state;
     public:
-        Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr* peerAddr, Client* cgiToClient = nullptr);
+        Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
 
-        const int&                      getFd() const;
+        const int                       getSocketFd() const;
         const struct sockaddr_storage&  getClientAddr() const;
-        const struct sockaddr*          getPeerAddr() const;
-        const int*                      getPipeFd() const;
+        const struct sockaddr_storage&  getPeerAddr() const;
 
+        const int*                      getPipeFd() const;
+        int*                            getPipeFd();
+
+		void							newRequest(Request *req);
         const Request*                  getRequest() const;
-        const Response*                 getResponse() const;
         Request*                        getRequest();
+
+        const Response*                 getResponse() const;
         Response*                       getResponse();
 
-        bool                            getType() const;
         const Client*                   getCgiToClient() const;
         const Client*                   getClientToCgi() const;
 
         const std::string&              getBuffer() const;
+        std::string&                    getBuffer();
+
+        const int                       getState() const;
+
+        const int                       getFdOf(const int index) const;
 
         void                            setClientToCgi(Client* clientToCgi);
+        void                            setRequest(Request* request);
+        void                            setResponse(Response* response);
+        void                            setState(const bool& state);
+
+        const bool                      isCgi() const;
+        void                            switchState();
 
         ~Client();
 };

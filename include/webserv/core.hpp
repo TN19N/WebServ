@@ -4,18 +4,19 @@
 # include <string>
 # include <vector>
 # include <netdb.h>
+# include <poll.h>
 
-# include "webserv/context.hpp"
-# include "webserv/client.hpp"
+# include "context.hpp"
+# include "client.hpp"
 
 namespace CORE {
 
 // * load Configuration ****************************************************************************************
 const Context* loadConfiguration(const std::string& configFilePath, Context* configuration, const size_t depth);
 
-// * Tools *********************************************************************************
+// * Tools ************************************************************************************************************
+const std::vector<pollfd> fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients);
 const std::vector<std::string> split(const std::string& str, const std::string& delimiters);
-Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);
 void listenToSignals();
 
 # ifdef DEBUG

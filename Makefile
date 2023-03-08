@@ -31,7 +31,14 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/core/loadConfiguration.$(SRC_EXT) \
 		$(SRC_DIR)/core/tools.$(SRC_EXT) \
 		$(SRC_DIR)/http/client.$(SRC_EXT) \
-		$(SRC_DIR)/http/connectionHandler.$(SRC_EXT)
+		$(SRC_DIR)/http/connectionHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/request.$(SRC_EXT) \
+		$(SRC_DIR)/http/response.$(SRC_EXT) \
+		$(SRC_DIR)/http/responseHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/tools.$(SRC_EXT) \
+		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/request_parser.$(SRC_EXT)
+
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
 TEMPLATES := $(wildcard $(TEMPLATE_DIR)/*)

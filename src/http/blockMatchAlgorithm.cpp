@@ -5,11 +5,11 @@
 # include <netdb.h>
 # include <iostream>
 
-# include "webserv/loadConfiguration.hpp"
-# include "keep/request.hpp"
-# include "webserv/client.hpp"
-# include "webserv/context.hpp"
-# include "keep/http.hpp"
+# include "../../include/webserv/loadConfiguration.hpp"
+# include "../../include/webserv/request.hpp"
+# include "../../include/webserv/client.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/http.hpp"
 
 static void isValidServer(const Context* context,  const Client* client, std::vector<const Context*>& servers) {
     if (context->getName() == SERVER_CONTEXT) {

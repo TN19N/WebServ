@@ -1,9 +1,9 @@
 # include <string>
 # include <fstream>
 
-# include "webserv/core.hpp"
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/configuration.hpp"
 
 # define WHITE_SPACE " \t\r\n\v\f"
 # define NEW_LINE '\n'
