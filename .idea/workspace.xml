@@ -10,7 +10,9 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated />
+    <generated>
+      <config projectName="webserv" targetName="webserv" />
+    </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -19,47 +21,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webserv.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/bin/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/obj/core/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/obj/http/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/obj/request/.gitKeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/default.cfg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/mime.types" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/client.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/context.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/init.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/loadConfiguration.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/webserv.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/context.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/init.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/acceptConnection.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/cgiHandler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/client.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/statusCodeHandler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/tools.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/request/get_method_handler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/request/request_handler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/request/request_parser.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/response/cgi.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index2.html" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/mime.types" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/client.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/configuration.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/context.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/core.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/response.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/webserv/webserv.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/core/context.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/core/luncher.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/core/tools.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/connectionHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/get_method_handler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/keep/blockMatchAlgorithm.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/keep/cgi.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/keep/http.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/keep/request.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/keep/responseHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/request_handler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/request_parser.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/statusCodeHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/template/config.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/template/mime.types" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/.gitKeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +110,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-webserv" />
+  </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2022" />
@@ -140,21 +138,22 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.cpp.clangd&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/http" />
       <recent name="$PROJECT_DIR$/keep" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/request" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="webserv" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="webserv" TARGET_NAME="webserv" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="webserv" RUN_TARGET_NAME="webserv">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -222,6 +221,8 @@
       <workItem from="1677850071380" duration="4582000" />
       <workItem from="1678184837721" duration="2263000" />
       <workItem from="1678191531818" duration="1058000" />
+      <workItem from="1678207730542" duration="4676000" />
+      <workItem from="1678271166641" duration="971000" />
     </task>
     <servers />
   </component>

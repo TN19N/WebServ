@@ -1,1 +1,11 @@
 cmake-build-debug
+.vscode/
+*.DS_Store
+*.swp
+*.exe
+*.o
+*.out
+test.cpp
+./build/debug/*.trace
+.idea
+CMakeLists.txt
