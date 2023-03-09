@@ -7,7 +7,7 @@
 # include "../../include/webserv/loadConfiguration.hpp"
 # include "../../include/webserv/http.hpp"
 
-void HTTP::get_method_handler(const Context *location, Client *client)
+void HTTP::getMethodHandler(const Context* const location, Client *client)
 {
 	std::map<const std::string, std::vector<std::string> >::const_iterator directive, not_found;
 	std::vector<std::string>::const_iterator begin, end;
@@ -37,7 +37,7 @@ void HTTP::get_method_handler(const Context *location, Client *client)
 		for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
 			if (*begin == client->getRequest()->extension)
 			{
-				client->getRequest()->cgi = HTTP::cgi_executor(client->getRequest()->path, client->getRequest()->headers);
+//				client->getRequest()->cgi = HTTP::cgi_executor(client->getRequest()->path, client->getRequest()->headers);
 				return;
 			}
 	}

@@ -28,6 +28,7 @@ namespace HTTP
 	Request*		requestParser(Client *client);
 	void			requestHandler(Client* client, const Context* const configuration);
 	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
+	void 			getMethodHandler(const Context* const location, Client *client);
 	
 	// * Tools **********************************************************************************
 	Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);
