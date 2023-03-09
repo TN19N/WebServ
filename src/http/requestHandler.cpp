@@ -1,5 +1,5 @@
 
-# define BUFFER_SIZE 40
+# define BUFFER_SIZE 1024
 
 # include <iostream>
 # include <string>
@@ -16,17 +16,17 @@
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
 
-static void __read_request_buffer_(Client* client)
+static void __read_request_buffer_(Client* client, size_t size = BUFFER_SIZE)
 {
-    char buffer[BUFFER_SIZE];
-    ssize_t bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
+    char buffer[size];
+    ssize_t bytesReceived = recv(client->getFdOf(READ_END), buffer, size, 0);
 	
     if (bytesReceived < 0)
 		throw 500;
 	else
 		client->getBuffer().append(buffer, bytesReceived);
 }
-/*
+
 static void __read_content_length_body_(Client* client, size_t size)
 {
 	char	buffer[size + 1];
@@ -34,7 +34,7 @@ static void __read_content_length_body_(Client* client, size_t size)
 	
 	if (size == 0)
 	{
-		client->getRequest()-> = true;
+		client->getRequest()->state = REQUEST_READY;
 		return;
 	}
 	switch (bytesReceived = recv(client->getFd(), buffer, size, 0)) {
@@ -87,7 +87,7 @@ static void __read_request_body_(Client* client)
 	else
 		__read_content_length_body_(client, client->getRequest()->contentLength - client->getRequest()->body.length());
 }
-*/
+
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
 	const Context *location;
@@ -96,7 +96,7 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
 	{
 		client->newRequest(HTTP::requestParser(client));
-//		location = HTTP::blockMatchAlgorithm(client, configuration);
+		location = HTTP::blockMatchAlgorithm(client, configuration);
 	}
 	if (client->getRequest() != nullptr)
 	{
@@ -110,11 +110,13 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 		for (std::map<std::string, std::string>::const_iterator b = client->getRequest()->headers.begin(),
 				e = client->getRequest()->headers.end(); b != e; ++b)
 			std::cout << b->first << ": " << b->second << '\n';
-		throw 404;
 #endif
-//		if (client->getRequest()->state == READING_BODY)
-//			__read_request_body_(client);
-//		if (client->getRequest()->state == REQUEST_READY)
-//			HTTP::request_handler(client, configuration);
+		if (client->getRequest()->state == READING_BODY)
+			__read_request_body_(client);
+		if (client->getRequest()->state == REQUEST_READY)
+		{
+			if (client->getRequest()->method == "GET")
+				HTTP::getMethodHandler(location, client);
+		}
 	}
 }
