@@ -240,6 +240,8 @@ Webserv::~Webserv() {
     for (size_t i = 0; i < this->serversSocketFd.size(); ++i) {
         close(this->serversSocketFd[i]);
     }
+	for (size_t i = 0; i < this->clients.size(); ++i)
+		delete this->clients[i] ;
 
     delete this->configuration;
 }

@@ -19,36 +19,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/request.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/http/response.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/mime.types" beforeDir="false" afterPath="$PROJECT_DIR$/config/mime.types" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/client.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/client.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/core.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/core.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/response.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/response.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/webserv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/webserv.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/context.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/context.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/luncher.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/luncher.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/tools.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/tools.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/connectionHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/connectionHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/get_method_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/get_method_handler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/request_handler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/request_handler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/request_parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/request_parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/statusCodeHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/tools.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/template/config.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/mime.types" beforeDir="false" afterPath="$PROJECT_DIR$/template/mime.types" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,9 +98,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -200,7 +175,8 @@
       <workItem from="1678299305883" duration="128000" />
       <workItem from="1678299440452" duration="175000" />
       <workItem from="1678299631096" duration="955000" />
-      <workItem from="1678303543636" duration="5559000" />
+      <workItem from="1678303543636" duration="6232000" />
+      <workItem from="1678353827762" duration="7091000" />
     </task>
     <servers />
   </component>

@@ -16,15 +16,15 @@
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
 
-static void readRequest(Client* client) {
+static void readRequest(Client* client)
+{
     char buffer[BUFFER_SIZE];
-    int  bytesReceived = 0;
-    switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0)) {
-        case -1 :   
-            throw 500;
-        default :
-            client->getBuffer().append(buffer, bytesReceived);
-    }
+    ssize_t bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
+	
+    if (bytesReceived < 0)
+		throw 500;
+	else
+		client->getBuffer().append(buffer, bytesReceived);
 }
 /*
 static void __read_content_length_body_(Client* client, size_t size)
@@ -96,13 +96,20 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 	if (client->getRequest() != nullptr)
 	{
 #ifdef DEBUG
+		std::cout << "===================== Request Parser =============================\n" ;
+		std::cout << "Method: " << client->getRequest()->method << '\n' ;
+		std::cout << "Path  : " << client->getRequest()->path << '\n' ;
+		std::cout << "Query : " << client->getRequest()->query << '\n' ;
+		std::cout << "Ext   : " << client->getRequest()->extension << '\n' ;
+		std::cout << "          ------------------\n" ;
 		for (std::map<std::string, std::string>::const_iterator b = client->getRequest()->headers.begin(),
 				e = client->getRequest()->headers.end(); b != e; ++b)
 			std::cout << b->first << ": " << b->second << '\n';
+		throw 404;
 #endif
-		if (client->getRequest()->state == READING_BODY)
-			__read_request_body_(client);
-		if (client->getRequest()->state == REQUEST_READY)
-			HTTP::request_handler(client, configuration);
+//		if (client->getRequest()->state == READING_BODY)
+//			__read_request_body_(client);
+//		if (client->getRequest()->state == REQUEST_READY)
+//			HTTP::request_handler(client, configuration);
 	}
 }

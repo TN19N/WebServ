@@ -5,19 +5,6 @@
 
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
-# include "../../include/webserv/client.hpp"
-
-static char *__buffer_duplicate_(const char *_buffer, size_t len)
-{
-	char *buffer, *save_buffer;
-	
-	buffer = new char[len + 1];
-	save_buffer = buffer;
-	while (*_buffer)
-		*buffer++ = *_buffer++;
-	*buffer = '\0';
-	return save_buffer;
-}
 
 static int __parse_content_length_(const char *str)
 {
@@ -46,7 +33,7 @@ static bool __is_space_(char c)
 		return true;
 	return false;
 }
-static void __skipp_spaces_(char * &buffer)
+static void __skipp_spaces_(const char * &buffer)
 {
 	while (*buffer == ' ' || *buffer == '\t')
 		++buffer;
@@ -54,9 +41,9 @@ static void __skipp_spaces_(char * &buffer)
 		throw 400;
 }
 
-static char *__get_request_method_(char * &buffer)
+static const char *__get_request_method_(const char * &buffer, std::string &base)
 {
-	char *save_buffer = buffer;
+	const char *save_buffer = buffer;
 	
 	 if (HTTP::__strcmp_(buffer, "GET") == ' ')
 		 buffer += 3;
@@ -67,35 +54,35 @@ static char *__get_request_method_(char * &buffer)
 	 else
 		 throw 501;
 	 
-	 *buffer = '\0';
+	 base[buffer - base.c_str()] = '\0';
 	 ++buffer;
 	 while (*buffer == ' ')
 		 ++buffer;
 	 return save_buffer ;
 }
 
-static char *__get_requested_path_(char * &buffer)
+static const char *__get_requested_path_(const char * &buffer, std::string &base)
 {
-	char *save_buffer = buffer;
+	const char *save_buffer = buffer;
 	
 	while (*buffer && *buffer != ' ')
 		++buffer;
 	if (*buffer == '\0')
 		throw 400;
-	*buffer = '\0';
+	base[buffer - base.c_str()] = '\0';
 	++buffer;
 	while (*buffer == ' ')
 		++buffer;
 	return save_buffer;
 }
 
-static char *__get_query_from_path_(char *path)
+static const char *__get_query_from_path_(const char *path, std::string &base)
 {
 	while (*path && *path != '?')
 		++path;
 	if (*path == '\0')
 		return path;
-	*path = '\0';
+	base[path - base.c_str()] = '\0';
 	return path + 1;
 }
 
@@ -110,7 +97,7 @@ static const char *__get_extension_from_path_(const char *path)
 	return "";
 }
 
-static void __check_request_protocol_(char * &buffer)
+static void __check_request_protocol_(const char * &buffer)
 {
 	if (HTTP::__strcmp_(buffer, "HTTP/1.1") == '\r')
 		buffer += 9;
@@ -130,22 +117,22 @@ static void __check_request_protocol_(char * &buffer)
 	++buffer;
 }
 
-static char *__get_header_key_(char * &buffer)
+static const char *__get_header_key_(const char * &buffer, std::string &base)
 {
-	char *save_buffer = buffer;
+	const char *save_buffer = buffer;
 	
 	while (*buffer && *buffer != ':' && !__is_space_(*buffer) && *buffer != '\r')
 		++buffer;
 	if (*buffer == '\0' || __is_space_(*buffer) || *buffer == '\r')
 		throw 400;
-	*buffer = '\0';
+	base[buffer - base.c_str()] = '\0';
 	++buffer;
 	return save_buffer;
 }
 
-static char *__get_header_value_(char * &buffer)
+static const char *__get_header_value_(const char * &buffer, std::string &base)
 {
-	char *save_buffer, *end_of_value;
+	const char *save_buffer, *end_of_value;
 
 	__skipp_spaces_(buffer);
 	save_buffer = buffer;
@@ -164,15 +151,15 @@ static char *__get_header_value_(char * &buffer)
 		throw 400;
 	if (end_of_value == save_buffer)
 		throw 400;
-	*end_of_value = '\0';
+	base[end_of_value - base.c_str()] = '\0';
 	buffer += 2;
 	return save_buffer;
 }
 
-static void __fill_request_and_check_basic_bad_errors(Request *request)
+static void __fill_request_and_check_basic_bad_errors_(Request *request)
 {
-	std::string::size_type	pos;
-	std::map<std::string, std::string>::iterator		header;
+	std::string::size_type							pos;
+	std::map<std::string, std::string>::iterator	header;
 	
 	header = request->headers.find("Host");
 	if (header == request->headers.end())
@@ -194,19 +181,32 @@ static void __fill_request_and_check_basic_bad_errors(Request *request)
 		request->contentLength = __parse_content_length_(header->second.c_str());
 }
 
-static void __parse_and_fill_request_headers(char * &buffer, std::map<std::string, std::string> &headers)
+static void __parse_and_fill_request_headers_(const char * &buffer, std::string &base,
+											  std::map<std::string, std::string> &headers, bool append)
 {
-	char		*key;
+	const char	*key;
 	
 	while (*buffer && *buffer != '\r')
 	{
 		key = buffer;
-		if ( ! headers[__get_header_key_(buffer)].empty())
+		if (headers[__get_header_key_(buffer, base)].empty())
+			headers[key] = __get_header_value_(buffer, base);
+		else
 		{
-			if (HTTP::__strcmp_(key, "Host") == 0)
-				throw 400;
+			if (append)
+			{
+				if (HTTP::__strcmp_(key, "setCookies") == 0)
+					headers[key].append(__get_header_value_(buffer, base));
+				else
+					headers[key] = __get_header_value_(buffer, base);
+			}
+			else
+			{
+				if (HTTP::__strcmp_(key, "Host") == 0)
+					throw 400;
+				headers[key] = __get_header_value_(buffer, base);
+			}
 		}
-		headers[key] = __get_header_value_(buffer);
 	}
 	if (*buffer == '\0' || *(buffer+1) != '\n')
 		throw 400;
@@ -215,25 +215,22 @@ static void __parse_and_fill_request_headers(char * &buffer, std::map<std::strin
 Request* HTTP::request_parser(Client *client)
 {
 	Request		*request;
-	char		*path, *buffer, *save_buffer;
+	const char	*path, *buffer = client->getBuffer().c_str();
 
 	request = new Request;
-	buffer = __buffer_duplicate_(client->getBuffer().c_str(), client->getBuffer().length());
-	save_buffer = buffer;
-	request->method = __get_request_method_(buffer) ;
-	path = __get_requested_path_(buffer);
+	request->method = __get_request_method_(buffer, client->getBuffer()) ;
+	path = __get_requested_path_(buffer, client->getBuffer());
 	if (path[0] != '/')
 		throw 400;
-	request->query = __get_query_from_path_(path);
+	request->query = __get_query_from_path_(path, client->getBuffer());
 	request->path = path;
 	request->extension = __get_extension_from_path_(path);
 	__check_request_protocol_(buffer);
 	if (*buffer == '\r')
 		throw 400;
-	__parse_and_fill_request_headers(buffer, request->headers);
-	__fill_request_and_check_basic_bad_errors(request);
+	__parse_and_fill_request_headers_(buffer,client->getBuffer(), request->headers, client->isCgi());
+	__fill_request_and_check_basic_bad_errors_(request);
 	buffer += 2;
 	client->getBuffer() = buffer;
-	delete save_buffer;
 	return request;
 }
