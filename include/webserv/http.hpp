@@ -25,9 +25,9 @@ namespace HTTP
 	const bool sendResponse(Client* client);
 	
 	// * Request Handler ***************
-	Request* request_parser(Client *client);
-	const Context* blockMatchAlgorithm(const Client* client, const Context* const configuration);
-	void requestHandler(Client* client, const Context* const configuration);
+	Request*		requestParser(Client *client);
+	void			requestHandler(Client* client, const Context* const configuration);
+	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
 	
 	// * Tools **********************************************************************************
 	Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);

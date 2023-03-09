@@ -19,11 +19,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/request_parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/request_parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/request_handler.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/request_parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestParser.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +177,7 @@
       <workItem from="1678299440452" duration="175000" />
       <workItem from="1678299631096" duration="955000" />
       <workItem from="1678303543636" duration="6232000" />
-      <workItem from="1678353827762" duration="7091000" />
+      <workItem from="1678353827762" duration="8360000" />
     </task>
     <servers />
   </component>

@@ -16,7 +16,7 @@
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
 
-static void readRequest(Client* client)
+static void __read_request_buffer_(Client* client)
 {
     char buffer[BUFFER_SIZE];
     ssize_t bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
@@ -90,9 +90,14 @@ static void __read_request_body_(Client* client)
 */
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
-	readRequest(client);
+	const Context *location;
+	
+	__read_request_buffer_(client);
 	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
-		client->newRequest(HTTP::request_parser(client));
+	{
+		client->newRequest(HTTP::requestParser(client));
+//		location = HTTP::blockMatchAlgorithm(client, configuration);
+	}
 	if (client->getRequest() != nullptr)
 	{
 #ifdef DEBUG

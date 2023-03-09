@@ -212,7 +212,7 @@ static void __parse_and_fill_request_headers_(const char * &buffer, std::string 
 		throw 400;
 }
 
-Request* HTTP::request_parser(Client *client)
+Request* HTTP::requestParser(Client *client)
 {
 	Request		*request;
 	const char	*path, *buffer = client->getBuffer().c_str();
