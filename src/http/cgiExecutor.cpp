@@ -3,7 +3,7 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
-#include "keep/http.hpp"
+#include "../../include/webserv/http.hpp"
 
 static char *__duplicate_string(const std::string &string)
 {
@@ -33,7 +33,7 @@ static char **__headers_to_args(const std::string &path, const std::map<std::str
 	return args;
 }
 
-int	HTTP::cgi_executor(const std::string &path, const std::map<std::string, std::string> &headers)
+int	HTTP::cgiExecutor(const std::string &path, const std::map<std::string, std::string> &headers)
 {
 	int		pid;
 	int		fds[2];
