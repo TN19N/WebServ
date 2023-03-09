@@ -26,7 +26,7 @@ static void __read_request_buffer_(Client* client, size_t size = BUFFER_SIZE)
 	else
 		client->getBuffer().append(buffer, bytesReceived);
 }
-
+/*
 static void __read_content_length_body_(Client* client, size_t size)
 {
 	char	buffer[size + 1];
@@ -37,7 +37,7 @@ static void __read_content_length_body_(Client* client, size_t size)
 		client->getRequest()->state = REQUEST_READY;
 		return;
 	}
-	switch (bytesReceived = recv(client->getFd(), buffer, size, 0)) {
+	switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, size, 0)) {
 		case -1 :
 			throw 500;
 		case 0 :
@@ -62,7 +62,7 @@ static void __read_chunked_body_(Client* client)
 	char		buffer[BUFFER_SIZE + 1];
 	ssize_t		bytesReceived;
 	
-	switch (bytesReceived = recv(client->getFd(), buffer, BUFFER_SIZE, 0))
+	switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0))
 	{
 		case -1 :
 			throw 500;
@@ -87,7 +87,7 @@ static void __read_request_body_(Client* client)
 	else
 		__read_content_length_body_(client, client->getRequest()->contentLength - client->getRequest()->body.length());
 }
-
+*/
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
 	const Context *location;
@@ -111,6 +111,8 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 				e = client->getRequest()->headers.end(); b != e; ++b)
 			std::cout << b->first << ": " << b->second << '\n';
 #endif
+	}
+/*
 		if (client->getRequest()->state == READING_BODY)
 			__read_request_body_(client);
 		if (client->getRequest()->state == REQUEST_READY)
@@ -119,4 +121,5 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 				HTTP::getMethodHandler(location, client);
 		}
 	}
+*/
 }

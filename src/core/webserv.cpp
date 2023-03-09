@@ -69,6 +69,13 @@ static bool errorHandler(const int statusCode, Client* client) {
         return false;
     }
 }
+
+static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
+    client->setResponse(new Response(redirect.first, KEEP_ALIVE));
+    client->getResponse()->addHeader("Location", redirect.second);
+    client->getResponse()->buffer += "\r\n";
+    client->switchState();
+}
 // *************************************************************************************************************************************************************************************
 
 // * Methods ***************************************************************************************************************************************************************************
@@ -225,6 +232,8 @@ void Webserv::run() {
                 if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
                     Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
                 }
+            } catch (const std::pair<int, std::string>& redirect) {
+                redirectTo(redirect, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::exception& e) {
                 if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
                     Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));

@@ -14,6 +14,14 @@
 			(index) : index.html index.htm index.php 
 			(port) : 8080 
 			(root) : /var/www/html 
+			[location] :: /path/to/match 
+				(allowed_method) : GET POST DELETE 
+				(autoindex) : off 
+				(client_max_body_size) : 1M 
+				(host) : localhost 
+				(index) : index.html index.htm index.php 
+				(port) : 8080 
+				(root) : /var/www/html 
 -------------------------- new Server --------------------------
 ai_flags: 0
 ai_family: 2
@@ -28,24 +36,155 @@ ai_addr:
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 ai_next: 1
--------------------------- Leaks --------------------------
-Process:         webserv.exe [2217]
-Path:            /Volumes/VOLUME/*/webserv.exe
-Load Address:    0x109fe6000
-Identifier:      webserv.exe
-Version:         ???
-Code Type:       X86-64
-Parent Process:  sh [2216]
-
-Date/Time:       2023-03-09 13:46:17.643 +0100
-Launch Time:     2023-03-09 13:46:15.336 +0100
-OS Version:      Mac OS X 10.14.6 (18G103)
-Report Version:  7
-Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
-Analysis Tool Version:  Xcode 11.3.1 (11C505)
-----
-
-leaks Report Version: 4.0
-Process 2217: 215 nodes malloced for 29 KB
-Process 2217: 0 leaks for 0 total leaked bytes.
-
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49334
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49334
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49335
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /path/to/match/
+Query : 
+Ext   : 
+          ------------------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Host: 127.0.0.1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "macOS"
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49335
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49410
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /path/to/match/
+Query : 
+Ext   : 
+          ------------------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Host: 127.0.0.1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "macOS"
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49548
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /path/to/match/
+Query : 
+Ext   : 
+          ------------------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Host: 127.0.0.1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "macOS"
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49548
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49410
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
