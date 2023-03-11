@@ -11,6 +11,9 @@
 # include <sys/socket.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <unistd.h>
+#include <fstream>
+#include <fcntl.h>
 
 # include "client.hpp"
 # include "context.hpp"

@@ -82,10 +82,6 @@ Response* Client::getResponse() {
     return this->response;
 }
 
-const Context* Client::getLocation() const {
-	return this->location;
-}
-
 const Client* Client::getCgiToClient() const {
     return this->cgiToClient;
 }
@@ -125,10 +121,6 @@ void Client::setRequest(Request* request) {
 
 void Client::setResponse(Response* response) {
     this->response = response;
-}
-
-void Client::setLocation(const Context *location) {
-	this->location = location;
 }
 
 void Client::setState(const int &state) {

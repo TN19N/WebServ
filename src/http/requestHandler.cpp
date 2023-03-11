@@ -37,7 +37,6 @@ static void __check_allowed_method_(const std::vector<std::string> &allowed, std
 
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
-	const Context	*location = client->getLocation();
 	Request			*request = client->getRequest();
 	
 	__read_request_buffer_from_client_(client);
@@ -45,10 +44,9 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 	{
 		request = HTTP::requestParser(client);
 		client->setRequest(request);
-		location = HTTP::blockMatchAlgorithm(client, configuration);
-		client->setLocation(location);
-		__check_allowed_method_(location->getDirectives().find(METHOD_DIRECTIVE)->second, request->method);
-		request->fullPath.append(location->getDirective(ROOT_DIRECTIVE)[0]);
+		request->location = HTTP::blockMatchAlgorithm(client, configuration);
+		__check_allowed_method_(request->location->getDirectives().find(METHOD_DIRECTIVE)->second, request->method);
+		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE)[0]);
 		request->fullPath.append(request->path);
 	}
 	if (request != nullptr)
@@ -74,9 +72,9 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 		std::cout << "size: " << request->body.size() << '\n' ;
 		std::cout << request->body << '\n' ;
 		std::cout << "===================== Location =============================\n" ;
-		std::cout << "Location: " << location->getArgs()[0] << '\n' ;
+		std::cout << "Location: " << request->location->getArgs()[0] << '\n' ;
 		for (std::map<std::string, std::vector<std::string> >::const_iterator
-		b = location->getDirectives().begin(), e = location->getDirectives().end(); b != e; ++b)
+		b = request->location->getDirectives().begin(), e = request->location->getDirectives().end(); b != e; ++b)
 		{
 			std::cout << b->first << ": ";
 			for (std::vector<std::string>::const_iterator bg = b->second.begin(), ed = b->second.end(); bg != ed; ++bg)

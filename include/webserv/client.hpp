@@ -31,8 +31,6 @@ class Client {
         Client*                         cgiToClient;
         Client*                         clientToCgi;
 
-		const Context*					location;
-		
         std::string                     buffer;
 
         int                             state;
@@ -58,9 +56,6 @@ class Client {
         const std::string&              getBuffer() const;
         std::string&                    getBuffer();
 
-		void							setLocation(const Context* location);
-		const Context*					getLocation() const ;
-		
         const int                       getState() const;
 
         const int                       getFdOf(const int index) const;
