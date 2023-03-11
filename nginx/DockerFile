@@ -1,0 +1,20 @@
+FROM alpine:3.16.2
+
+RUN apk update \
+    && apk upgrade --no-cache \
+    && apk add --no-cache nginx php8 php8-fpm php8-opcache php8-gd \
+    php8-mysqli php8-zlib php8-curl php8-iconv curl php-phar
+
+USER nginx
+
+EXPOSE 443
+
+WORKDIR /etc/nginx
+
+COPY ./nginx.conf nginx.conf
+
+COPY ../www /var/www
+
+RUN mkdir -p /var/run /var/log/nginx && touch /var/run/nginx.pid
+
+CMD ["nginx", "-g", "daemon off;"]

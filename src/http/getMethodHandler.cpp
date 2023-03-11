@@ -61,6 +61,8 @@ void HTTP::getMethodHandler(Client *client)
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;
 	
+	std::cerr << "Full Path: " << request->fullPath << '\n' ;
+
 	notFound = location->getDirectives().end();
 	// Check for redirection
 	directive = location->getDirectives().find(REDIRECT_DIRECTIVE);
@@ -73,11 +75,13 @@ void HTTP::getMethodHandler(Client *client)
 	{
 		if (request->path.c_str()[request->path.size()-1] != '/')
 			throw std::make_pair(301, request->path + '/');
-		else if (location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == DEFAULT_AUTOINDEX)
+		else if (location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off")
 			throw 403;
-		else
+		else {
 //			throw 1024;
 			__do_response_with_dir_content_(client);
+			return ;
+		}
 	}
 	// Check for CGI
 	directive = location->getDirectives().find(CGI_DIRECTIVE);
