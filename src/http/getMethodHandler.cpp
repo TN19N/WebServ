@@ -31,8 +31,12 @@ static void __do_response_with_dir_content_(Client* client)
 	
 	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == nullptr)
 		throw 403;
+	body = " <!DOCTYPE html>\n<html>\n<head>\n<title>";
+	body.append(path);
+	body.append("</title>\n</head>\n<body>\n<h1>Directory Content</h1>\n");
 	while ((ent = readdir(dir)))
 	{
+		body.append("<p><a href=\"");
 		if (strcmp(ent->d_name, ".") == 0)
 			body.append(path) ;
 		else if (strcmp(ent->d_name, "..") == 0)
@@ -41,15 +45,18 @@ static void __do_response_with_dir_content_(Client* client)
 		{
 			body.append(path);
 			body.append(ent->d_name) ;
-			if (ent->d_type == DT_DIR)
-				body.append(1, '/');
 		}
-		body.append(1, '\n');
+		if (ent->d_type == DT_DIR)
+			body.append(1, '/');
+		body.append("\">");
+		body.append(ent->d_name);
+		body.append("</a></p>\n");
 	}
+	body.append("</body>\n</html>\n");
 	closedir(dir);
+	response->addHeader("Content-Type", "text/html");
 	response->addBody(body);
 	client->switchState();
-//	std::cerr << response->buffer << '\n' ;
 }
 
 void HTTP::getMethodHandler(Client *client)
@@ -61,8 +68,6 @@ void HTTP::getMethodHandler(Client *client)
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;
 	
-	std::cerr << "Full Path: " << request->fullPath << '\n' ;
-
 	notFound = location->getDirectives().end();
 	// Check for redirection
 	directive = location->getDirectives().find(REDIRECT_DIRECTIVE);
