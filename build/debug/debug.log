@@ -44,7 +44,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50232
+	sin_port: 51086
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -54,39 +54,12 @@ ai_addr:
 	sin_port: 8080
 	sin_addr: 0.0.0.0
 	sin_zero: [8]
-===================== Request Parser =============================
-Method: GET
-Path  : /
-fullPath  : /Users/mannouao/Desktop/WebServ/www/
-Ext   : 
-Query : 
-          --------- headers ---------
-Accept: */*
-Host: 127.0.0.1
-User-Agent: curl/7.54.0
-          --------- Request Stat ---------
-REQUEST_READY
-          --------- Client BODY ---------
-size: 0
-
-===================== Location =============================
-Location: /
-allowed_method: GET POST DELETE 
-autoindex: on 
-cgi: .php .py 
-client_max_body_size: 1M 
-host: 0.0.0.0 
-index: index.html 
-name: 1337.ma www.1337.ma 
-port: 8080 
-root: /Users/mannouao/Desktop/WebServ/www 
-=============== END ===============
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50232
+	sin_port: 51086
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- new Client --------------------------
@@ -94,7 +67,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50234
+	sin_port: 51093
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -104,160 +77,12 @@ ai_addr:
 	sin_port: 8080
 	sin_addr: 0.0.0.0
 	sin_zero: [8]
-===================== Request Parser =============================
-Method: GET
-Path  : /
-fullPath  : /Users/mannouao/Desktop/WebServ/www/
-Ext   : 
-Query : 
-          --------- headers ---------
-Accept: */*
-Host: 127.0.0.1
-User-Agent: curl/7.54.0
-          --------- Request Stat ---------
-REQUEST_READY
-          --------- Client BODY ---------
-size: 0
-
-===================== Location =============================
-Location: /
-allowed_method: GET POST DELETE 
-autoindex: on 
-cgi: .php .py 
-client_max_body_size: 1M 
-host: 0.0.0.0 
-index: index.html 
-name: 1337.ma www.1337.ma 
-port: 8080 
-root: /Users/mannouao/Desktop/WebServ/www 
-=============== END ===============
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50234
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 50239
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
-===================== Request Parser =============================
-Method: GET
-Path  : /
-fullPath  : /Users/mannouao/Desktop/WebServ/www/
-Ext   : 
-Query : 
-          --------- headers ---------
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Accept-Encoding: gzip, deflate, br
-Accept-Language: en-US,en;q=0.9
-Connection: keep-alive
-Host: 127.0.0.1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
-sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "macOS"
-          --------- Request Stat ---------
-REQUEST_READY
-          --------- Client BODY ---------
-size: 0
-
-===================== Location =============================
-Location: /
-allowed_method: GET POST DELETE 
-autoindex: on 
-cgi: .php .py 
-client_max_body_size: 1M 
-host: 0.0.0.0 
-index: index.html 
-name: 1337.ma www.1337.ma 
-port: 8080 
-root: /Users/mannouao/Desktop/WebServ/www 
-=============== END ===============
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 50239
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 50240
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
-	sin_zero: [8]
-===================== Request Parser =============================
-Method: GET
-Path  : /favicon.ico
-fullPath  : /Users/mannouao/Desktop/WebServ/www/favicon.ico
-Ext   : .ico
-Query : 
-          --------- headers ---------
-Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
-Accept-Encoding: gzip, deflate, br
-Accept-Language: en-US,en;q=0.9
-Connection: keep-alive
-Host: 127.0.0.1
-Referer: http://127.0.0.1:8080/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
-sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "macOS"
-          --------- Request Stat ---------
-REQUEST_READY
-          --------- Client BODY ---------
-size: 0
-
-===================== Location =============================
-Location: /
-allowed_method: GET POST DELETE 
-autoindex: on 
-cgi: .php .py 
-client_max_body_size: 1M 
-host: 0.0.0.0 
-index: index.html 
-name: 1337.ma www.1337.ma 
-port: 8080 
-root: /Users/mannouao/Desktop/WebServ/www 
-=============== END ===============
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 50240
+	sin_port: 51093
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- Leaks --------------------------

@@ -214,6 +214,7 @@ void Webserv::run() {
                     if (i < this->serversSocketFd.size()) {
                         HTTP::acceptConnection(fds[i].fd, this->clients);
                     } else {
+                        throw 404;
                         HTTP::requestHandler(HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration);
                     }
                 } else if (fds[i].revents & POLLOUT) {
