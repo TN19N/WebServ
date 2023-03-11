@@ -16,9 +16,9 @@ struct Request {
         std::string                         body;
         bool                                keepAlive;
         bool                                isChunked;
-		bool								readyToResponse;
         std::string                         method;
         std::string                         path;
+		std::string                         fullPath;
         std::string                         query;
         std::string                         extension;
         size_t                              contentLength;

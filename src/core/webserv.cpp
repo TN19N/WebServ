@@ -71,7 +71,7 @@ static bool errorHandler(const int statusCode, Client* client) {
 }
 
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
-    client->setResponse(new Response(redirect.first, KEEP_ALIVE));
+    client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
     client->getResponse()->addHeader("Location", redirect.second);
     client->getResponse()->buffer += "\r\n";
     client->switchState();
@@ -217,8 +217,8 @@ void Webserv::run() {
                         HTTP::requestHandler(HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration);
                     }
                 } else if (fds[i].revents & POLLOUT) {
-                    Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-                    if (HTTP::sendResponse(client)) {
+					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+					if (HTTP::sendResponse(client)) {
                         if (client->isCgi()) {
                             client->switchState();
                         } else {

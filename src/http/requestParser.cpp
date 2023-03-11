@@ -11,10 +11,12 @@ static int __parse_content_length_(const char *str)
 	const char 	*checker = str;
 	long int	res = 0;
 	
+	if (*checker == '\0')
+		throw 400;
 	while (*checker)
 	{
 		if (*checker < '0' || *checker > '9')
-			return -1;
+			throw 400;
 		++checker;
 	}
 	while (*str && res < INT_MAX)
@@ -24,7 +26,7 @@ static int __parse_content_length_(const char *str)
 	}
 	if (*str == '\0')
 		return res;
-	return -1;
+	throw 400;
 }
 
 static bool __is_space_(char c)
@@ -156,10 +158,9 @@ static const char *__get_header_value_(const char * &buffer, std::string &base)
 	return save_buffer;
 }
 
-static void __fill_request_and_check_basic_bad_errors_(Request *request)
-{
-	std::string::size_type							pos;
-	std::map<std::string, std::string>::iterator	header;
+static void __fill_request_and_check_basic_bad_errors_(Request *request) {
+	std::string::size_type pos;
+	std::map<std::string, std::string>::iterator header;
 	
 	header = request->headers.find("Host");
 	if (header == request->headers.end())
@@ -169,16 +170,18 @@ static void __fill_request_and_check_basic_bad_errors_(Request *request)
 		header->second = header->second.substr(0, pos);
 	if (request->method != "POST")
 		request->state = REQUEST_READY;
-	header = request->headers.find("Transfer-Encoding") ;
-	if (header != request->headers.end())
-	{
+	header = request->headers.find("Transfer-Encoding");
+	if (header != request->headers.end()) {
 		if (header->second != "chunked")
 			throw 501;
 		request->isChunked = true;
 	}
-	header =  request->headers.find("Content-Length");
-	if (header != request->headers.end())
-		request->contentLength = __parse_content_length_(header->second.c_str());
+	else
+	{
+		header =  request->headers.find("Content-Length");
+		if (header != request->headers.end())
+			request->contentLength = __parse_content_length_(header->second.c_str());
+	}
 }
 
 static void __parse_and_fill_request_headers_(const char * &buffer, std::string &base,
@@ -231,6 +234,6 @@ Request* HTTP::requestParser(Client *client)
 	__parse_and_fill_request_headers_(buffer,client->getBuffer(), request->headers, client->isCgi());
 	__fill_request_and_check_basic_bad_errors_(request);
 	buffer += 2;
-	client->getBuffer() = buffer;
+	client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
 	return request;
 }

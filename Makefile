@@ -38,7 +38,9 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/tools.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestParser.$(SRC_EXT) \
-		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT)
+		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT) \
+		$(SRC_DIR)/http/readRequestBody.$(SRC_EXT) \
+		$(SRC_DIR)/http/getMethodHandler.$(SRC_EXT)
 
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
@@ -54,7 +56,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += -g3 #-fsanitize=address
+debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
 debug: $(TARGET)
 

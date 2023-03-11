@@ -66,10 +66,6 @@ int* Client::getPipeFd() {
     return this->pipeFd;
 }
 
-void Client::newRequest(Request *req) {
-	this->request = req;
-}
-
 const Request* Client::getRequest() const {
     return this->request;
 }
@@ -84,6 +80,10 @@ Request* Client::getRequest() {
 
 Response* Client::getResponse() {
     return this->response;
+}
+
+const Context* Client::getLocation() const {
+	return this->location;
 }
 
 const Client* Client::getCgiToClient() const {
@@ -127,7 +127,11 @@ void Client::setResponse(Response* response) {
     this->response = response;
 }
 
-void Client::setState(const bool& state) {
+void Client::setLocation(const Context *location) {
+	this->location = location;
+}
+
+void Client::setState(const int &state) {
     this->state = state;
 }
 // ******************************************************************************************************************

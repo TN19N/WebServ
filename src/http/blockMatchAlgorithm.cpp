@@ -22,9 +22,6 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
-	
-	std::cerr << "host: " << host << std::endl;
-	std::cerr << "port: " << port << std::endl;
 
 	if (getaddrinfo(host.c_str(), port.c_str(), &hints, &res)  == -1) {
 		std::cerr << "webserv: warning: getaddrinfo: " << strerror(errno) << std::endl;
@@ -65,30 +62,12 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
 	}
 }
 
-static int __compare_path_and_location_(const char *path, const char *location)
-{
-	while (*path && *path == *location)
-	{ ++path; ++location; }
-	if (*location == '\0' && *(location-1) == '/')
-		return '/';
-	return *path - *location;
-}
-
 static const Context* __get_match_server_context_(std::vector<const Context*> &servers, const std::string &host)
 {
 	std::map<std::string, std::vector<std::string> >::const_iterator serv_name, not_found;
 	std::vector<std::string>::const_iterator name, end;
 	
 	for (size_t i = 0; i < servers.size(); ++i) {
-	
-		
-		// const std::vector<std::string>& names = servers[i]->getDirective(NAME_DIRECTIVE);
-		// for (size_t i = 0; i < names.size(); ++i) {
-		// 	if (names[i] == host) {
-		// 		return servers[i];
-		// 	}
-		// }
-
 		serv_name = servers[i]->getDirectives().find(NAME_DIRECTIVE);
 		not_found = servers[i]->getDirectives().end();
 		if (serv_name != not_found)
@@ -116,17 +95,8 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	{
 		if (begin->first == "/")
 			return begin->second;
-		std::cerr << "begin->first: " << begin->first << std::endl;
-		std::cerr << "path: " << path << std::endl;
-		character = __compare_path_and_location_(path.c_str(), begin->first.c_str());
-		std::cerr << "webserv: warning: " << path << " " << begin->first << " " << char(character) << std::endl;
-		if (character == 0)
-		{
-			std::cerr << "webserv: warning: 301 move to " << begin->first << "/" << std::endl;
-			// Return 301 move to path/to'/' (slash at the end)
-			throw std::make_pair(301, begin->first + '/');
-		}
-		if (character == '/')
+		character = HTTP::__strcmp_(path.c_str(), begin->first.c_str());
+		if (character == 0 || character == '/')
 			return begin->second;
 	}
 	throw 403;
@@ -147,6 +117,5 @@ const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* co
 			isValidServer(children[i], client, servers);
 		}
 	}
-
     return __get_location_context_(client->getRequest(), servers);
 }

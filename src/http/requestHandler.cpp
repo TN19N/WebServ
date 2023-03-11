@@ -2,9 +2,7 @@
 # define BUFFER_SIZE 1024
 
 # include <iostream>
-# include <string>
 # include <vector>
-# include <iostream>
 # include <map>
 
 # ifdef DEBUG
@@ -13,113 +11,84 @@
 
 # include "../../include/webserv/client.hpp"
 # include "../../include/webserv/context.hpp"
-# include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
 
-static void __read_request_buffer_(Client* client, size_t size = BUFFER_SIZE)
+static void __read_request_buffer_from_client_(Client* client)
 {
-    char buffer[size];
-    ssize_t bytesReceived = recv(client->getFdOf(READ_END), buffer, size, 0);
-	
+    char	buffer[BUFFER_SIZE];
+    ssize_t	bytesReceived;
+
+	bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
     if (bytesReceived < 0)
 		throw 500;
 	else
 		client->getBuffer().append(buffer, bytesReceived);
 }
-/*
-static void __read_content_length_body_(Client* client, size_t size)
+
+static void __check_allowed_method_(const std::vector<std::string> &allowed, std::string &method)
 {
-	char	buffer[size + 1];
-	ssize_t	bytesReceived;
+	std::vector<std::string>::const_iterator begin = allowed.begin();
+	std::vector<std::string>::const_iterator end = allowed.end();
 	
-	if (size == 0)
-	{
-		client->getRequest()->state = REQUEST_READY;
-		return;
-	}
-	switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, size, 0)) {
-		case -1 :
-			throw 500;
-		case 0 :
-			throw "close connection";
-		default :
-			buffer[bytesReceived] = '\0';
-			client->getRequest()->body = client->getRequest()->body + buffer;
-			if (bytesReceived == size)
-				client->getRequest()->readyToResponse = true;
-	}
+	for ( ; begin != end && *begin != method; ++begin) ;
+	if (begin == end)
+		throw 405;
 }
 
-static void __parse_chunked_body_(const char *chunked, std::string& body)
-{
-
-
-}
-
-static void __read_chunked_body_(Client* client)
-{
-	std::string	body;
-	char		buffer[BUFFER_SIZE + 1];
-	ssize_t		bytesReceived;
-	
-	switch (bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0))
-	{
-		case -1 :
-			throw 500;
-		case 0 :
-			throw "close connection";
-		default :
-			buffer[bytesReceived] = '\0';
-			client->getRequest()->body.append(buffer);
-	}
-	if (client->getRequest()->body.find(END_CHUNKED) != std::string::npos)
-	{
-		__parse_chunked_body_(client->getRequest()->body.c_str(), body);
-		client->getRequest()->body = body;
-		client->getRequest()->readyToResponse = true;
-	}
-}
-
-static void __read_request_body_(Client* client)
-{
-	if (client->getRequest()->isChunked)
-		__read_chunked_body_(client);
-	else
-		__read_content_length_body_(client, client->getRequest()->contentLength - client->getRequest()->body.length());
-}
-*/
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
-	const Context *location;
+	const Context	*location = client->getLocation();
+	Request			*request = client->getRequest();
 	
-	__read_request_buffer_(client);
-	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
+	__read_request_buffer_from_client_(client);
+	if (request == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos)
 	{
-		client->newRequest(HTTP::requestParser(client));
+		request = HTTP::requestParser(client);
+		client->setRequest(request);
 		location = HTTP::blockMatchAlgorithm(client, configuration);
+		client->setLocation(location);
+		__check_allowed_method_(location->getDirectives().find(METHOD_DIRECTIVE)->second, request->method);
+		request->fullPath.append(location->getDirective(ROOT_DIRECTIVE)[0]);
+		request->fullPath.append(request->path);
 	}
-	if (client->getRequest() != nullptr)
+	if (request != nullptr)
 	{
+		if (request->state == READING_BODY)
+			HTTP::readRequestBodyFromBuffer(client);
+		if (request->state == REQUEST_READY)
+		{
 #ifdef DEBUG
 		std::cout << "===================== Request Parser =============================\n" ;
-		std::cout << "Method: " << client->getRequest()->method << '\n' ;
-		std::cout << "Path  : " << client->getRequest()->path << '\n' ;
-		std::cout << "Query : " << client->getRequest()->query << '\n' ;
-		std::cout << "Ext   : " << client->getRequest()->extension << '\n' ;
-		std::cout << "          ------------------\n" ;
-		for (std::map<std::string, std::string>::const_iterator b = client->getRequest()->headers.begin(),
-				e = client->getRequest()->headers.end(); b != e; ++b)
+		std::cout << "Method: " << request->method << '\n' ;
+		std::cout << "Path  : " << request->path << '\n' ;
+		std::cout << "fullPath  : " << request->fullPath << '\n' ;
+		std::cout << "Ext   : " << request->extension << '\n' ;
+		std::cout << "Query : " << request->query << '\n' ;
+		std::cout << "          --------- headers ---------\n" ;
+		for (std::map<std::string, std::string>::const_iterator b = request->headers.begin(),
+				e = request->headers.end(); b != e; ++b)
 			std::cout << b->first << ": " << b->second << '\n';
-#endif
-	}
-/*
-		if (client->getRequest()->state == READING_BODY)
-			__read_request_body_(client);
-		if (client->getRequest()->state == REQUEST_READY)
+		std::cout << "          --------- Request Stat ---------\n" ;
+		request->state == READING_BODY ? std::cout << "READING_BODY\n" : std::cout << "REQUEST_READY\n" ;
+		std::cout << "          --------- Client BODY ---------\n" ;
+		std::cout << "size: " << request->body.size() << '\n' ;
+		std::cout << request->body << '\n' ;
+		std::cout << "===================== Location =============================\n" ;
+		std::cout << "Location: " << location->getArgs()[0] << '\n' ;
+		for (std::map<std::string, std::vector<std::string> >::const_iterator
+		b = location->getDirectives().begin(), e = location->getDirectives().end(); b != e; ++b)
 		{
-			if (client->getRequest()->method == "GET")
-				HTTP::getMethodHandler(location, client);
+			std::cout << b->first << ": ";
+			for (std::vector<std::string>::const_iterator bg = b->second.begin(), ed = b->second.end(); bg != ed; ++bg)
+				std::cout << *bg << ' ' ;
+			std::cout << '\n';
+		}
+		std::cout << "=============== END ===============\n" ;
+#endif
+			if (request->method == "GET")
+				HTTP::getMethodHandler(client);
+			else
+				throw 1337;
 		}
 	}
-*/
 }

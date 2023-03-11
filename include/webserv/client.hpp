@@ -8,6 +8,7 @@
 
 # include "request.hpp"
 # include "response.hpp"
+#include "context.hpp"
 
 # define READ_END  0
 # define WRITE_END 1
@@ -30,6 +31,8 @@ class Client {
         Client*                         cgiToClient;
         Client*                         clientToCgi;
 
+		const Context*					location;
+		
         std::string                     buffer;
 
         int                             state;
@@ -43,7 +46,6 @@ class Client {
         const int*                      getPipeFd() const;
         int*                            getPipeFd();
 
-		void							newRequest(Request *req);
         const Request*                  getRequest() const;
         Request*                        getRequest();
 
@@ -56,6 +58,9 @@ class Client {
         const std::string&              getBuffer() const;
         std::string&                    getBuffer();
 
+		void							setLocation(const Context* location);
+		const Context*					getLocation() const ;
+		
         const int                       getState() const;
 
         const int                       getFdOf(const int index) const;
@@ -63,7 +68,7 @@ class Client {
         void                            setClientToCgi(Client* clientToCgi);
         void                            setRequest(Request* request);
         void                            setResponse(Response* response);
-        void                            setState(const bool& state);
+        void                            setState(const int &state);
 
         const bool                      isCgi() const;
         void                            switchState();

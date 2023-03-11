@@ -18,7 +18,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="" />
+    <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/http/readRequestBody.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/client.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/client.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/request.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/request.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/requestParser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestParser.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,9 +108,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -171,6 +187,9 @@
       <workItem from="1678299631096" duration="955000" />
       <workItem from="1678303543636" duration="6232000" />
       <workItem from="1678353827762" duration="8653000" />
+      <workItem from="1678444832295" duration="24891000" />
+      <workItem from="1678479987788" duration="14677000" />
+      <workItem from="1678536227167" duration="884000" />
     </task>
     <servers />
   </component>
@@ -179,6 +198,7 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.cfg" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

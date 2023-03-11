@@ -1,7 +1,7 @@
 # include "../../include/webserv/request.hpp"
 
 // * Constructor ****************************************************************************************************
-Request::Request() : state(READING_BODY)
+Request::Request() : isChunked(false), contentLength(0), state(READING_BODY)
 {
     // Nothing to do
 }
