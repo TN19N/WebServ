@@ -18,6 +18,17 @@ static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::strin
 	body.append(1, '/') ;
 }
 
+static const char *__get_extension_from_path_(const char *path)
+{
+	while (*path)
+		++path;
+	while (*path != '/' && *path != '.')
+		--path;
+	if (*path == '.' && *(path-1) != '/')
+		return path;
+	return "";
+}
+
 static void __do_response_with_dir_content_(Client* client)
 {
 	Response		*response;
@@ -61,7 +72,7 @@ static void __do_response_with_dir_content_(Client* client)
 	client->switchState();
 }
 
-static void __read_file_content_do_response_(Client* client)
+static void __read_file_content_to_do_response_(Client* client)
 {
 	Response		*response;
 	std::string		body;
@@ -69,7 +80,7 @@ static void __read_file_content_do_response_(Client* client)
 	ssize_t 		readSize;
 	char			buffer[1024];
 	
-	response = new Response(200, false);
+	response = new Response(200, true);
 	client->setResponse(response);
 	
 	file  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
@@ -88,9 +99,9 @@ static void __read_file_content_do_response_(Client* client)
 		body.append(buffer, readSize);
 	}
 	close(file);
-	
-	
-	
+	response->addHeader("Content-Type", "text/html");
+	response->addBody(body);
+	client->switchState();
 }
 
 void HTTP::getMethodHandler(Client *client)
@@ -125,6 +136,7 @@ void HTTP::getMethodHandler(Client *client)
 				{
 					request->fullPath.append(*begin);
 					request->path.append(*begin);
+					request->extension = __get_extension_from_path_(request->path.c_str());
 					break;
 				}
 			}
@@ -142,11 +154,11 @@ void HTTP::getMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound)
 	{
-		for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
+		for (begin = directive->second.begin(), end = directive->second.end(); begin < end; ++begin)
 			if (*begin == request->extension)
 			{
 				throw 1337;
 			}
 	}
-	__read_file_content_do_response_(client);
+	__read_file_content_to_do_response_(client);
 }
