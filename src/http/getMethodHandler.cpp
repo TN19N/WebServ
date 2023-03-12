@@ -80,7 +80,7 @@ static void __read_file_content_to_do_response_(Client* client)
 	ssize_t 		readSize;
 	char			buffer[1024];
 	
-	response = new Response(200, true);
+	response = new Response(200, false);
 	client->setResponse(response);
 	
 	file  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
@@ -128,9 +128,8 @@ void HTTP::getMethodHandler(Client *client)
 			throw std::make_pair(301, request->path + '/');
 		else
 		{
-			for (begin = request->location->getDirectives().find(INDEX_DIRECTIVE)->second.begin(),
-						 end = request->location->getDirectives().find(INDEX_DIRECTIVE)->second.end();
-						 begin != end; ++begin)
+			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
+			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
 			{
 				if (access((request->fullPath + *begin).c_str(), F_OK) == 0)
 				{
@@ -154,11 +153,13 @@ void HTTP::getMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound)
 	{
-		for (begin = directive->second.begin(), end = directive->second.end(); begin < end; ++begin)
+		for (begin = directive->second.begin(), ++begin, end = directive->second.end(); begin < end; ++begin, ++begin)
 			if (*begin == request->extension)
 			{
+				--begin;
 				throw 1337;
 			}
 	}
+	// no CGI just a simple file
 	__read_file_content_to_do_response_(client);
 }

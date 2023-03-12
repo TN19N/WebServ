@@ -40,7 +40,7 @@
 # define SIZE_DIRECTIVE_ARGS(args)       (args.size() == 1)
 # define METHOD_DIRECTIVE_ARGS(args)     (args.size() > 0)
 # define AUTOINDEX_DIRECTIVE_ARGS(args)  (args.size() == 1)
-# define CGI_DIRECTIVE_ARGS(args)        (args.size() > 0)
+# define CGI_DIRECTIVE_ARGS(args)        (args.size() % 2 == 0 && args.size() > 0)
 # define UPLOAD_DIRECTIVE_ARGS(args)     (args.size() == 1)
 # define REDIRECT_DIRECTIVE_ARGS(args)   (args.size() == 2)
 # define INCLUDE_DIRECTIVE_ARGS(args)    (args.size() == 1)

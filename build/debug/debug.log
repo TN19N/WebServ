@@ -18,10 +18,10 @@
 			[location] :: / 
 				(allowed_method) : POST GET 
 				(autoindex) : on 
-				(cgi) : .php 
+				(cgi) : php-cgi .php python-cgi .py ruby-cgi .rb perl-cgi .pl lua-cgi .lua node-cgi .js 
 				(client_max_body_size) : 1M 
 				(host) : 0.0.0.0 
-				(index) : index.html index.htm index.php 
+				(index) : index.html index.php 
 				(name) : 1337.ma www.1337.ma 
 				(port) : 8080 
 				(root) : /Users/jchakir/projs/webserv 
@@ -54,7 +54,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50570
+	sin_port: 50103
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -92,10 +92,10 @@ size: 0
 Location: /
 allowed_method: POST GET 
 autoindex: on 
-cgi: .php 
+cgi: php-cgi .php python-cgi .py ruby-cgi .rb perl-cgi .pl lua-cgi .lua node-cgi .js 
 client_max_body_size: 1M 
 host: 0.0.0.0 
-index: index.html index.htm index.php 
+index: index.html index.php 
 name: 1337.ma www.1337.ma 
 port: 8080 
 root: /Users/jchakir/projs/webserv 
@@ -105,6 +105,65 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50570
+	sin_port: 50103
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50104
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /favicon.ico
+fullPath  : /Users/jchakir/projs/webserv/favicon.ico
+Ext   : .ico
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Host: 127.0.0.1
+Referer: http://127.0.0.1:8080/www/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+REQUEST_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+allowed_method: POST GET 
+autoindex: on 
+cgi: php-cgi .php python-cgi .py ruby-cgi .rb perl-cgi .pl lua-cgi .lua node-cgi .js 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+index: index.html index.php 
+name: 1337.ma www.1337.ma 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50104
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- Leaks --------------------------
