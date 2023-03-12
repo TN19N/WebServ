@@ -139,14 +139,25 @@ void HTTP::getMethodHandler(Client *client)
 		}
 	}
 	// Check for CGI
-	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
-	if (directive != notFound)
-	{
-		for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
-			if (*begin == request->extension)
-			{
+	// directive = request->location->getDirectives().find(CGI_DIRECTIVE);
+	// if (directive != notFound)
+	// {
+	// 	for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
+	// 		if (*begin == request->extension)
+	// 		{
+	// 			throw 1337;
+	// 		}
+	// }
+	// (mannouao) must changed TO (i % 2 == 0 : cgi path, i % 2 == 1 : cgi extension)
+	try {
+		std::vector<std::string> cgis = request->location->getDirective(CGI_DIRECTIVE);
+		for (size_t i = 1; i < cgis.size(); i += 2) {
+			if (cgis[i] == request->extension) {
 				throw 1337;
 			}
+		}
+	} catch (std::out_of_range &e) {
+		// no cgi
 	}
 	__read_file_content_do_response_(client);
 }
