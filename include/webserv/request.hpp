@@ -3,6 +3,7 @@
 
 # include <string>
 # include <map>
+#include "context.hpp"
 
 # define CLOSE_CONNECTION   false
 # define KEEP_ALIVE         true
@@ -12,6 +13,7 @@
 
 struct Request {
     public :
+		const Context*						location;
         std::map<std::string, std::string>  headers;
         std::string                         body;
         bool                                keepAlive;

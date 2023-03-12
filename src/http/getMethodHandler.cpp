@@ -31,8 +31,12 @@ static void __do_response_with_dir_content_(Client* client)
 	
 	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == nullptr)
 		throw 403;
+	body = " <!DOCTYPE html>\n<html>\n<head>\n<title>";
+	body.append(path);
+	body.append("</title>\n</head>\n<body>\n<h1>Directory Content</h1>\n");
 	while ((ent = readdir(dir)))
 	{
+		body.append("<p><a href=\"");
 		if (strcmp(ent->d_name, ".") == 0)
 			body.append(path) ;
 		else if (strcmp(ent->d_name, "..") == 0)
@@ -44,12 +48,49 @@ static void __do_response_with_dir_content_(Client* client)
 			if (ent->d_type == DT_DIR)
 				body.append(1, '/');
 		}
-		body.append(1, '\n');
+		body.append("\">");
+		body.append(ent->d_name);
+		if (ent->d_type == DT_DIR)
+			body.append(1, '/');
+		body.append("</a></p>\n");
 	}
+	body.append("</body>\n</html>\n");
 	closedir(dir);
+	response->addHeader("Content-Type", "text/html");
 	response->addBody(body);
 	client->switchState();
-//	std::cerr << response->buffer << '\n' ;
+}
+
+static void __read_file_content_do_response_(Client* client)
+{
+	Response		*response;
+	std::string		body;
+	int				file;
+	ssize_t 		readSize;
+	char			buffer[1024];
+	
+	response = new Response(200, false);
+	client->setResponse(response);
+	
+	file  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
+	if (file < 0)
+		throw 403;
+	while (true)
+	{
+		readSize = read(file, buffer, 1024);
+		if (readSize == 0)
+			break;
+		if (readSize < 0)
+		{
+			close(file);
+			throw 500;
+		}
+		body.append(buffer, readSize);
+	}
+	close(file);
+	
+	
+	
 }
 
 void HTTP::getMethodHandler(Client *client)
@@ -57,34 +98,48 @@ void HTTP::getMethodHandler(Client *client)
 	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
 	std::vector<std::string>::const_iterator							begin, end;
 	
-	const Context* const	location = client->getLocation();
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;
 	
-	std::cerr << "Full Path: " << request->fullPath << '\n' ;
-
-	notFound = location->getDirectives().end();
+	notFound = request->location->getDirectives().end();
 	// Check for redirection
-	directive = location->getDirectives().find(REDIRECT_DIRECTIVE);
+	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound)
 		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]) ;
-	if (stat(request->fullPath.c_str(), &pathInfo) < 0)
+	if (access(request->fullPath.c_str(), F_OK) < 0)
 		throw 404;
+	if (stat(request->fullPath.c_str(), &pathInfo) < 0)
+		throw 403;
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode))
 	{
 		if (request->path.c_str()[request->path.size()-1] != '/')
 			throw std::make_pair(301, request->path + '/');
-		else if (location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off")
-			throw 403;
-		else {
-//			throw 1024;
-			__do_response_with_dir_content_(client);
-			return ;
+		else
+		{
+			for (begin = request->location->getDirectives().find(INDEX_DIRECTIVE)->second.begin(),
+						 end = request->location->getDirectives().find(INDEX_DIRECTIVE)->second.end();
+						 begin != end; ++begin)
+			{
+				if (access((request->fullPath + *begin).c_str(), F_OK) == 0)
+				{
+					request->fullPath.append(*begin);
+					request->path.append(*begin);
+					break;
+				}
+			}
+			if (begin == end)
+			{
+				if (request->location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off")
+					throw 403;
+				else
+					__do_response_with_dir_content_(client);
+				return ;
+			}
 		}
 	}
 	// Check for CGI
-	directive = location->getDirectives().find(CGI_DIRECTIVE);
+	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound)
 	{
 		for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
@@ -93,5 +148,5 @@ void HTTP::getMethodHandler(Client *client)
 				throw 1337;
 			}
 	}
-	throw 1337;
+	__read_file_content_do_response_(client);
 }
