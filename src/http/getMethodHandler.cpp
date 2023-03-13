@@ -74,6 +74,7 @@ static void __do_response_with_dir_content_(Client* client)
 
 static void __read_file_content_to_do_response_(Client* client)
 {
+	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
 	Response		*response;
 	std::string		body;
 	int				file;
@@ -99,8 +100,15 @@ static void __read_file_content_to_do_response_(Client* client)
 		body.append(buffer, readSize);
 	}
 	close(file);
-	response->addHeader("Content-Type", "text/html");
+	notFound = client->getRequest()->location->getDirectives().end();
+	directive = client->getRequest()->location->getDirectives().find(client->getRequest()->extension);
+	if (directive != notFound)
+		response->addHeader("Content-Type", directive->second[0]);
+	else
+		response->addHeader("Content-Type", DEFAULT_MIME_TYPE);
 	response->addBody(body);
+	std::cerr << client->getRequest()->fullPath << '\n' ;
+	std::cerr << directive->second[0] << '\n' ;
 	client->switchState();
 }
 

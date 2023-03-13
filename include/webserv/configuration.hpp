@@ -66,5 +66,7 @@
 # define DEFAULT_SIZE           "1M"
 # define DEFAULT_METHOD         "GET POST DELETE"
 # define DEFAULT_AUTOINDEX      "off"
+# define DEFAULT_MIME_TYPE		"application/octet-stream"
+
 
 # endif
