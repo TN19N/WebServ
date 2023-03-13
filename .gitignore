@@ -9,4 +9,4 @@ test.cpp
 ./build/debug/*.trace
 CMakeLists.txt
 .idea/
-nginx
+nginx/
