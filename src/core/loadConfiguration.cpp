@@ -180,7 +180,7 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
     } else if (currentContext->getName() == TYPES_CONTEXT) {
         std::vector<std::string> mimeType = CORE::split(directiveName, WHITE_SPACE);
         for (std::vector<std::string>::const_iterator it = directiveArgs.begin(); it != directiveArgs.end(); ++it) {
-            if (std::find((*it).begin(), (*it).end(), '.') == (*it).end()) {
+            if (std::find((*it).begin(), (*it).end(), '.') != (*it).end()) {
                 throw std::runtime_error("invalid extension '" + (*it) + "' in '" + directiveName + "' directive");
             }
             currentContext->getParent()->addDirective((*it), mimeType);
