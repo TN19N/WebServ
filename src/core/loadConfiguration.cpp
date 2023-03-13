@@ -1,5 +1,6 @@
 # include <string>
 # include <fstream>
+# include <algorithm>
 
 # include "../../include/webserv/core.hpp"
 # include "../../include/webserv/context.hpp"
@@ -153,6 +154,12 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
         }
     } else if (directiveName == CGI_DIRECTIVE) {
         checkRequirements(CGI_DIRECTIVE_ARGS(directiveArgs), CGI_DIRECTIVE_POS(currentContext), directiveName, "directive");
+
+        for (size_t i = 1; i < directiveArgs.size(); i += 2) {
+            if (directiveArgs.at(i).front() != '.' || directiveArgs.at(i).length() < 2 || std::count(directiveArgs.at(i).begin(), directiveArgs.at(i).end(), '.') > 1) {
+                throw std::runtime_error("invalid extension '" + directiveArgs.at(i) + "' in '" + directiveName + "' directive");
+            }
+        }
     } else if (directiveName == UPLOAD_DIRECTIVE) {
         checkRequirements(UPLOAD_DIRECTIVE_ARGS(directiveArgs), UPLOAD_DIRECTIVE_POS(currentContext), directiveName, "directive");
 
@@ -173,6 +180,9 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
     } else if (currentContext->getName() == TYPES_CONTEXT) {
         std::vector<std::string> mimeType = CORE::split(directiveName, WHITE_SPACE);
         for (std::vector<std::string>::const_iterator it = directiveArgs.begin(); it != directiveArgs.end(); ++it) {
+            if (std::find((*it).begin(), (*it).end(), '.') == (*it).end()) {
+                throw std::runtime_error("invalid extension '" + (*it) + "' in '" + directiveName + "' directive");
+            }
             currentContext->getParent()->addDirective((*it), mimeType);
         }
         return ;
