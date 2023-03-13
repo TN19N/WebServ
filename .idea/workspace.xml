@@ -19,13 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/deleteMethodHundler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/http/postMethodHundler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/configuration.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/configuration.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/index111.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +180,9 @@
       <workItem from="1678479987788" duration="14677000" />
       <workItem from="1678536227167" duration="9213000" />
       <workItem from="1678576687796" duration="4412000" />
-      <workItem from="1678626205238" duration="2391000" />
+      <workItem from="1678626205238" duration="4904000" />
+      <workItem from="1678651418121" duration="637000" />
+      <workItem from="1678697242631" duration="1421000" />
     </task>
     <servers />
   </component>

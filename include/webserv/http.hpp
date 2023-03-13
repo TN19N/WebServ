@@ -39,13 +39,15 @@ namespace HTTP
 	void			requestHandler(Client* client, const Context* const configuration);
 	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
 	void 			getMethodHandler(Client *client);
+	void 			deleteMethodHandler(Client *client);
+	void 			postMethodHandler(Client *client);
 	void 			readRequestBodyFromBuffer(Client* client);
 	
 	// * Tools **********************************************************************************
-	Client* getClientWithFd(const int fd, const std::vector<Client*>& clients);
-	const std::string getDefaultErrorPage(const int statusCode);
-	const std::string getHttpDate();
-	int __strcmp_(const char *s1, const char *s2);
+	Client*				getClientWithFd(const int fd, const std::vector<Client*>& clients);
+	const std::string	getDefaultErrorPage(const int statusCode);
+	const std::string	getHttpDate();
+	int					__strcmp_(const char *s1, const char *s2);
 
 } // namespace HTTP
 
