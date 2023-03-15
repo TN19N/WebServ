@@ -76,6 +76,7 @@ void HTTP::requestHandler(Client* client, const Context* const configuration)
 				client->switchState();
 			}
 			break;
+		//case expression: other case for cgi
 		case READING_BODY:
 			client->setState(READING_REQUEST);
 			request = HTTP::requestParser(client);
