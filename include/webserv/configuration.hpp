@@ -15,7 +15,7 @@
 # define HTTP_CONTEXT_POS(context)     (context->getName() == MAIN_CONTEXT)
 # define SERVER_CONTEXT_POS(context)   (context->getName() == HTTP_CONTEXT)
 # define LOCATION_CONTEXT_POS(context) (context->getName() == SERVER_CONTEXT)
-# define TYPES_CONTEXT_POS(context)    (context->getName() == HTTP_CONTEXT)
+# define TYPES_CONTEXT_POS(context)    (true)
 
 # define PORT_DIRECTIVE         "port"
 # define HOST_DIRECTIVE         "host"

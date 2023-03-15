@@ -4,38 +4,22 @@
 // -------------------------------------------------------------------------------
 
 # include "../../include/webserv/client.hpp"
-# include "../../include/webserv/context.hpp"
 # include "../../include/webserv/http.hpp"
 
-static int __parse_content_length_(const char *str)
+static void __read_content_length_body_(Client* client)
 {
-	const char 	*checker = str;
-	long int	res = 0;
+	Request*	request;
 	
-	if (*checker == '\0')
-		throw 400;
-	while (*checker)
+	// contentLength always decrement until 0.
+	request->body.append(client->getBuffer(), 0, request->contentLength) ;
+	if (client->getBuffer().size() < request->contentLength)
+		request->contentLength -= client->getBuffer().size();
+	else
 	{
-		if (*checker < '0' || *checker > '9')
-			throw 400;
-		++checker;
+		request->state = BODY_READY ;
+		request->contentLength = 0;
 	}
-	while (*str && res < INT_MAX)
-	{
-		res = res * 10 + *str - '0' ;
-		++str;
-	}
-	if (*str == '\0')
-		return res;
-	throw 400;
-}
-
-static void __read_content_length_body_(Client* client, size_t size)
-{
-	client->getRequest()->body.append(client->getBuffer(), 0, size) ;
 	client->getBuffer().clear() ;
-	if (client->getRequest()->body.size() == client->getRequest()->contentLength)
-		client->getRequest()->state = REQUEST_READY ;
 }
 
 static bool __read_chunked_body_(Client* client)
@@ -50,10 +34,10 @@ static bool __read_chunked_body_(Client* client)
 			return false;
 		client->getBuffer()[buffer - client->getBuffer().c_str()] = '\0';
 		buffer += 2;
-		client->getRequest()->contentLength = __parse_content_length_(client->getBuffer().c_str());
+		client->getRequest()->contentLength = HTTP::parseContentLength(client->getBuffer().c_str());
 		if (client->getRequest()->contentLength == 0 && *buffer == '\r' && *(buffer+1) == '\n')
 		{
-			client->getRequest()->state = REQUEST_READY;
+			client->getRequest()->state = BODY_READY;
 			return false;
 		}
 		client->getRequest()->contentLength += 2; // this is for '\r\n'
@@ -77,10 +61,14 @@ static bool __read_chunked_body_(Client* client)
 	return client->getBuffer().size() != 0;
 }
 
-void HTTP::readRequestBodyFromBuffer(Client* client)
+void HTTP::readBodyFromBuffer(Client *client)
 {
-	if (client->getRequest()->isChunked)
+	Request*	request = client->getRequest();
+
+	if (request == 0)
+		return;
+	if (request->isChunked)
 		while (__read_chunked_body_(client)) ;
 	else
-		__read_content_length_body_(client, client->getRequest()->contentLength - client->getRequest()->body.size());
+		__read_content_length_body_(client);
 }

@@ -6,6 +6,12 @@
 # include <map>
 # include <sys/socket.h>
 
+# define CLOSE_CONNECTION   false
+# define KEEP_ALIVE         true
+
+enum { READING_REQUEST, SENDING_RESPONSE, READING_RESPONSE, SENDING_REQUEST, WRITE_BODY_TO_CGI
+		UPLOADING_FILE, READING_HEADERS, READING_BODY, BODY_READY, WRITE_END, READ_END } ;
+
 class Context {
     private:
         const std::string                                   name;

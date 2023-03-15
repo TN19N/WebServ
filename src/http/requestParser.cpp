@@ -6,29 +6,6 @@
 # include "../../include/webserv/request.hpp"
 # include "../../include/webserv/http.hpp"
 
-static int __parse_content_length_(const char *str)
-{
-	const char 	*checker = str;
-	long int	res = 0;
-	
-	if (*checker == '\0')
-		throw 400;
-	while (*checker)
-	{
-		if (*checker < '0' || *checker > '9')
-			throw 400;
-		++checker;
-	}
-	while (*str && res < INT_MAX)
-	{
-		res = res * 10 + *str - '0' ;
-		++str;
-	}
-	if (*str == '\0')
-		return res;
-	throw 400;
-}
-
 static bool __is_space_(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -47,11 +24,11 @@ static const char *__get_request_method_(const char * &buffer, std::string &base
 {
 	const char *save_buffer = buffer;
 	
-	 if (HTTP::__strcmp_(buffer, "GET") == ' ')
+	 if (HTTP::strcmp(buffer, "GET") == ' ')
 		 buffer += 3;
-	 else if (HTTP::__strcmp_(buffer, "POST") == ' ')
+	 else if (HTTP::strcmp(buffer, "POST") == ' ')
 		 buffer += 4;
-	 else if (HTTP::__strcmp_(buffer, "DELETE") == ' ')
+	 else if (HTTP::strcmp(buffer, "DELETE") == ' ')
 		 buffer += 6;
 	 else
 		 throw 501;
@@ -88,22 +65,11 @@ static const char *__get_query_from_path_(const char *path, std::string &base)
 	return path + 1;
 }
 
-static const char *__get_extension_from_path_(const char *path)
-{
-	while (*path)
-		++path;
-	while (*path != '/' && *path != '.')
-		--path;
-	if (*path == '.' && *(path-1) != '/')
-		return path;
-	return "";
-}
-
 static void __check_request_protocol_(const char * &buffer)
 {
-	if (HTTP::__strcmp_(buffer, "HTTP/1.1") == '\r')
+	if (HTTP::strcmp(buffer, "HTTP/1.1") == '\r')
 		buffer += 9;
-	else if (HTTP::__strcmp_(buffer, "HTTP/1.1") == ' ')
+	else if (HTTP::strcmp(buffer, "HTTP/1.1") == ' ')
 	{
 		buffer += 9;
 		while (*buffer == ' ')
@@ -168,8 +134,6 @@ static void __fill_request_and_check_basic_bad_errors_(Request *request) {
 	pos = header->second.rfind(':');
 	if (pos != std::string::npos)
 		header->second = header->second.substr(0, pos);
-	if (request->method != "POST")
-		request->state = REQUEST_READY;
 	header = request->headers.find("Transfer-Encoding");
 	if (header != request->headers.end()) {
 		if (header->second != "chunked")
@@ -180,7 +144,7 @@ static void __fill_request_and_check_basic_bad_errors_(Request *request) {
 	{
 		header =  request->headers.find("Content-Length");
 		if (header != request->headers.end())
-			request->contentLength = __parse_content_length_(header->second.c_str());
+			request->contentLength = HTTP::parseContentLength(header->second.c_str());
 	}
 }
 
@@ -198,14 +162,14 @@ static void __parse_and_fill_request_headers_(const char * &buffer, std::string 
 		{
 			if (append)
 			{
-				if (HTTP::__strcmp_(key, "setCookies") == 0)
+				if (HTTP::strcmp(key, "setCookies") == 0)
 					headers[key].append(__get_header_value_(buffer, base));
 				else
 					headers[key] = __get_header_value_(buffer, base);
 			}
 			else
 			{
-				if (HTTP::__strcmp_(key, "Host") == 0)
+				if (HTTP::strcmp(key, "Host") == 0)
 					throw 400;
 				headers[key] = __get_header_value_(buffer, base);
 			}
@@ -227,7 +191,7 @@ Request* HTTP::requestParser(Client *client)
 		throw 400;
 	request->query = __get_query_from_path_(path, client->getBuffer());
 	request->path = path;
-	request->extension = __get_extension_from_path_(path);
+	request->extension = HTTP::getExtensionFromPath(path);
 	__check_request_protocol_(buffer);
 	if (*buffer == '\r')
 		throw 400;

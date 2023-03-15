@@ -18,17 +18,6 @@ static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::strin
 	body.append(1, '/') ;
 }
 
-static const char *__get_extension_from_path_(const char *path)
-{
-	while (*path)
-		++path;
-	while (*path != '/' && *path != '.')
-		--path;
-	if (*path == '.' && *(path-1) != '/')
-		return path;
-	return "";
-}
-
 static void __do_response_with_dir_content_(Client* client)
 {
 	Response		*response;
@@ -106,9 +95,8 @@ static void __read_file_content_to_do_response_(Client* client)
 		response->addHeader("Content-Type", directive->second[0]);
 	else
 		response->addHeader("Content-Type", DEFAULT_MIME_TYPE);
+
 	response->addBody(body);
-	std::cerr << client->getRequest()->fullPath << '\n' ;
-	std::cerr << directive->second[0] << '\n' ;
 	client->switchState();
 }
 
@@ -125,10 +113,9 @@ void HTTP::getMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound)
 		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]) ;
-	if (access(request->fullPath.c_str(), F_OK) < 0)
-		throw 404;
+
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0)
-		throw 403;
+		throw 404;
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode))
 	{
@@ -143,7 +130,7 @@ void HTTP::getMethodHandler(Client *client)
 				{
 					request->fullPath.append(*begin);
 					request->path.append(*begin);
-					request->extension = __get_extension_from_path_(request->path.c_str());
+					request->extension = HTTP::getExtensionFromPath(request->path.c_str());
 					break;
 				}
 			}

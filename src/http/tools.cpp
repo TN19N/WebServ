@@ -9,11 +9,57 @@
 
 // * Functions *************************************************************************************************************************
 
-int HTTP::__strcmp_(const char *s1, const char *s2)
+int HTTP::strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s1 == *s2)
 	{ ++s1; ++s2; }
 	return *s1 - *s2;
+}
+
+const char * HTTP::getExtensionFromPath(const char *path)
+{
+	while (*path)
+		++path;
+	while (*path != '/' && *path != '.')
+		--path;
+	if (*path == '.' && *(path-1) != '/')
+		return path;
+	return "";
+}
+
+int HTTP::parseContentLength(const char *str)
+{
+	const char 	*checker = str;
+	long int	res = 0;
+	
+	if (*checker == '\0')
+		throw 400;
+	while (*checker)
+	{
+		if (*checker < '0' || *checker > '9')
+			throw 400;
+		++checker;
+	}
+	while (*str && res < INT_MAX)
+	{
+		res = res * 10 + *str - '0' ;
+		++str;
+	}
+	if (*str == '\0')
+		return res;
+	throw 400;
+}
+
+void HTTP::readRequestBufferFromClient(Client* client)
+{
+	char	buffer[BUFFER_SIZE];
+	ssize_t	bytesReceived;
+	
+	bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
+	if (bytesReceived < 0)
+		throw 500;
+	else
+		client->getBuffer().append(buffer, bytesReceived);
 }
 
 Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients) {
@@ -23,7 +69,7 @@ Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients)
                 if (clients[i]->getFdOf(WRITE_END) == fd) {
                     return clients[i];
                 }
-            } else if (clients[i]->getState() == RIDING_RESPONSE) {
+            } else if (clients[i]->getState() == READING_RESPONSE) {
                 if (clients[i]->getFdOf(READ_END) == fd) {
                     return clients[i];
                 }
@@ -34,13 +80,13 @@ Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients)
             }
         }
     }
-    return nullptr; // never be reached (i hope so :D)
+    return nullptr; // never be reached (I hope so :D)
 }
 
 const std::string HTTP::getDefaultErrorPage(const int statusCode) {
 
     // comment if you don't want to go crazy
-    # define GO_CRAZY
+//    # define GO_CRAZY
 
     # ifdef GO_CRAZY
     return (

@@ -10,14 +10,6 @@
 # include "response.hpp"
 #include "context.hpp"
 
-# define READ_END  0
-# define WRITE_END 1
-
-# define RIDING_REQUEST   0
-# define SENDING_RESPONSE 1
-# define RIDING_RESPONSE  2
-# define SENDING_REQUEST  3
-
 class Client {
     private:
         const int                       socketFd;

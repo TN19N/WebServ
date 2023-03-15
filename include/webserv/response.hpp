@@ -4,11 +4,9 @@
 # include <string>
 # include <map>
 
-# define CLOSE_CONNECTION   false
-# define KEEP_ALIVE         true
-
 struct Response {
     public :
+		int									file_fd;
         int                                 statusCode;
         std::map<std::string, std::string>  headers;
         bool                                keepAlive;

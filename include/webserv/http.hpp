@@ -41,13 +41,16 @@ namespace HTTP
 	void 			getMethodHandler(Client *client);
 	void 			deleteMethodHandler(Client *client);
 	void 			postMethodHandler(Client *client);
-	void 			readRequestBodyFromBuffer(Client* client);
+	void 			readBodyFromBuffer(Client* client);
 	
 	// * Tools **********************************************************************************
 	Client*				getClientWithFd(const int fd, const std::vector<Client*>& clients);
 	const std::string	getDefaultErrorPage(const int statusCode);
 	const std::string	getHttpDate();
-	int					__strcmp_(const char *s1, const char *s2);
+	int					strcmp(const char *s1, const char *s2);
+	const char 			*getExtensionFromPath(const char *path);
+	int					parseContentLength(const char *str);
+	void 				readRequestBufferFromClient(Client* client);
 
 } // namespace HTTP
 

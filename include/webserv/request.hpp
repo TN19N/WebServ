@@ -1,18 +1,15 @@
 # ifndef REQUEST_HPP
 # define REQUEST_HPP
 
+# define BUFFER_SIZE 2048
+
 # include <string>
 # include <map>
 #include "context.hpp"
 
-# define CLOSE_CONNECTION   false
-# define KEEP_ALIVE         true
-
-# define READING_BODY       0
-# define REQUEST_READY      1
-
 struct Request {
     public :
+		int									upload_file_fd;
 		const Context*						location;
         std::map<std::string, std::string>  headers;
         std::string                         body;

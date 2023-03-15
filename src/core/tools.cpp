@@ -137,7 +137,7 @@ const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd,
     for (size_t i = serversSocketFd.size(); i < fds.size(); ++i) {
         Client *client = clients[i - serversSocketFd.size()];
         switch (client->getState()) {
-            case RIDING_REQUEST :
+            case READING_REQUEST :
                 fds[i].fd = client->getFdOf(READ_END);
                 fds[i].events = POLLIN | POLLHUP;
                 break;
@@ -149,7 +149,7 @@ const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd,
                 fds[i].fd = client->getFdOf(WRITE_END);
                 fds[i].events = POLLIN | POLLHUP;
                 break;
-            case RIDING_RESPONSE :
+            case READING_RESPONSE :
                 fds[i].fd = client->getFdOf(READ_END);
                 fds[i].events = POLLOUT | POLLHUP;
         }

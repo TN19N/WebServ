@@ -3,7 +3,6 @@
 
 # include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
-# include "../../include/webserv/client.hpp"
 
 # define SEND_BUFFER_SIZE 4096UL
 
@@ -20,7 +19,7 @@ const bool HTTP::sendResponse(Client* client) {
             request->body.erase(0, res);
         }
 
-        if (request->body.empty() == true) {
+        if (request->body.empty()) {
             return true;
         }
     } else {
@@ -33,7 +32,7 @@ const bool HTTP::sendResponse(Client* client) {
             response->buffer.erase(0, res);
         }
 
-        if (response->buffer.empty() == true) {
+        if (response->buffer.empty()) {
             if (response->keepAlive == false) {
                 return true;
             }

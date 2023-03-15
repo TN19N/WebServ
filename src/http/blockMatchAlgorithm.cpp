@@ -95,7 +95,7 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	{
 		if (begin->first == "/")
 			return begin->second;
-		character = HTTP::__strcmp_(path.c_str(), begin->first.c_str());
+		character = HTTP::strcmp(path.c_str(), begin->first.c_str());
 		if (character == 0 || character == '/')
 			return begin->second;
 	}

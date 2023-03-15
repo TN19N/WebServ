@@ -1,37 +1,508 @@
 -------------------------- Configuration --------------------------
 [main] :: 
 	[http] :: 
+		(.3gp) : z 
+		(.3gpp) : z 
+		(.7z) : zapplication/x-7z-compressed 
+		(.ai) : zapplication/postscript 
+		(.asf) : zvideo/x-ms-asf 
+		(.asx) : zvideo/x-ms-asf 
+		(.atom) : zapplication/atom+xml 
+		(.avi) : zvideo/x-msvideo 
+		(.avif) : zimage/avif 
+		(.bin) : zapplication/octet-stream 
+		(.bmp) : zimage/x-ms-bmp 
+		(.cco) : zapplication/x-cocoa 
+		(.crt) : zapplication/x-x509-ca-cert 
+		(.css) : ztext/css 
+		(.deb) : zapplication/octet-stream 
+		(.der) : zapplication/x-x509-ca-cert 
+		(.dll) : zapplication/octet-stream 
+		(.dmg) : zapplication/octet-stream 
+		(.doc) : zapplication/msword 
+		(.docx) : zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+		(.ear) : zapplication/java-archive 
+		(.eot) : zapplication/vnd.ms-fontobject 
+		(.eps) : zapplication/postscript 
+		(.exe) : zapplication/octet-stream 
+		(.flv) : zvideo/x-flv 
+		(.gif) : z 
+		(.hqx) : zapplication/mac-binhex40 
+		(.htc) : ztext/x-component 
+		(.htm) : text/html 
+		(.html) : text/html 
+		(.ico) : zimage/x-icon 
+		(.img) : zapplication/octet-stream 
+		(.iso) : zapplication/octet-stream 
+		(.jad) : ztext/vnd.sun.j2me.app-descriptor 
+		(.jar) : zapplication/java-archive 
+		(.jardiff) : zapplication/x-java-archive-diff 
+		(.jng) : zimage/x-jng 
+		(.jnlp) : zapplication/x-java-jnlp-file 
+		(.jpeg) : zimage/jpeg 
+		(.jpg) : zimage/jpeg 
+		(.js) : z 
+		(.json) : zapplication/json 
+		(.kar) : z 
+		(.kml) : zapplication/vnd.google-earth.kml+xml 
+		(.kmz) : zapplication/vnd.google-earth.kmz 
+		(.m3u8) : zapplication/vnd.apple.mpegurl 
+		(.m4a) : zaudio/x-m4a 
+		(.m4v) : zvideo/x-m4v 
+		(.mid) : z 
+		(.midi) : z 
+		(.mml) : ztext/mathml 
+		(.mng) : zvideo/x-mng 
+		(.mov) : zvideo/quicktime 
+		(.mp3) : zaudio/mpeg 
+		(.mp4) : zvideo/mp4 
+		(.mpeg) : zvideo/mpeg 
+		(.mpg) : zvideo/mpeg 
+		(.msi) : zapplication/octet-stream 
+		(.msm) : zapplication/octet-stream 
+		(.msp) : zapplication/octet-stream 
+		(.odg) : zapplication/vnd.oasis.opendocument.graphics 
+		(.odp) : zapplication/vnd.oasis.opendocument.presentation 
+		(.ods) : zapplication/vnd.oasis.opendocument.spreadsheet 
+		(.odt) : zapplication/vnd.oasis.opendocument.text 
+		(.ogg) : zaudio/ogg 
+		(.pdb) : zapplication/x-pilot 
+		(.pdf) : zapplication/pdf 
+		(.pem) : zapplication/x-x509-ca-cert 
+		(.pl) : zapplication/x-perl 
+		(.pm) : zapplication/x-perl 
+		(.png) : zimage/png 
+		(.ppt) : zapplication/vnd.ms-powerpoint 
+		(.pptx) : zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+		(.prc) : zapplication/x-pilot 
+		(.ps) : zapplication/postscript 
+		(.ra) : zaudio/x-realaudio 
+		(.rar) : zapplication/x-rar-compressed 
+		(.rpm) : zapplication/x-redhat-package-manager 
+		(.rss) : zapplication/rss+xml 
+		(.rtf) : zapplication/rtf 
+		(.run) : zapplication/x-makeself 
+		(.sea) : zapplication/x-sea 
+		(.shtml) : text/html 
+		(.sit) : zapplication/x-stuffit 
+		(.svg) : zimage/svg+xml 
+		(.svgz) : zimage/svg+xml 
+		(.swf) : zapplication/x-shockwave-flash 
+		(.tcl) : zapplication/x-tcl 
+		(.tif) : zimage/tiff 
+		(.tiff) : zimage/tiff 
+		(.tk) : zapplication/x-tcl 
+		(.ts) : zvideo/mp2t 
+		(.txt) : ztext/plain 
+		(.war) : zapplication/java-archive 
+		(.wasm) : zapplication/wasm 
+		(.wbmp) : zimage/vnd.wap.wbmp 
+		(.webm) : zvideo/webm 
+		(.webp) : zimage/webp 
+		(.wml) : ztext/vnd.wap.wml 
+		(.wmlc) : zapplication/vnd.wap.wmlc 
+		(.wmv) : zvideo/x-ms-wmv 
+		(.woff) : z 
+		(.woff2) : zfont/woff2 
+		(.xhtml) : zapplication/xhtml+xml 
+		(.xls) : zapplication/vnd.ms-excel 
+		(.xlsx) : zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+		(.xml) : ztext/xml 
+		(.xpi) : zapplication/x-xpinstall 
+		(.xspf) : zapplication/xspf+xml 
+		(.z) : z 
+		(.zapplication/javascript) : z 
+		(.zaudio/midi) : z 
+		(.zfont/woff) : z 
+		(.zimage/gif) : z 
+		(.zip) : zapplication/zip 
+		(.zvideo/3gpp) : z 
 		(allowed_method) : GET POST DELETE 
 		(autoindex) : off 
 		(client_max_body_size) : 1M 
+		(include) : /Users/jchakir/projs/webserv/config/mime.types 
 		(index) : index.html index.htm index.php 
 		(root) : /var/www/html 
-		[server] :: 
+		[types] :: 
 			(allowed_method) : GET POST DELETE 
 			(autoindex) : off 
 			(client_max_body_size) : 1M 
-			(host) : 0.0.0.0 
 			(index) : index.html index.htm index.php 
-			(name) : 1337.ma www.1337.ma 
+			(root) : /var/www/html 
+		[server] :: 
+			(.3gp) : z 
+			(.3gpp) : z 
+			(.7z) : zapplication/x-7z-compressed 
+			(.ai) : zapplication/postscript 
+			(.asf) : zvideo/x-ms-asf 
+			(.asx) : zvideo/x-ms-asf 
+			(.atom) : zapplication/atom+xml 
+			(.avi) : zvideo/x-msvideo 
+			(.avif) : zimage/avif 
+			(.bin) : zapplication/octet-stream 
+			(.bmp) : zimage/x-ms-bmp 
+			(.cco) : zapplication/x-cocoa 
+			(.crt) : zapplication/x-x509-ca-cert 
+			(.css) : ztext/css 
+			(.deb) : zapplication/octet-stream 
+			(.der) : zapplication/x-x509-ca-cert 
+			(.dll) : zapplication/octet-stream 
+			(.dmg) : zapplication/octet-stream 
+			(.doc) : zapplication/msword 
+			(.docx) : zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+			(.ear) : zapplication/java-archive 
+			(.eot) : zapplication/vnd.ms-fontobject 
+			(.eps) : zapplication/postscript 
+			(.exe) : zapplication/octet-stream 
+			(.flv) : zvideo/x-flv 
+			(.gif) : z 
+			(.hqx) : zapplication/mac-binhex40 
+			(.htc) : ztext/x-component 
+			(.htm) : text/html 
+			(.html) : text/html 
+			(.ico) : zimage/x-icon 
+			(.img) : zapplication/octet-stream 
+			(.iso) : zapplication/octet-stream 
+			(.jad) : ztext/vnd.sun.j2me.app-descriptor 
+			(.jar) : zapplication/java-archive 
+			(.jardiff) : zapplication/x-java-archive-diff 
+			(.jng) : zimage/x-jng 
+			(.jnlp) : zapplication/x-java-jnlp-file 
+			(.jpeg) : zimage/jpeg 
+			(.jpg) : zimage/jpeg 
+			(.js) : z 
+			(.json) : zapplication/json 
+			(.kar) : z 
+			(.kml) : zapplication/vnd.google-earth.kml+xml 
+			(.kmz) : zapplication/vnd.google-earth.kmz 
+			(.m3u8) : zapplication/vnd.apple.mpegurl 
+			(.m4a) : zaudio/x-m4a 
+			(.m4v) : zvideo/x-m4v 
+			(.mid) : z 
+			(.midi) : z 
+			(.mml) : ztext/mathml 
+			(.mng) : zvideo/x-mng 
+			(.mov) : zvideo/quicktime 
+			(.mp3) : zaudio/mpeg 
+			(.mp4) : zvideo/mp4 
+			(.mpeg) : zvideo/mpeg 
+			(.mpg) : zvideo/mpeg 
+			(.msi) : zapplication/octet-stream 
+			(.msm) : zapplication/octet-stream 
+			(.msp) : zapplication/octet-stream 
+			(.odg) : zapplication/vnd.oasis.opendocument.graphics 
+			(.odp) : zapplication/vnd.oasis.opendocument.presentation 
+			(.ods) : zapplication/vnd.oasis.opendocument.spreadsheet 
+			(.odt) : zapplication/vnd.oasis.opendocument.text 
+			(.ogg) : zaudio/ogg 
+			(.pdb) : zapplication/x-pilot 
+			(.pdf) : zapplication/pdf 
+			(.pem) : zapplication/x-x509-ca-cert 
+			(.pl) : zapplication/x-perl 
+			(.pm) : zapplication/x-perl 
+			(.png) : zimage/png 
+			(.ppt) : zapplication/vnd.ms-powerpoint 
+			(.pptx) : zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+			(.prc) : zapplication/x-pilot 
+			(.ps) : zapplication/postscript 
+			(.ra) : zaudio/x-realaudio 
+			(.rar) : zapplication/x-rar-compressed 
+			(.rpm) : zapplication/x-redhat-package-manager 
+			(.rss) : zapplication/rss+xml 
+			(.rtf) : zapplication/rtf 
+			(.run) : zapplication/x-makeself 
+			(.sea) : zapplication/x-sea 
+			(.shtml) : text/html 
+			(.sit) : zapplication/x-stuffit 
+			(.svg) : zimage/svg+xml 
+			(.svgz) : zimage/svg+xml 
+			(.swf) : zapplication/x-shockwave-flash 
+			(.tcl) : zapplication/x-tcl 
+			(.tif) : zimage/tiff 
+			(.tiff) : zimage/tiff 
+			(.tk) : zapplication/x-tcl 
+			(.ts) : zvideo/mp2t 
+			(.txt) : ztext/plain 
+			(.war) : zapplication/java-archive 
+			(.wasm) : zapplication/wasm 
+			(.wbmp) : zimage/vnd.wap.wbmp 
+			(.webm) : zvideo/webm 
+			(.webp) : zimage/webp 
+			(.wml) : ztext/vnd.wap.wml 
+			(.wmlc) : zapplication/vnd.wap.wmlc 
+			(.wmv) : zvideo/x-ms-wmv 
+			(.woff) : z 
+			(.woff2) : zfont/woff2 
+			(.xhtml) : zapplication/xhtml+xml 
+			(.xls) : zapplication/vnd.ms-excel 
+			(.xlsx) : zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+			(.xml) : ztext/xml 
+			(.xpi) : zapplication/x-xpinstall 
+			(.xspf) : zapplication/xspf+xml 
+			(.z) : z 
+			(.zapplication/javascript) : z 
+			(.zaudio/midi) : z 
+			(.zfont/woff) : z 
+			(.zimage/gif) : z 
+			(.zip) : zapplication/zip 
+			(.zvideo/3gpp) : z 
+			(allowed_method) : GET POST DELETE 
+			(autoindex) : off 
+			(client_max_body_size) : 1M 
+			(host) : localhost 
+			(include) : /Users/jchakir/projs/webserv/config/mime.types 
+			(index) : index.html index.htm index.php 
 			(port) : 8080 
 			(root) : /var/www/html 
 			[location] :: / 
+				(.3gp) : z 
+				(.3gpp) : z 
+				(.7z) : zapplication/x-7z-compressed 
+				(.ai) : zapplication/postscript 
+				(.asf) : zvideo/x-ms-asf 
+				(.asx) : zvideo/x-ms-asf 
+				(.atom) : zapplication/atom+xml 
+				(.avi) : zvideo/x-msvideo 
+				(.avif) : zimage/avif 
+				(.bin) : zapplication/octet-stream 
+				(.bmp) : zimage/x-ms-bmp 
+				(.cco) : zapplication/x-cocoa 
+				(.crt) : zapplication/x-x509-ca-cert 
+				(.css) : ztext/css 
+				(.deb) : zapplication/octet-stream 
+				(.der) : zapplication/x-x509-ca-cert 
+				(.dll) : zapplication/octet-stream 
+				(.dmg) : zapplication/octet-stream 
+				(.doc) : zapplication/msword 
+				(.docx) : zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+				(.ear) : zapplication/java-archive 
+				(.eot) : zapplication/vnd.ms-fontobject 
+				(.eps) : zapplication/postscript 
+				(.exe) : zapplication/octet-stream 
+				(.flv) : zvideo/x-flv 
+				(.gif) : z 
+				(.hqx) : zapplication/mac-binhex40 
+				(.htc) : ztext/x-component 
+				(.htm) : text/html 
+				(.html) : text/html 
+				(.ico) : zimage/x-icon 
+				(.img) : zapplication/octet-stream 
+				(.iso) : zapplication/octet-stream 
+				(.jad) : ztext/vnd.sun.j2me.app-descriptor 
+				(.jar) : zapplication/java-archive 
+				(.jardiff) : zapplication/x-java-archive-diff 
+				(.jng) : zimage/x-jng 
+				(.jnlp) : zapplication/x-java-jnlp-file 
+				(.jpeg) : zimage/jpeg 
+				(.jpg) : zimage/jpeg 
+				(.js) : z 
+				(.json) : zapplication/json 
+				(.kar) : z 
+				(.kml) : zapplication/vnd.google-earth.kml+xml 
+				(.kmz) : zapplication/vnd.google-earth.kmz 
+				(.m3u8) : zapplication/vnd.apple.mpegurl 
+				(.m4a) : zaudio/x-m4a 
+				(.m4v) : zvideo/x-m4v 
+				(.mid) : z 
+				(.midi) : z 
+				(.mml) : ztext/mathml 
+				(.mng) : zvideo/x-mng 
+				(.mov) : zvideo/quicktime 
+				(.mp3) : zaudio/mpeg 
+				(.mp4) : zvideo/mp4 
+				(.mpeg) : zvideo/mpeg 
+				(.mpg) : zvideo/mpeg 
+				(.msi) : zapplication/octet-stream 
+				(.msm) : zapplication/octet-stream 
+				(.msp) : zapplication/octet-stream 
+				(.odg) : zapplication/vnd.oasis.opendocument.graphics 
+				(.odp) : zapplication/vnd.oasis.opendocument.presentation 
+				(.ods) : zapplication/vnd.oasis.opendocument.spreadsheet 
+				(.odt) : zapplication/vnd.oasis.opendocument.text 
+				(.ogg) : zaudio/ogg 
+				(.pdb) : zapplication/x-pilot 
+				(.pdf) : zapplication/pdf 
+				(.pem) : zapplication/x-x509-ca-cert 
+				(.pl) : zapplication/x-perl 
+				(.pm) : zapplication/x-perl 
+				(.png) : zimage/png 
+				(.ppt) : zapplication/vnd.ms-powerpoint 
+				(.pptx) : zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+				(.prc) : zapplication/x-pilot 
+				(.ps) : zapplication/postscript 
+				(.ra) : zaudio/x-realaudio 
+				(.rar) : zapplication/x-rar-compressed 
+				(.rpm) : zapplication/x-redhat-package-manager 
+				(.rss) : zapplication/rss+xml 
+				(.rtf) : zapplication/rtf 
+				(.run) : zapplication/x-makeself 
+				(.sea) : zapplication/x-sea 
+				(.shtml) : text/html 
+				(.sit) : zapplication/x-stuffit 
+				(.svg) : zimage/svg+xml 
+				(.svgz) : zimage/svg+xml 
+				(.swf) : zapplication/x-shockwave-flash 
+				(.tcl) : zapplication/x-tcl 
+				(.tif) : zimage/tiff 
+				(.tiff) : zimage/tiff 
+				(.tk) : zapplication/x-tcl 
+				(.ts) : zvideo/mp2t 
+				(.txt) : ztext/plain 
+				(.war) : zapplication/java-archive 
+				(.wasm) : zapplication/wasm 
+				(.wbmp) : zimage/vnd.wap.wbmp 
+				(.webm) : zvideo/webm 
+				(.webp) : zimage/webp 
+				(.wml) : ztext/vnd.wap.wml 
+				(.wmlc) : zapplication/vnd.wap.wmlc 
+				(.wmv) : zvideo/x-ms-wmv 
+				(.woff) : z 
+				(.woff2) : zfont/woff2 
+				(.xhtml) : zapplication/xhtml+xml 
+				(.xls) : zapplication/vnd.ms-excel 
+				(.xlsx) : zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+				(.xml) : ztext/xml 
+				(.xpi) : zapplication/x-xpinstall 
+				(.xspf) : zapplication/xspf+xml 
+				(.z) : z 
+				(.zapplication/javascript) : z 
+				(.zaudio/midi) : z 
+				(.zfont/woff) : z 
+				(.zimage/gif) : z 
+				(.zip) : zapplication/zip 
+				(.zvideo/3gpp) : z 
 				(allowed_method) : POST GET 
 				(autoindex) : on 
-				(cgi) : php-cgi .php python-cgi .py ruby-cgi .rb perl-cgi .pl lua-cgi .lua node-cgi .js 
+				(cgi) : /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
 				(client_max_body_size) : 1M 
-				(host) : 0.0.0.0 
+				(host) : localhost 
+				(include) : /Users/jchakir/projs/webserv/config/mime.types 
 				(index) : index.html index.php 
-				(name) : 1337.ma www.1337.ma 
 				(port) : 8080 
 				(root) : /Users/jchakir/projs/webserv 
 			[location] :: /google 
+				(.3gp) : z 
+				(.3gpp) : z 
+				(.7z) : zapplication/x-7z-compressed 
+				(.ai) : zapplication/postscript 
+				(.asf) : zvideo/x-ms-asf 
+				(.asx) : zvideo/x-ms-asf 
+				(.atom) : zapplication/atom+xml 
+				(.avi) : zvideo/x-msvideo 
+				(.avif) : zimage/avif 
+				(.bin) : zapplication/octet-stream 
+				(.bmp) : zimage/x-ms-bmp 
+				(.cco) : zapplication/x-cocoa 
+				(.crt) : zapplication/x-x509-ca-cert 
+				(.css) : ztext/css 
+				(.deb) : zapplication/octet-stream 
+				(.der) : zapplication/x-x509-ca-cert 
+				(.dll) : zapplication/octet-stream 
+				(.dmg) : zapplication/octet-stream 
+				(.doc) : zapplication/msword 
+				(.docx) : zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+				(.ear) : zapplication/java-archive 
+				(.eot) : zapplication/vnd.ms-fontobject 
+				(.eps) : zapplication/postscript 
+				(.exe) : zapplication/octet-stream 
+				(.flv) : zvideo/x-flv 
+				(.gif) : z 
+				(.hqx) : zapplication/mac-binhex40 
+				(.htc) : ztext/x-component 
+				(.htm) : text/html 
+				(.html) : text/html 
+				(.ico) : zimage/x-icon 
+				(.img) : zapplication/octet-stream 
+				(.iso) : zapplication/octet-stream 
+				(.jad) : ztext/vnd.sun.j2me.app-descriptor 
+				(.jar) : zapplication/java-archive 
+				(.jardiff) : zapplication/x-java-archive-diff 
+				(.jng) : zimage/x-jng 
+				(.jnlp) : zapplication/x-java-jnlp-file 
+				(.jpeg) : zimage/jpeg 
+				(.jpg) : zimage/jpeg 
+				(.js) : z 
+				(.json) : zapplication/json 
+				(.kar) : z 
+				(.kml) : zapplication/vnd.google-earth.kml+xml 
+				(.kmz) : zapplication/vnd.google-earth.kmz 
+				(.m3u8) : zapplication/vnd.apple.mpegurl 
+				(.m4a) : zaudio/x-m4a 
+				(.m4v) : zvideo/x-m4v 
+				(.mid) : z 
+				(.midi) : z 
+				(.mml) : ztext/mathml 
+				(.mng) : zvideo/x-mng 
+				(.mov) : zvideo/quicktime 
+				(.mp3) : zaudio/mpeg 
+				(.mp4) : zvideo/mp4 
+				(.mpeg) : zvideo/mpeg 
+				(.mpg) : zvideo/mpeg 
+				(.msi) : zapplication/octet-stream 
+				(.msm) : zapplication/octet-stream 
+				(.msp) : zapplication/octet-stream 
+				(.odg) : zapplication/vnd.oasis.opendocument.graphics 
+				(.odp) : zapplication/vnd.oasis.opendocument.presentation 
+				(.ods) : zapplication/vnd.oasis.opendocument.spreadsheet 
+				(.odt) : zapplication/vnd.oasis.opendocument.text 
+				(.ogg) : zaudio/ogg 
+				(.pdb) : zapplication/x-pilot 
+				(.pdf) : zapplication/pdf 
+				(.pem) : zapplication/x-x509-ca-cert 
+				(.pl) : zapplication/x-perl 
+				(.pm) : zapplication/x-perl 
+				(.png) : zimage/png 
+				(.ppt) : zapplication/vnd.ms-powerpoint 
+				(.pptx) : zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+				(.prc) : zapplication/x-pilot 
+				(.ps) : zapplication/postscript 
+				(.ra) : zaudio/x-realaudio 
+				(.rar) : zapplication/x-rar-compressed 
+				(.rpm) : zapplication/x-redhat-package-manager 
+				(.rss) : zapplication/rss+xml 
+				(.rtf) : zapplication/rtf 
+				(.run) : zapplication/x-makeself 
+				(.sea) : zapplication/x-sea 
+				(.shtml) : text/html 
+				(.sit) : zapplication/x-stuffit 
+				(.svg) : zimage/svg+xml 
+				(.svgz) : zimage/svg+xml 
+				(.swf) : zapplication/x-shockwave-flash 
+				(.tcl) : zapplication/x-tcl 
+				(.tif) : zimage/tiff 
+				(.tiff) : zimage/tiff 
+				(.tk) : zapplication/x-tcl 
+				(.ts) : zvideo/mp2t 
+				(.txt) : ztext/plain 
+				(.war) : zapplication/java-archive 
+				(.wasm) : zapplication/wasm 
+				(.wbmp) : zimage/vnd.wap.wbmp 
+				(.webm) : zvideo/webm 
+				(.webp) : zimage/webp 
+				(.wml) : ztext/vnd.wap.wml 
+				(.wmlc) : zapplication/vnd.wap.wmlc 
+				(.wmv) : zvideo/x-ms-wmv 
+				(.woff) : z 
+				(.woff2) : zfont/woff2 
+				(.xhtml) : zapplication/xhtml+xml 
+				(.xls) : zapplication/vnd.ms-excel 
+				(.xlsx) : zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+				(.xml) : ztext/xml 
+				(.xpi) : zapplication/x-xpinstall 
+				(.xspf) : zapplication/xspf+xml 
+				(.z) : z 
+				(.zapplication/javascript) : z 
+				(.zaudio/midi) : z 
+				(.zfont/woff) : z 
+				(.zimage/gif) : z 
+				(.zip) : zapplication/zip 
+				(.zvideo/3gpp) : z 
 				(allowed_method) : GET POST DELETE 
 				(autoindex) : off 
 				(client_max_body_size) : 1M 
-				(host) : 0.0.0.0 
+				(host) : localhost 
+				(include) : /Users/jchakir/projs/webserv/config/mime.types 
 				(index) : index.html index.htm index.php 
-				(name) : 1337.ma www.1337.ma 
 				(port) : 8080 
 				(redirect) : 301 www.google.com 
 				(root) : /var/www/html 
@@ -46,15 +517,15 @@ ai_addr:
 	sin_len: 16
 	sin_family: 2
 	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
-ai_next: 0
+ai_next: 1
 -------------------------- new Client --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50494
+	sin_port: 49763
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -62,7 +533,7 @@ ai_addr:
 	sin_len: 16
 	sin_family: 2
 	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
 ===================== Request Parser =============================
 Method: GET
@@ -74,8 +545,10 @@ Query :
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
 Accept-Encoding: gzip, deflate, br
 Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
 Connection: keep-alive
 Host: 127.0.0.1
+Pragma: no-cache
 Sec-Fetch-Dest: document
 Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: none
@@ -84,19 +557,135 @@ Sec-GPC: 1
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
           --------- Request Stat ---------
-REQUEST_READY
+BODY_READY
           --------- Client BODY ---------
 size: 0
 
 ===================== Location =============================
 Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
 allowed_method: POST GET 
 autoindex: on 
-cgi: php-cgi .php python-cgi .py ruby-cgi .rb perl-cgi .pl lua-cgi .lua node-cgi .js 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
 client_max_body_size: 1M 
-host: 0.0.0.0 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
 index: index.html index.php 
-name: 1337.ma www.1337.ma 
 port: 8080 
 root: /Users/jchakir/projs/webserv 
 =============== END ===============
@@ -105,7 +694,1591 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50494
+	sin_port: 49763
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49764
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/js/main.cbfc72bb.js
+fullPath  : /Users/jchakir/projs/webserv/static/js/main.cbfc72bb.js
+Ext   : .js
+Query : 
+          --------- headers ---------
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: script
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49764
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49765
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/css/main.88b522ba.css
+fullPath  : /Users/jchakir/projs/webserv/static/css/main.88b522ba.css
+Ext   : .css
+Query : 
+          --------- headers ---------
+Accept: text/css,*/*;q=0.1
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49765
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49766
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49767
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/media/jchakirbg.07fec12e679999f8ca71.png
+fullPath  : /Users/jchakir/projs/webserv/static/media/jchakirbg.07fec12e679999f8ca71.png
+Ext   : .png
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49768
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/media/port.c6f4e10d95ffe67b15ad.png
+fullPath  : /Users/jchakir/projs/webserv/static/media/port.c6f4e10d95ffe67b15ad.png
+Ext   : .png
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49769
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/media/blog.33963cd7fe5f35b8d80e.jpeg
+fullPath  : /Users/jchakir/projs/webserv/static/media/blog.33963cd7fe5f35b8d80e.jpeg
+Ext   : .jpeg
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49770
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /static/media/cms.235694fd6b702b47176d.jpeg
+fullPath  : /Users/jchakir/projs/webserv/static/media/cms.235694fd6b702b47176d.jpeg
+Ext   : .jpeg
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+===================== Request Parser =============================
+Method: GET
+Path  : /favicon.ico
+fullPath  : /Users/jchakir/projs/webserv/favicon.ico
+Ext   : .ico
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49770
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49769
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49768
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49766
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49767
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49772
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /logo192.png
+fullPath  : /Users/jchakir/projs/webserv/logo192.png
+Ext   : .png
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49773
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49772
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /favicon.ico
+fullPath  : /Users/jchakir/projs/webserv/favicon.ico
+Ext   : .ico
+Query : 
+          --------- headers ---------
+Accept: image/avif,image/webp,*/*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Connection: keep-alive
+Host: 127.0.0.1
+Pragma: no-cache
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+          --------- Request Stat ---------
+BODY_READY
+          --------- Client BODY ---------
+size: 0
+
+===================== Location =============================
+Location: /
+.3gp: z 
+.3gpp: z 
+.7z: zapplication/x-7z-compressed 
+.ai: zapplication/postscript 
+.asf: zvideo/x-ms-asf 
+.asx: zvideo/x-ms-asf 
+.atom: zapplication/atom+xml 
+.avi: zvideo/x-msvideo 
+.avif: zimage/avif 
+.bin: zapplication/octet-stream 
+.bmp: zimage/x-ms-bmp 
+.cco: zapplication/x-cocoa 
+.crt: zapplication/x-x509-ca-cert 
+.css: ztext/css 
+.deb: zapplication/octet-stream 
+.der: zapplication/x-x509-ca-cert 
+.dll: zapplication/octet-stream 
+.dmg: zapplication/octet-stream 
+.doc: zapplication/msword 
+.docx: zapplication/vnd.openxmlformats-officedocument.wordprocessingml.document 
+.ear: zapplication/java-archive 
+.eot: zapplication/vnd.ms-fontobject 
+.eps: zapplication/postscript 
+.exe: zapplication/octet-stream 
+.flv: zvideo/x-flv 
+.gif: z 
+.hqx: zapplication/mac-binhex40 
+.htc: ztext/x-component 
+.htm: text/html 
+.html: text/html 
+.ico: zimage/x-icon 
+.img: zapplication/octet-stream 
+.iso: zapplication/octet-stream 
+.jad: ztext/vnd.sun.j2me.app-descriptor 
+.jar: zapplication/java-archive 
+.jardiff: zapplication/x-java-archive-diff 
+.jng: zimage/x-jng 
+.jnlp: zapplication/x-java-jnlp-file 
+.jpeg: zimage/jpeg 
+.jpg: zimage/jpeg 
+.js: z 
+.json: zapplication/json 
+.kar: z 
+.kml: zapplication/vnd.google-earth.kml+xml 
+.kmz: zapplication/vnd.google-earth.kmz 
+.m3u8: zapplication/vnd.apple.mpegurl 
+.m4a: zaudio/x-m4a 
+.m4v: zvideo/x-m4v 
+.mid: z 
+.midi: z 
+.mml: ztext/mathml 
+.mng: zvideo/x-mng 
+.mov: zvideo/quicktime 
+.mp3: zaudio/mpeg 
+.mp4: zvideo/mp4 
+.mpeg: zvideo/mpeg 
+.mpg: zvideo/mpeg 
+.msi: zapplication/octet-stream 
+.msm: zapplication/octet-stream 
+.msp: zapplication/octet-stream 
+.odg: zapplication/vnd.oasis.opendocument.graphics 
+.odp: zapplication/vnd.oasis.opendocument.presentation 
+.ods: zapplication/vnd.oasis.opendocument.spreadsheet 
+.odt: zapplication/vnd.oasis.opendocument.text 
+.ogg: zaudio/ogg 
+.pdb: zapplication/x-pilot 
+.pdf: zapplication/pdf 
+.pem: zapplication/x-x509-ca-cert 
+.pl: zapplication/x-perl 
+.pm: zapplication/x-perl 
+.png: zimage/png 
+.ppt: zapplication/vnd.ms-powerpoint 
+.pptx: zapplication/vnd.openxmlformats-officedocument.presentationml.presentation 
+.prc: zapplication/x-pilot 
+.ps: zapplication/postscript 
+.ra: zaudio/x-realaudio 
+.rar: zapplication/x-rar-compressed 
+.rpm: zapplication/x-redhat-package-manager 
+.rss: zapplication/rss+xml 
+.rtf: zapplication/rtf 
+.run: zapplication/x-makeself 
+.sea: zapplication/x-sea 
+.shtml: text/html 
+.sit: zapplication/x-stuffit 
+.svg: zimage/svg+xml 
+.svgz: zimage/svg+xml 
+.swf: zapplication/x-shockwave-flash 
+.tcl: zapplication/x-tcl 
+.tif: zimage/tiff 
+.tiff: zimage/tiff 
+.tk: zapplication/x-tcl 
+.ts: zvideo/mp2t 
+.txt: ztext/plain 
+.war: zapplication/java-archive 
+.wasm: zapplication/wasm 
+.wbmp: zimage/vnd.wap.wbmp 
+.webm: zvideo/webm 
+.webp: zimage/webp 
+.wml: ztext/vnd.wap.wml 
+.wmlc: zapplication/vnd.wap.wmlc 
+.wmv: zvideo/x-ms-wmv 
+.woff: z 
+.woff2: zfont/woff2 
+.xhtml: zapplication/xhtml+xml 
+.xls: zapplication/vnd.ms-excel 
+.xlsx: zapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+.xml: ztext/xml 
+.xpi: zapplication/x-xpinstall 
+.xspf: zapplication/xspf+xml 
+.z: z 
+.zapplication/javascript: z 
+.zaudio/midi: z 
+.zfont/woff: z 
+.zimage/gif: z 
+.zip: zapplication/zip 
+.zvideo/3gpp: z 
+allowed_method: POST GET 
+autoindex: on 
+cgi: /usr/bin/php-cgi .php /usr/bin/python3 .py /usr/bin/ruby .rb /usr/bin/perl .pl /usr/bin/go .go /usr/bin/luajit .lua /usr/bin/scala .scala /usr/bin/rustc .rs /usr/bin/ghc .hs 
+client_max_body_size: 1M 
+host: localhost 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: index.html index.php 
+port: 8080 
+root: /Users/jchakir/projs/webserv 
+=============== END ===============
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 49773
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- Leaks --------------------------

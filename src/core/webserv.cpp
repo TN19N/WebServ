@@ -36,8 +36,8 @@ Webserv::Webserv(const std::string& configFilePath)
 // *************************************************************************************************************************************************************************************
 
 // * Static Tools **********************************************************************************************************************************************************************
-static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data, const int end) {
-    for (int i = 0; i < end; ++i) {
+static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data) {
+    for (int i = 0; i < data.size(); ++i) {
         if (addr->sa_family == data[i]->ai_addr->sa_family) {
             if (addr->sa_family == AF_INET) {
                 const struct sockaddr_in* addr4 = reinterpret_cast<const struct sockaddr_in*>(addr);
@@ -86,7 +86,7 @@ void Webserv::startServers() {
     for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
         if ((*context)->getName() == HTTP_CONTEXT) {
             const std::vector<Context*>& contexts = (*context)->getChildren();
-            for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
+			for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
                 if ((*context)->getName() == SERVER_CONTEXT) {
                     struct addrinfo hints, *res = NULL;
                     int sockfd;
@@ -97,7 +97,7 @@ void Webserv::startServers() {
 
                     const std::string& port = (*context)->getDirective(PORT_DIRECTIVE).at(0);
                     const std::string& host = (*context)->getDirective(HOST_DIRECTIVE).at(0);
-
+					
                     if (getaddrinfo(host.c_str(), port.c_str(), &hints, &res) != 0 || res == NULL) {
                         throw std::runtime_error("getaddrinfo() : " + std::string(gai_strerror(errno)));
                     }
@@ -115,14 +115,15 @@ void Webserv::startServers() {
                         }
                     }
 
-                    serversAddress.push_back(res);
 
-                    if (isInRange(res->ai_addr, serversAddress, (context - contexts.begin()))) {
+                    if (isInRange(res->ai_addr, serversAddress)) {
                         freeaddrinfo(res->ai_next);
-                        continue;
+						serversAddress.push_back(res);
+						continue;
                     }
-
-                    if ((sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1) {
+					serversAddress.push_back(res);
+	
+					if ((sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1) {
                         freeaddrinfo(res->ai_next);
                         throw std::runtime_error("socket() : " + std::string(strerror(errno)));
                     }
@@ -155,7 +156,7 @@ void Webserv::startServers() {
                         freeaddrinfo(res->ai_next);
                         throw std::runtime_error("listen() : " + std::string(strerror(errno)));
                     }
-
+					
                     this->serversSocketFd.push_back(sockfd);
 
                     # ifdef DEBUG

@@ -21,7 +21,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     response(nullptr),
     cgiToClient(cgiToClient),
     clientToCgi(nullptr),
-    state(cgiToClient == nullptr ? RIDING_REQUEST : SENDING_REQUEST)
+    state(cgiToClient == nullptr ? READING_HEADERS : SENDING_REQUEST)
 {
     if (cgiToClient != nullptr) {
         this->pipeFd[READ_END] = fd[READ_END];
@@ -131,7 +131,7 @@ void Client::setState(const int &state) {
 // * Methods ********************************************************************************************************
 void Client::switchState() {
     switch (this->getState()) {
-        case RIDING_REQUEST :
+        case READING_REQUEST :
             this->setState(SENDING_RESPONSE);
             delete this->request;
             this->request = nullptr;
@@ -143,7 +143,7 @@ void Client::switchState() {
             break;
         case SENDING_REQUEST :
             close(this->getFdOf(READ_END));
-            this->setState(RIDING_REQUEST);
+            this->setState(READING_REQUEST);
             delete this->request;
             this->request = nullptr;
             break;
@@ -159,13 +159,13 @@ const bool Client::isCgi() const {
 Client::~Client() {
 
     switch (this->getState()) {
-        case RIDING_REQUEST :
+        case READING_REQUEST :
         case SENDING_RESPONSE :
             close(this->getSocketFd());
             break;
         case SENDING_REQUEST :
             close(this->getPipeFd()[WRITE_END]);
-        case RIDING_RESPONSE :
+        case READING_RESPONSE :
             close(this->getPipeFd()[READ_END]);
     }
 
