@@ -5,11 +5,9 @@
 # include <vector>
 # include <poll.h>
 
+# include "defines.hpp"
 # include "context.hpp"
 # include "client.hpp"
-
-# define WEB_SERV_RUNNING 0
-# define WEB_SERV_STOPPING 1
 
 class Webserv {
     private:

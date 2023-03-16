@@ -65,39 +65,25 @@ static void __read_file_content_to_do_response_(Client* client)
 {
 	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
 	Response		*response;
-	std::string		body;
-	int				file;
-	ssize_t 		readSize;
-	char			buffer[1024];
+	struct stat		pathInfo;
 	
 	response = new Response(200, false);
-	client->setResponse(response);
 	
-	file  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
-	if (file < 0)
+	stat(client->getRequest()->fullPath.c_str(), &pathInfo);
+	response->download_file_fd  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
+	if (response->download_file_fd < 0)
 		throw 403;
-	while (true)
-	{
-		readSize = read(file, buffer, 1024);
-		if (readSize == 0)
-			break;
-		if (readSize < 0)
-		{
-			close(file);
-			throw 500;
-		}
-		body.append(buffer, readSize);
-	}
-	close(file);
 	notFound = client->getRequest()->location->getDirectives().end();
 	directive = client->getRequest()->location->getDirectives().find(client->getRequest()->extension);
 	if (directive != notFound)
 		response->addHeader("Content-Type", directive->second[0]);
 	else
 		response->addHeader("Content-Type", DEFAULT_MIME_TYPE);
-
-	response->addBody(body);
+	response->addHeader("Content-Length",std::to_string(pathInfo.st_size));
+	response->buffer.append(CRLF);
+	client->setResponse(response);
 	client->switchState();
+	client->setState(DOWNLOADING_FILE);
 }
 
 void HTTP::getMethodHandler(Client *client)

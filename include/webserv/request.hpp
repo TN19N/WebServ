@@ -1,11 +1,13 @@
 # ifndef REQUEST_HPP
 # define REQUEST_HPP
 
-# define BUFFER_SIZE 2048
 
 # include <string>
 # include <map>
-#include "context.hpp"
+# include <unistd.h>
+
+# include "defines.hpp"
+# include "context.hpp"
 
 struct Request {
     public :

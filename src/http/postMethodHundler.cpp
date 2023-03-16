@@ -17,15 +17,10 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 		throw 403;
 	
 	if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0)
-	{
-		close(request->upload_file_fd);
 		throw 500;
-	}
 	request->body.clear();
 	if (request->state == BODY_READY)
 	{
-		close(request->upload_file_fd);
-		request->upload_file_fd = 0;
 		client->setResponse(new Response(200, false));
 		client->switchState();
 	}
@@ -50,6 +45,7 @@ void HTTP::postMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
+		// TODO: logic of filepath name here <<<-------
 		__create_file_to_upload_content_(client, (directive->second[0] + "test").c_str());
 		return;
 	}

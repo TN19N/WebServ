@@ -52,31 +52,26 @@ static void __check_allowed_method_(const Context* location, std::string &method
 
 void HTTP::requestHandler(Client* client, const Context* const configuration)
 {
-	Request			*request;
-	
+	Request	*request = client->getRequest();
+
+	std::cerr << "requestHandler\n" ;
 	HTTP::readRequestBufferFromClient(client);
 	HTTP::readBodyFromBuffer(client);
-	if (client->getRequest() == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos)
+	if (request == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos)
 		client->setState(READING_BODY);
 	switch (client->getState())
 	{
 		case UPLOADING_FILE:
 			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0)
-			{
-				close(request->upload_file_fd);
 				throw 500;
-			}
 			request->body.clear();
 			if (request->state == BODY_READY)
 			{
-				client->setState(READING_REQUEST);
-				close(request->upload_file_fd);
-				request->upload_file_fd = 0;
 				client->setResponse(new Response(200, false));
 				client->switchState();
 			}
 			break;
-		//case expression: other case for cgi
+		//case cgi: other case for cgi
 		case READING_BODY:
 			client->setState(READING_REQUEST);
 			request = HTTP::requestParser(client);

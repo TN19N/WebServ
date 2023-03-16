@@ -9,6 +9,18 @@
 
 // * Functions *************************************************************************************************************************
 
+bool HTTP::sendResponseBufferToClient(Client *client)
+{
+	Response	*response = client->getResponse();
+	ssize_t		readSize;
+	
+	readSize = send(client->getFdOf(WRITE_END), response->buffer.c_str(), response->buffer.length(), 0);
+	if (readSize < 0)
+		throw 500;
+	response->buffer.erase(0, readSize);
+	return response->buffer.size() == 0;
+}
+
 int HTTP::strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s1 == *s2)

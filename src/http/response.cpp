@@ -3,15 +3,11 @@
 # include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
 
-# define CRLF "\r\n"
 
 // * Constructor ****************************************************************************************************
 Response::Response(const int statusCode, const bool keepAlive) 
-    : statusCode(statusCode),
-        keepAlive(keepAlive),
-        contentLength(0),
-        protocol("HTTP/1.1"),
-        buffer("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF)
+    : download_file_fd(0), statusCode(statusCode), keepAlive(keepAlive), contentLength(0),
+	  buffer("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF)
 {
     this->addHeader("Date", HTTP::getHttpDate());
     this->addHeader("Connection", (this->keepAlive) ? "keep-alive" : "close");
@@ -35,5 +31,7 @@ void Response::addBody(const std::string& body) {
 // * Destructor *****************************************************************************************************
 Response::~Response() {
     // Nothing to do
+	if (download_file_fd)
+		close(download_file_fd);
 }
 // ******************************************************************************************************************

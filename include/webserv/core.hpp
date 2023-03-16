@@ -6,6 +6,7 @@
 # include <netdb.h>
 # include <poll.h>
 
+#include "defines.hpp"
 # include "context.hpp"
 # include "client.hpp"
 

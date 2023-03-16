@@ -8,5 +8,5 @@
 
 void HTTP::deleteMethodHandler(Client *client)
 {
-
+	(void)client;
 }

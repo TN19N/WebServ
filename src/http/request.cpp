@@ -1,7 +1,7 @@
 # include "../../include/webserv/request.hpp"
 
 // * Constructor ****************************************************************************************************
-Request::Request() : isChunked(false), contentLength(0), state(READING_BODY)
+Request::Request() : upload_file_fd(0), isChunked(false), contentLength(0), state(READING_BODY)
 {
     // Nothing to do
 }
@@ -10,5 +10,7 @@ Request::Request() : isChunked(false), contentLength(0), state(READING_BODY)
 // * Destructor *****************************************************************************************************
 Request::~Request() {
     // Nothing to do
+	if (upload_file_fd)
+		close(upload_file_fd);
 }
 // ******************************************************************************************************************

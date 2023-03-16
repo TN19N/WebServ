@@ -6,6 +6,7 @@
 # include <string>
 # include <poll.h>
 
+#include "defines.hpp"
 # include "request.hpp"
 # include "response.hpp"
 #include "context.hpp"

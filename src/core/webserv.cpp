@@ -219,7 +219,8 @@ void Webserv::run() {
                     }
                 } else if (fds[i].revents & POLLOUT) {
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (HTTP::sendResponse(client)) {
+
+					if (HTTP::responseHandler(client)) {
                         if (client->isCgi()) {
                             client->switchState();
                         } else {

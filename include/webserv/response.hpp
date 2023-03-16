@@ -4,14 +4,15 @@
 # include <string>
 # include <map>
 
+#include "defines.hpp"
+
 struct Response {
     public :
-		int									file_fd;
+		int									download_file_fd;
         int                                 statusCode;
         std::map<std::string, std::string>  headers;
         bool                                keepAlive;
         size_t                              contentLength;
-        std::string                         protocol;
 
         std::string                         buffer;
     public :

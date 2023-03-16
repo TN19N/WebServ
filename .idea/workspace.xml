@@ -19,30 +19,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/include/webserv/defines.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/mime.types" beforeDir="false" afterPath="$PROJECT_DIR$/config/mime.types" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/client.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/client.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/webserv/configuration.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/configuration.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/context.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/context.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/core.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/core.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/http.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/http.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/request.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/request.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/webserv/response.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/response.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/loadConfiguration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/tools.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/tools.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/webserv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/webserv.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/blockMatchAlgorithm.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/client.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/deleteMethodHundler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/deleteMethodHundler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/postMethodHundler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/postMethodHundler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/readRequestBody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/readBodyFromBuffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/request.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/request.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/requestParser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestParser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/response.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/response.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/tools.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/tools.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/template/config.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,6 +207,8 @@
       <workItem from="1678714005901" duration="3381000" />
       <workItem from="1678734619906" duration="625000" />
       <workItem from="1678796337505" duration="26987000" />
+      <workItem from="1678887434269" duration="11817000" />
+      <workItem from="1678907346592" duration="14764000" />
     </task>
     <servers />
   </component>

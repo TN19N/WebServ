@@ -15,12 +15,10 @@
 #include <fstream>
 #include <fcntl.h>
 
+# include "defines.hpp"
 # include "client.hpp"
 # include "context.hpp"
-#include "configuration.hpp"
-
-# define END_CHUNKED "0\r\n\r\n"
-# define END_HEADERS "\r\n\r\n"
+# include "configuration.hpp"
 
 namespace HTTP
 {
@@ -32,7 +30,8 @@ namespace HTTP
 	const std::string getStatusCodeMessage(const int statusCode);
 	
 	// * Response Handler ******************
-	const bool sendResponse(Client* client);
+	bool 	sendResponseBufferToClient(Client *client);
+	bool 	responseHandler(Client *client);
 	
 	// * Request Handler ***************
 	Request*		requestParser(Client *client);

@@ -147,6 +147,11 @@ void Client::switchState() {
             delete this->request;
             this->request = nullptr;
             break;
+		case UPLOADING_FILE:
+			this->setState(SENDING_RESPONSE);
+			delete this->request;
+			this->request = nullptr;
+			break;
     }
 }
 
