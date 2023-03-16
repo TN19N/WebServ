@@ -61,6 +61,8 @@ bool HTTP::responseHandler(Client *client)
 			if (readSize < BUFFER_SIZE)
 				ret = true;
 			break;
+		default:
+			ret = true;
 	}
 	return ret && HTTP::sendResponseBufferToClient(client);
 }
