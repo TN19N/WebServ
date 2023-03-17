@@ -11,7 +11,7 @@ types {
 
 #   --- image ---
 #    image/gif           gif;
-#    image/jpeg          jpeg jpg;
+    image/jpeg          jpeg jpg;
 #    image/avif          avif;
 #    image/png           png;
 #    image/svg+xml       svg svgz;

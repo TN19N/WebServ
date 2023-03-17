@@ -21,9 +21,6 @@ static void __print_request_data_for_debug_(Request *request)
 	for (std::map<std::string, std::string>::const_iterator b = request->headers.begin(),
 			e = request->headers.end(); b != e; ++b)
 		std::cout << b->first << ": " << b->second << '\n';
-	std::cout << "          --------- Client BODY ---------\n" ;
-	std::cout << "size: " << request->body.size() << '\n' ;
-	std::cout << request->body << '\n' ;
 	std::cout << "===================== Location =============================\n" ;
 	std::cout << "Location: " << request->location->getArgs()[0] << '\n' ;
 	for (std::map<std::string, std::vector<std::string> >::const_iterator
@@ -35,6 +32,18 @@ static void __print_request_data_for_debug_(Request *request)
 		std::cout << '\n';
 	}
 	std::cout << "=============== END ===============\n" ;
+}
+
+static void __print_response_data_for_debug_(Response *response) {
+	std::cout << "===================== Response =============================\n" ;
+	std::cout << "Status: " << response->statusCode << std::endl;
+	std::cout << "download_file_fd: " << response->download_file_fd << std::endl;
+	std::cout << "keepAlive: " << response->keepAlive << std::endl;
+	std::cout << "contentLength: " << response->contentLength << std::endl;
+	std::cout << "	--------- headers ---------	 " << std::endl;
+	for (std::map<std::string, std::string>::const_iterator b = response->headers.begin(), e = response->headers.end(); b != e; ++b) {
+		std::cout << '\t' << b->first << ": " << b->second << std::endl;
+	}
 }
 # endif
 
@@ -71,6 +80,10 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
 		request->fullPath.append(request->path);
 
+		# ifdef DEBUG
+			__print_request_data_for_debug_(request);
+		# endif
+
 		if (request->method == "GET") {
 			HTTP::getMethodHandler(client);
 		} else if (request->method == "POST") {
@@ -96,4 +109,10 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 			}
 		}
 	}
+
+	# ifdef DEBUG
+	if (client->getResponse() != nullptr) {
+		__print_response_data_for_debug_(client->getResponse());
+	}
+	# endif
 }
