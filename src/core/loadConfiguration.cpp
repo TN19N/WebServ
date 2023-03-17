@@ -106,6 +106,12 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
         if (rootStr.front() != '/') {
             throw std::runtime_error("invalid root '" + rootStr + "' in '" + directiveName + "' directive");
         }
+        if (rootStr.back() == '/' && rootStr.length() > 1) {
+            std::vector<std::string> newDirectiveArgs;
+            newDirectiveArgs.push_back(rootStr.substr(0, rootStr.length() - 1));
+            currentContext->addDirective(directiveName, newDirectiveArgs);
+            return ;
+        }
     } else if (directiveName == INDEX_DIRECTIVE) {
         checkRequirements(INDEX_DIRECTIVE_ARGS(directiveArgs), INDEX_DIRECTIVE_POS(currentContext), directiveName, "directive");
     } else if (directiveName == ERROR_DIRECTIVE) {

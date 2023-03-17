@@ -1,7 +1,12 @@
 # include "../../include/webserv/request.hpp"
 
 // * Constructor ****************************************************************************************************
-Request::Request() : upload_file_fd(0), isChunked(false), contentLength(0), state(READING_BODY)
+Request::Request() 
+    : keepAlive(true),
+    upload_file_fd(-1),
+    isChunked(false), 
+    contentLength(0), 
+    state(CREATING)
 {
     // Nothing to do
 }
@@ -9,8 +14,8 @@ Request::Request() : upload_file_fd(0), isChunked(false), contentLength(0), stat
 
 // * Destructor *****************************************************************************************************
 Request::~Request() {
-    // Nothing to do
-	if (upload_file_fd)
+	if (upload_file_fd != -1) {
 		close(upload_file_fd);
+    }
 }
 // ******************************************************************************************************************

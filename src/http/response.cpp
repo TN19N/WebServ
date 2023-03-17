@@ -6,8 +6,12 @@
 
 // * Constructor ****************************************************************************************************
 Response::Response(const int statusCode, const bool keepAlive) 
-    : download_file_fd(0), statusCode(statusCode), keepAlive(keepAlive), contentLength(0),
-	  buffer("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF)
+    : download_file_fd(-1), 
+        statusCode(statusCode), 
+        keepAlive(keepAlive), 
+        contentLength(0),
+        buffer("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF),
+        state(CREATING)
 {
     this->addHeader("Date", HTTP::getHttpDate());
     this->addHeader("Connection", (this->keepAlive) ? "keep-alive" : "close");
@@ -30,8 +34,8 @@ void Response::addBody(const std::string& body) {
 
 // * Destructor *****************************************************************************************************
 Response::~Response() {
-    // Nothing to do
-	if (download_file_fd)
+	if (download_file_fd != -1) {
 		close(download_file_fd);
+    }
 }
 // ******************************************************************************************************************

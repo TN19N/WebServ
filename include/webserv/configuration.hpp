@@ -68,5 +68,4 @@
 # define DEFAULT_AUTOINDEX      "off"
 # define DEFAULT_MIME_TYPE		"application/octet-stream"
 
-
 # endif

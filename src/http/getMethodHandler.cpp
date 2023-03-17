@@ -61,29 +61,29 @@ static void __do_response_with_dir_content_(Client* client)
 	client->switchState();
 }
 
-static void __read_file_content_to_do_response_(Client* client)
-{
+static void __read_file_content_to_do_response_(Client* client) {
 	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
 	Response		*response;
 	struct stat		pathInfo;
 	
-	response = new Response(200, false);
+	response = new Response(200, client->getRequest()->keepAlive);
 	
 	stat(client->getRequest()->fullPath.c_str(), &pathInfo);
-	response->download_file_fd  = open(client->getRequest()->fullPath.c_str(), O_RDONLY);
-	if (response->download_file_fd < 0)
+	if ((response->download_file_fd = open(client->getRequest()->fullPath.c_str(), O_RDONLY)) < 0) {
 		throw 403;
+	}
+
 	notFound = client->getRequest()->location->getDirectives().end();
 	directive = client->getRequest()->location->getDirectives().find(client->getRequest()->extension);
-	if (directive != notFound)
+	if (directive != notFound) {
 		response->addHeader("Content-Type", directive->second[0]);
-	else
+	} else {
 		response->addHeader("Content-Type", DEFAULT_MIME_TYPE);
+	}
 	response->addHeader("Content-Length",std::to_string(pathInfo.st_size));
 	response->buffer.append(CRLF);
 	client->setResponse(response);
 	client->switchState();
-	client->setState(DOWNLOADING_FILE);
 }
 
 void HTTP::getMethodHandler(Client *client)
@@ -93,47 +93,44 @@ void HTTP::getMethodHandler(Client *client)
 	
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;
-	
+
 	notFound = request->location->getDirectives().end();
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
-	if (directive != notFound)
-		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]) ;
+	if (directive != notFound) {
+		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
+	}
 
-	if (stat(request->fullPath.c_str(), &pathInfo) < 0)
+	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
+	}
 	// Check is directory
-	if (S_ISDIR(pathInfo.st_mode))
-	{
-		if (request->path.c_str()[request->path.size()-1] != '/')
+	if (S_ISDIR(pathInfo.st_mode)) {
+		if (request->path.c_str()[request->path.size()-1] != '/') {
 			throw std::make_pair(301, request->path + '/');
-		else
-		{
+		} else {
 			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
-			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
-			{
-				if (access((request->fullPath + *begin).c_str(), F_OK) == 0)
-				{
+			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin) {
+				if (access((request->fullPath + *begin).c_str(), F_OK) == 0) {
 					request->fullPath.append(*begin);
 					request->path.append(*begin);
 					request->extension = HTTP::getExtensionFromPath(request->path.c_str());
 					break;
 				}
 			}
-			if (begin == end)
-			{
-				if (request->location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off")
+			if (begin == end) {
+				if (request->location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off") {
 					throw 403;
-				else
+				} else {
 					__do_response_with_dir_content_(client);
+				}
 				return ;
 			}
 		}
 	}
 	// Check for CGI
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
-	if (directive != notFound)
-	{
+	if (directive != notFound) {
 		for (begin = directive->second.begin(), ++begin, end = directive->second.end(); begin < end; ++begin, ++begin)
 			if (*begin == request->extension)
 			{

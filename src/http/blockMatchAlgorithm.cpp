@@ -60,6 +60,7 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
 			}
 		}
 	}
+	freeaddrinfo(res);
 }
 
 static const Context* __get_match_server_context_(std::vector<const Context*> &servers, const std::string &host)
@@ -77,7 +78,7 @@ static const Context* __get_match_server_context_(std::vector<const Context*> &s
 					return servers[i];
 		}
 	}
-	return servers[0];
+	return servers.at(0);
 }
 
 static const Context* __get_match_location_context_(const std::vector<Context*> &locations, const std::string &path)
@@ -88,13 +89,14 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	
 	if (locations.empty())
 		throw 403;
-	for (size_t i = 0; i < locations.size(); ++i)
+	for (size_t i = 0; i < locations.size(); ++i) {
 		locate.insert(std::make_pair(locations[i]->getArgs()[0], locations[i]));
-	
+	}
 	for (begin = locate.begin(), end = locate.end(); begin != end; ++begin)
 	{
-		if (begin->first == "/")
+		if (begin->first == "/") {
 			return begin->second;
+		}
 		character = HTTP::strcmp(path.c_str(), begin->first.c_str());
 		if (character == 0 || character == '/')
 			return begin->second;
@@ -117,5 +119,6 @@ const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* co
 			isValidServer(children[i], client, servers);
 		}
 	}
+
     return __get_location_context_(client->getRequest(), servers);
 }

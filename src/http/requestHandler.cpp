@@ -50,42 +50,50 @@ static void __check_allowed_method_(const Context* location, std::string &method
 		throw 405;
 }
 
-void HTTP::requestHandler(Client* client, const Context* const configuration)
-{
-	Request	*request = client->getRequest();
+void HTTP::requestHandler(Client* client, const Context* const configuration) {
+	Request	*request;
 
-	std::cerr << "requestHandler\n" ;
 	HTTP::readRequestBufferFromClient(client);
-	HTTP::readBodyFromBuffer(client);
-	if (request == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos)
-		client->setState(READING_BODY);
-	switch (client->getState())
-	{
-		case UPLOADING_FILE:
-			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0)
+
+	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
+		request = HTTP::requestParser(client);
+		client->setRequest(request);
+		
+		try {
+			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
+		} catch (std::out_of_range &e) {
+			// otherwise keepAlive is true
+		}
+
+		request->location = HTTP::blockMatchAlgorithm(client, configuration);
+
+		__check_allowed_method_(request->location, request->method);
+		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
+		request->fullPath.append(request->path);
+
+		if (request->method == "GET") {
+			HTTP::getMethodHandler(client);
+		} else if (request->method == "POST") {
+			HTTP::postMethodHandler(client);
+		} else if (request->method == "DELETE") {
+			HTTP::deleteMethodHandler(client);
+		}
+	}
+
+	request = client->getRequest();
+	if (request != nullptr) {
+		HTTP::readBodyFromBuffer(client);
+
+		if (request->upload_file_fd != -1) {
+			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0) {
 				throw 500;
+			}
 			request->body.clear();
-			if (request->state == BODY_READY)
-			{
-				client->setResponse(new Response(200, false));
+
+			if (request->state == READY) {
+				client->setResponse(new Response(200, request->keepAlive));
 				client->switchState();
 			}
-			break;
-		//case cgi: other case for cgi
-		case READING_BODY:
-			client->setState(READING_REQUEST);
-			request = HTTP::requestParser(client);
-			client->setRequest(request);
-			HTTP::readBodyFromBuffer(client);
-			request->location = HTTP::blockMatchAlgorithm(client, configuration);
-			__check_allowed_method_(request->location, request->method);
-			request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE)[0]);
-			request->fullPath.append(request->path);
-			if (request->method == "GET")
-				HTTP::getMethodHandler(client);
-			else if (request->method == "POST")
-				HTTP::postMethodHandler(client);
-			else // else mean delete method
-				HTTP::deleteMethodHandler(client);
+		}
 	}
 }

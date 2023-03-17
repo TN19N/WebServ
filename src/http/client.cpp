@@ -21,7 +21,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     response(nullptr),
     cgiToClient(cgiToClient),
     clientToCgi(nullptr),
-    state(cgiToClient == nullptr ? READING_HEADERS : SENDING_REQUEST)
+    state(cgiToClient == nullptr ? READING_REQUEST : SENDING_REQUEST)
 {
     if (cgiToClient != nullptr) {
         this->pipeFd[READ_END] = fd[READ_END];
@@ -137,20 +137,20 @@ void Client::switchState() {
             this->request = nullptr;
             break;
         case SENDING_RESPONSE :
-            this->setState(SENDING_RESPONSE);
+            this->setState(READING_REQUEST);
             delete this->response;
             this->response = nullptr;
             break;
         case SENDING_REQUEST :
             close(this->getFdOf(READ_END));
-            this->setState(READING_REQUEST);
+            this->setState(READING_RESPONSE);
             delete this->request;
             this->request = nullptr;
             break;
-		case UPLOADING_FILE:
-			this->setState(SENDING_RESPONSE);
-			delete this->request;
-			this->request = nullptr;
+		case READING_RESPONSE:
+			this->setState(SENDING_REQUEST);
+			delete this->response;
+			this->response = nullptr;
 			break;
     }
 }

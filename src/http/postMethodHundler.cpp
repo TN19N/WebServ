@@ -10,22 +10,14 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 {
 	Request	*request = client->getRequest();
 	
-	if (access(filepath, F_OK) == 0)
+	if (access(filepath, F_OK) == 0) {
 		throw 403;
-	request->upload_file_fd = open(filepath, O_WRONLY | O_CREAT);
-	if (request->upload_file_fd < 0)
-		throw 403;
-	
-	if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0)
-		throw 500;
-	request->body.clear();
-	if (request->state == BODY_READY)
-	{
-		client->setResponse(new Response(200, false));
-		client->switchState();
 	}
-	else
-		client->setState(UPLOADING_FILE);
+
+	request->upload_file_fd = open(filepath, O_WRONLY | O_CREAT);
+	if (request->upload_file_fd < 0) {
+		throw 403;
+	}
 }
 
 void HTTP::postMethodHandler(Client *client)
@@ -39,8 +31,9 @@ void HTTP::postMethodHandler(Client *client)
 	notFound = request->location->getDirectives().end();
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
-	if (directive != notFound)
-		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]) ;
+	if (directive != notFound) {
+		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
+	}
 	// check for file upload
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
@@ -50,15 +43,15 @@ void HTTP::postMethodHandler(Client *client)
 		return;
 	}
 	// check is exist whatever file or directory
-	if (stat(request->fullPath.c_str(), &pathInfo) < 0)
+	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
+	}
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode))
 	{
-		if (request->path.c_str()[request->path.size()-1] != '/')
+		if (request->path.c_str()[request->path.size()-1] != '/') {
 			throw std::make_pair(301, request->path + '/');
-		else
-		{
+		} else {
 			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
 			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)
 			{
@@ -70,8 +63,9 @@ void HTTP::postMethodHandler(Client *client)
 					break;
 				}
 			}
-			if (begin == end)
+			if (begin == end) {
 				throw 403;
+			}
 		}
 	}
 	// Check for CGI

@@ -24,20 +24,20 @@ static const char *__get_request_method_(const char * &buffer, std::string &base
 {
 	const char *save_buffer = buffer;
 	
-	 if (HTTP::strcmp(buffer, "GET") == ' ')
-		 buffer += 3;
-	 else if (HTTP::strcmp(buffer, "POST") == ' ')
-		 buffer += 4;
-	 else if (HTTP::strcmp(buffer, "DELETE") == ' ')
-		 buffer += 6;
-	 else
-		 throw 501;
-	 
-	 base[buffer - base.c_str()] = '\0';
-	 ++buffer;
-	 while (*buffer == ' ')
-		 ++buffer;
-	 return save_buffer ;
+	if (HTTP::strcmp(buffer, "GET") == ' ')
+		buffer += 3;
+	else if (HTTP::strcmp(buffer, "POST") == ' ')
+		buffer += 4;
+	else if (HTTP::strcmp(buffer, "DELETE") == ' ')
+		buffer += 6;
+	else
+		throw 501;
+
+	base[buffer - base.c_str()] = '\0';
+	++buffer;
+	while (*buffer == ' ')
+		++buffer;
+	return save_buffer ;
 }
 
 static const char *__get_requested_path_(const char * &buffer, std::string &base)
@@ -129,28 +129,28 @@ static void __fill_request_and_check_basic_bad_errors_(Request *request) {
 	std::map<std::string, std::string>::iterator header;
 	
 	header = request->headers.find("Host");
-	if (header == request->headers.end())
+	if (header == request->headers.end()) {
 		throw 400;
+	}
 	pos = header->second.rfind(':');
-	if (pos != std::string::npos)
+	if (pos != std::string::npos) {
 		header->second = header->second.substr(0, pos);
+	}
 	header = request->headers.find("Transfer-Encoding");
 	if (header != request->headers.end()) {
-		if (header->second != "chunked")
+		if (header->second != "chunked") {
 			throw 501;
+		}
 		request->isChunked = true;
-	}
-	else
-	{
+	} else {
 		header =  request->headers.find("Content-Length");
-		if (header != request->headers.end())
+		if (header != request->headers.end()) {
 			request->contentLength = HTTP::parseContentLength(header->second.c_str());
+		}
 	}
 }
 
-static void __parse_and_fill_request_headers_(const char * &buffer, std::string &base,
-											  std::map<std::string, std::string> &headers, bool append)
-{
+static void __parse_and_fill_request_headers_(const char * &buffer, std::string &base, std::map<std::string, std::string> &headers, bool append) {
 	const char	*key;
 	
 	while (*buffer && *buffer != '\r')
@@ -184,7 +184,7 @@ Request* HTTP::requestParser(Client *client)
 	Request		*request;
 	const char	*path, *buffer = client->getBuffer().c_str();
 
-	request = new Request;
+	request = new Request();
 	request->method = __get_request_method_(buffer, client->getBuffer()) ;
 	path = __get_requested_path_(buffer, client->getBuffer());
 	if (path[0] != '/')

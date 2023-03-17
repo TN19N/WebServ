@@ -15,6 +15,7 @@ struct Response {
         size_t                              contentLength;
 
         std::string                         buffer;
+        int                                 state;
     public :
         Response(const int statusCode, const bool keepAlive);
 
