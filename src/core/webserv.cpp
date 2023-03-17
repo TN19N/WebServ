@@ -63,7 +63,7 @@ static bool errorHandler(const int statusCode, Client* client) {
     if (client->getState() == SENDING_RESPONSE) {
         return true;
     } else {
-        client->setResponse(new Response(statusCode, CLOSE_CONNECTION));
+        client->setResponse(new Response(statusCode, KEEP_ALIVE));
         client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
         client->switchState();
         return false;
