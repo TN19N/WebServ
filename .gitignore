@@ -11,3 +11,4 @@ test.cpp
 CMakeLists.txt
 .idea/
 nginx/
+www/
