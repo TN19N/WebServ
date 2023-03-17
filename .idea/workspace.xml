@@ -18,11 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,17 +85,17 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/src/http" />
-      <recent name="$PROJECT_DIR$/keep" />
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/request" />
+      <recent name="$PROJECT_DIR$/www/site7" />
+      <recent name="$PROJECT_DIR$/www/site6" />
+      <recent name="$PROJECT_DIR$/www/site5" />
+      <recent name="$PROJECT_DIR$/www/site4" />
+      <recent name="$PROJECT_DIR$/www/site3" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -189,7 +185,14 @@
       <workItem from="1678734619906" duration="625000" />
       <workItem from="1678796337505" duration="26987000" />
       <workItem from="1678887434269" duration="11817000" />
-      <workItem from="1678907346592" duration="16775000" />
+      <workItem from="1678907346592" duration="17110000" />
+      <workItem from="1678973590366" duration="9215000" />
+      <workItem from="1678983629858" duration="686000" />
+      <workItem from="1678984944712" duration="3575000" />
+      <workItem from="1678992779414" duration="10095000" />
+      <workItem from="1679050126736" duration="5000" />
+      <workItem from="1679053363196" duration="294000" />
+      <workItem from="1679056498925" duration="3877000" />
     </task>
     <servers />
   </component>

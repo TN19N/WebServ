@@ -1,15 +1,135 @@
 -------------------------- Configuration --------------------------
 [main] :: 
 	[http] :: 
-		(.htm) : text/html 
-		(.html) : text/html 
-		(.shtml) : text/html 
+		(.---) : --- 
+		(.3gp) : --- 
+		(.3gpp) : --- 
+		(.7z) : application/x-7z-compressed 
+		(.ai) : application/postscript 
+		(.application) : --- 
+		(.application/javascript) : --- 
+		(.asf) : video/x-ms-asf 
+		(.asx) : video/x-ms-asf 
+		(.atom) : application/atom+xml 
+		(.audio) : --- 
+		(.audio/midi) : --- 
+		(.avi) : video/x-msvideo 
+		(.avif) : image/avif 
+		(.bin) : application/octet-stream 
+		(.bmp) : image/x-ms-bmp 
+		(.cco) : application/x-cocoa 
+		(.crt) : application/x-x509-ca-cert 
+		(.css) : text/css 
+		(.deb) : application/octet-stream 
+		(.der) : application/x-x509-ca-cert 
+		(.dll) : application/octet-stream 
+		(.dmg) : application/octet-stream 
+		(.doc) : application/msword 
+		(.docx) : application/vnd.openxmlformats-officedocument.wordprocessingml.document 
+		(.ear) : application/java-archive 
+		(.eot) : application/vnd.ms-fontobject 
+		(.eps) : application/postscript 
+		(.exe) : application/octet-stream 
+		(.flv) : video/x-flv 
+		(.font) : --- 
+		(.font/woff) : --- 
+		(.gif) : --- 
+		(.hqx) : application/mac-binhex40 
+		(.htc) : text/x-component 
+		(.htm) : --- 
+		(.html) : --- 
+		(.ico) : image/x-icon 
+		(.image) : --- 
+		(.image/gif) : --- 
+		(.img) : application/octet-stream 
+		(.iso) : application/octet-stream 
+		(.jad) : text/vnd.sun.j2me.app-descriptor 
+		(.jar) : application/java-archive 
+		(.jardiff) : application/x-java-archive-diff 
+		(.jng) : image/x-jng 
+		(.jnlp) : application/x-java-jnlp-file 
+		(.jpeg) : image/jpeg 
+		(.jpg) : image/jpeg 
+		(.js) : --- 
+		(.json) : application/json 
+		(.kar) : --- 
+		(.kml) : application/vnd.google-earth.kml+xml 
+		(.kmz) : application/vnd.google-earth.kmz 
+		(.m3u8) : application/vnd.apple.mpegurl 
+		(.m4a) : audio/x-m4a 
+		(.m4v) : video/x-m4v 
+		(.mid) : --- 
+		(.midi) : --- 
+		(.mml) : text/mathml 
+		(.mng) : video/x-mng 
+		(.mov) : video/quicktime 
+		(.mp3) : audio/mpeg 
+		(.mp4) : video/mp4 
+		(.mpeg) : video/mpeg 
+		(.mpg) : video/mpeg 
+		(.msi) : application/octet-stream 
+		(.msm) : application/octet-stream 
+		(.msp) : application/octet-stream 
+		(.odg) : application/vnd.oasis.opendocument.graphics 
+		(.odp) : application/vnd.oasis.opendocument.presentation 
+		(.ods) : application/vnd.oasis.opendocument.spreadsheet 
+		(.odt) : application/vnd.oasis.opendocument.text 
+		(.ogg) : audio/ogg 
+		(.pdb) : application/x-pilot 
+		(.pdf) : application/pdf 
+		(.pem) : application/x-x509-ca-cert 
+		(.pl) : application/x-perl 
+		(.pm) : application/x-perl 
+		(.png) : image/png 
+		(.ppt) : application/vnd.ms-powerpoint 
+		(.pptx) : application/vnd.openxmlformats-officedocument.presentationml.presentation 
+		(.prc) : application/x-pilot 
+		(.ps) : application/postscript 
+		(.ra) : audio/x-realaudio 
+		(.rar) : application/x-rar-compressed 
+		(.rpm) : application/x-redhat-package-manager 
+		(.rss) : application/rss+xml 
+		(.rtf) : application/rtf 
+		(.run) : application/x-makeself 
+		(.sea) : application/x-sea 
+		(.shtml) : --- 
+		(.sit) : application/x-stuffit 
+		(.svg) : image/svg+xml 
+		(.svgz) : image/svg+xml 
+		(.swf) : application/x-shockwave-flash 
+		(.tcl) : application/x-tcl 
+		(.text) : --- 
+		(.text/html) : --- 
+		(.tif) : image/tiff 
+		(.tiff) : image/tiff 
+		(.tk) : application/x-tcl 
+		(.ts) : video/mp2t 
+		(.txt) : text/plain 
+		(.video) : --- 
+		(.video/3gpp) : --- 
+		(.war) : application/java-archive 
+		(.wasm) : application/wasm 
+		(.wbmp) : image/vnd.wap.wbmp 
+		(.webm) : video/webm 
+		(.webp) : image/webp 
+		(.wml) : text/vnd.wap.wml 
+		(.wmlc) : application/vnd.wap.wmlc 
+		(.wmv) : video/x-ms-wmv 
+		(.woff) : --- 
+		(.woff2) : font/woff2 
+		(.xhtml) : application/xhtml+xml 
+		(.xls) : application/vnd.ms-excel 
+		(.xlsx) : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+		(.xml) : text/xml 
+		(.xpi) : application/x-xpinstall 
+		(.xspf) : application/xspf+xml 
+		(.zip) : application/zip 
 		(allowed_method) : GET POST DELETE 
 		(autoindex) : off 
 		(client_max_body_size) : 1M 
-		(include) : /Users/mannouao/Desktop/WebServ/config/mime.types 
+		(include) : /Users/jchakir/projs/webserv/config/mime.types 
 		(index) : index.html index.htm index.php 
-		(root) : /Users/mannouao/Desktop/WebServ/www 
+		(root) : /Users/jchakir/projs/webserv/www/site7 
 		[types] :: 
 			(allowed_method) : GET POST DELETE 
 			(autoindex) : off 
@@ -17,29 +137,269 @@
 			(index) : index.html index.htm index.php 
 			(root) : /var/www/html 
 		[server] :: 
-			(.htm) : text/html 
-			(.html) : text/html 
-			(.shtml) : text/html 
+			(.---) : --- 
+			(.3gp) : --- 
+			(.3gpp) : --- 
+			(.7z) : application/x-7z-compressed 
+			(.ai) : application/postscript 
+			(.application) : --- 
+			(.application/javascript) : --- 
+			(.asf) : video/x-ms-asf 
+			(.asx) : video/x-ms-asf 
+			(.atom) : application/atom+xml 
+			(.audio) : --- 
+			(.audio/midi) : --- 
+			(.avi) : video/x-msvideo 
+			(.avif) : image/avif 
+			(.bin) : application/octet-stream 
+			(.bmp) : image/x-ms-bmp 
+			(.cco) : application/x-cocoa 
+			(.crt) : application/x-x509-ca-cert 
+			(.css) : text/css 
+			(.deb) : application/octet-stream 
+			(.der) : application/x-x509-ca-cert 
+			(.dll) : application/octet-stream 
+			(.dmg) : application/octet-stream 
+			(.doc) : application/msword 
+			(.docx) : application/vnd.openxmlformats-officedocument.wordprocessingml.document 
+			(.ear) : application/java-archive 
+			(.eot) : application/vnd.ms-fontobject 
+			(.eps) : application/postscript 
+			(.exe) : application/octet-stream 
+			(.flv) : video/x-flv 
+			(.font) : --- 
+			(.font/woff) : --- 
+			(.gif) : --- 
+			(.hqx) : application/mac-binhex40 
+			(.htc) : text/x-component 
+			(.htm) : --- 
+			(.html) : --- 
+			(.ico) : image/x-icon 
+			(.image) : --- 
+			(.image/gif) : --- 
+			(.img) : application/octet-stream 
+			(.iso) : application/octet-stream 
+			(.jad) : text/vnd.sun.j2me.app-descriptor 
+			(.jar) : application/java-archive 
+			(.jardiff) : application/x-java-archive-diff 
+			(.jng) : image/x-jng 
+			(.jnlp) : application/x-java-jnlp-file 
+			(.jpeg) : image/jpeg 
+			(.jpg) : image/jpeg 
+			(.js) : --- 
+			(.json) : application/json 
+			(.kar) : --- 
+			(.kml) : application/vnd.google-earth.kml+xml 
+			(.kmz) : application/vnd.google-earth.kmz 
+			(.m3u8) : application/vnd.apple.mpegurl 
+			(.m4a) : audio/x-m4a 
+			(.m4v) : video/x-m4v 
+			(.mid) : --- 
+			(.midi) : --- 
+			(.mml) : text/mathml 
+			(.mng) : video/x-mng 
+			(.mov) : video/quicktime 
+			(.mp3) : audio/mpeg 
+			(.mp4) : video/mp4 
+			(.mpeg) : video/mpeg 
+			(.mpg) : video/mpeg 
+			(.msi) : application/octet-stream 
+			(.msm) : application/octet-stream 
+			(.msp) : application/octet-stream 
+			(.odg) : application/vnd.oasis.opendocument.graphics 
+			(.odp) : application/vnd.oasis.opendocument.presentation 
+			(.ods) : application/vnd.oasis.opendocument.spreadsheet 
+			(.odt) : application/vnd.oasis.opendocument.text 
+			(.ogg) : audio/ogg 
+			(.pdb) : application/x-pilot 
+			(.pdf) : application/pdf 
+			(.pem) : application/x-x509-ca-cert 
+			(.pl) : application/x-perl 
+			(.pm) : application/x-perl 
+			(.png) : image/png 
+			(.ppt) : application/vnd.ms-powerpoint 
+			(.pptx) : application/vnd.openxmlformats-officedocument.presentationml.presentation 
+			(.prc) : application/x-pilot 
+			(.ps) : application/postscript 
+			(.ra) : audio/x-realaudio 
+			(.rar) : application/x-rar-compressed 
+			(.rpm) : application/x-redhat-package-manager 
+			(.rss) : application/rss+xml 
+			(.rtf) : application/rtf 
+			(.run) : application/x-makeself 
+			(.sea) : application/x-sea 
+			(.shtml) : --- 
+			(.sit) : application/x-stuffit 
+			(.svg) : image/svg+xml 
+			(.svgz) : image/svg+xml 
+			(.swf) : application/x-shockwave-flash 
+			(.tcl) : application/x-tcl 
+			(.text) : --- 
+			(.text/html) : --- 
+			(.tif) : image/tiff 
+			(.tiff) : image/tiff 
+			(.tk) : application/x-tcl 
+			(.ts) : video/mp2t 
+			(.txt) : text/plain 
+			(.video) : --- 
+			(.video/3gpp) : --- 
+			(.war) : application/java-archive 
+			(.wasm) : application/wasm 
+			(.wbmp) : image/vnd.wap.wbmp 
+			(.webm) : video/webm 
+			(.webp) : image/webp 
+			(.wml) : text/vnd.wap.wml 
+			(.wmlc) : application/vnd.wap.wmlc 
+			(.wmv) : video/x-ms-wmv 
+			(.woff) : --- 
+			(.woff2) : font/woff2 
+			(.xhtml) : application/xhtml+xml 
+			(.xls) : application/vnd.ms-excel 
+			(.xlsx) : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+			(.xml) : text/xml 
+			(.xpi) : application/x-xpinstall 
+			(.xspf) : application/xspf+xml 
+			(.zip) : application/zip 
 			(allowed_method) : GET POST DELETE 
 			(autoindex) : off 
 			(client_max_body_size) : 1M 
 			(host) : 0.0.0.0 
-			(include) : /Users/mannouao/Desktop/WebServ/config/mime.types 
+			(include) : /Users/jchakir/projs/webserv/config/mime.types 
 			(index) : index.html index.htm index.php 
 			(port) : 8080 
-			(root) : /Users/mannouao/Desktop/WebServ/www 
+			(root) : /Users/jchakir/projs/webserv/www/site7 
 			[location] :: / 
-				(.htm) : text/html 
-				(.html) : text/html 
-				(.shtml) : text/html 
+				(.---) : --- 
+				(.3gp) : --- 
+				(.3gpp) : --- 
+				(.7z) : application/x-7z-compressed 
+				(.ai) : application/postscript 
+				(.application) : --- 
+				(.application/javascript) : --- 
+				(.asf) : video/x-ms-asf 
+				(.asx) : video/x-ms-asf 
+				(.atom) : application/atom+xml 
+				(.audio) : --- 
+				(.audio/midi) : --- 
+				(.avi) : video/x-msvideo 
+				(.avif) : image/avif 
+				(.bin) : application/octet-stream 
+				(.bmp) : image/x-ms-bmp 
+				(.cco) : application/x-cocoa 
+				(.crt) : application/x-x509-ca-cert 
+				(.css) : text/css 
+				(.deb) : application/octet-stream 
+				(.der) : application/x-x509-ca-cert 
+				(.dll) : application/octet-stream 
+				(.dmg) : application/octet-stream 
+				(.doc) : application/msword 
+				(.docx) : application/vnd.openxmlformats-officedocument.wordprocessingml.document 
+				(.ear) : application/java-archive 
+				(.eot) : application/vnd.ms-fontobject 
+				(.eps) : application/postscript 
+				(.exe) : application/octet-stream 
+				(.flv) : video/x-flv 
+				(.font) : --- 
+				(.font/woff) : --- 
+				(.gif) : --- 
+				(.hqx) : application/mac-binhex40 
+				(.htc) : text/x-component 
+				(.htm) : --- 
+				(.html) : --- 
+				(.ico) : image/x-icon 
+				(.image) : --- 
+				(.image/gif) : --- 
+				(.img) : application/octet-stream 
+				(.iso) : application/octet-stream 
+				(.jad) : text/vnd.sun.j2me.app-descriptor 
+				(.jar) : application/java-archive 
+				(.jardiff) : application/x-java-archive-diff 
+				(.jng) : image/x-jng 
+				(.jnlp) : application/x-java-jnlp-file 
+				(.jpeg) : image/jpeg 
+				(.jpg) : image/jpeg 
+				(.js) : --- 
+				(.json) : application/json 
+				(.kar) : --- 
+				(.kml) : application/vnd.google-earth.kml+xml 
+				(.kmz) : application/vnd.google-earth.kmz 
+				(.m3u8) : application/vnd.apple.mpegurl 
+				(.m4a) : audio/x-m4a 
+				(.m4v) : video/x-m4v 
+				(.mid) : --- 
+				(.midi) : --- 
+				(.mml) : text/mathml 
+				(.mng) : video/x-mng 
+				(.mov) : video/quicktime 
+				(.mp3) : audio/mpeg 
+				(.mp4) : video/mp4 
+				(.mpeg) : video/mpeg 
+				(.mpg) : video/mpeg 
+				(.msi) : application/octet-stream 
+				(.msm) : application/octet-stream 
+				(.msp) : application/octet-stream 
+				(.odg) : application/vnd.oasis.opendocument.graphics 
+				(.odp) : application/vnd.oasis.opendocument.presentation 
+				(.ods) : application/vnd.oasis.opendocument.spreadsheet 
+				(.odt) : application/vnd.oasis.opendocument.text 
+				(.ogg) : audio/ogg 
+				(.pdb) : application/x-pilot 
+				(.pdf) : application/pdf 
+				(.pem) : application/x-x509-ca-cert 
+				(.pl) : application/x-perl 
+				(.pm) : application/x-perl 
+				(.png) : image/png 
+				(.ppt) : application/vnd.ms-powerpoint 
+				(.pptx) : application/vnd.openxmlformats-officedocument.presentationml.presentation 
+				(.prc) : application/x-pilot 
+				(.ps) : application/postscript 
+				(.ra) : audio/x-realaudio 
+				(.rar) : application/x-rar-compressed 
+				(.rpm) : application/x-redhat-package-manager 
+				(.rss) : application/rss+xml 
+				(.rtf) : application/rtf 
+				(.run) : application/x-makeself 
+				(.sea) : application/x-sea 
+				(.shtml) : --- 
+				(.sit) : application/x-stuffit 
+				(.svg) : image/svg+xml 
+				(.svgz) : image/svg+xml 
+				(.swf) : application/x-shockwave-flash 
+				(.tcl) : application/x-tcl 
+				(.text) : --- 
+				(.text/html) : --- 
+				(.tif) : image/tiff 
+				(.tiff) : image/tiff 
+				(.tk) : application/x-tcl 
+				(.ts) : video/mp2t 
+				(.txt) : text/plain 
+				(.video) : --- 
+				(.video/3gpp) : --- 
+				(.war) : application/java-archive 
+				(.wasm) : application/wasm 
+				(.wbmp) : image/vnd.wap.wbmp 
+				(.webm) : video/webm 
+				(.webp) : image/webp 
+				(.wml) : text/vnd.wap.wml 
+				(.wmlc) : application/vnd.wap.wmlc 
+				(.wmv) : video/x-ms-wmv 
+				(.woff) : --- 
+				(.woff2) : font/woff2 
+				(.xhtml) : application/xhtml+xml 
+				(.xls) : application/vnd.ms-excel 
+				(.xlsx) : application/vnd.openxmlformats-officedocument.spreadsheetml.sheet 
+				(.xml) : text/xml 
+				(.xpi) : application/x-xpinstall 
+				(.xspf) : application/xspf+xml 
+				(.zip) : application/zip 
 				(allowed_method) : GET 
-				(autoindex) : off 
+				(autoindex) : on 
 				(client_max_body_size) : 1M 
 				(host) : 0.0.0.0 
-				(include) : /Users/mannouao/Desktop/WebServ/config/mime.types 
+				(include) : /Users/jchakir/projs/webserv/config/mime.types 
 				(index) : index.html index.htm index.php 
 				(port) : 8080 
-				(root) : /Users/mannouao/Desktop/WebServ/www 
+				(root) : /Users/jchakir/projs/webserv/www/site7 
 -------------------------- new Server --------------------------
 ai_flags: 0
 ai_family: 2
@@ -59,7 +419,82 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 51010
+	sin_port: 50350
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50351
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50352
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50353
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50354
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50355
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -74,44 +509,67 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 51010
+	sin_port: 50350
 	sin_addr: 127.0.0.1
-	sin_zero: [8]
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 51029
-	sin_addr: 127.0.0.1
-	sin_zero: [8]
-connected to: 
-ai_addr: 
-	sin_len: 16
-	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
 	sin_zero: [8]
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 51029
+	sin_port: 50351
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
--------------------------- new Client --------------------------
+-------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 51060
+	sin_port: 50352
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
-connected to: 
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 8080
-	sin_addr: 0.0.0.0
+	sin_port: 50353
+	sin_addr: 127.0.0.1
 	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50354
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50355
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- Leaks --------------------------
+Process:         webserv.exe [55983]
+Path:            /Volumes/VOLUME/*/webserv.exe
+Load Address:    0x10445c000
+Identifier:      webserv.exe
+Version:         ???
+Code Type:       X86-64
+Parent Process:  sh [55982]
+
+Date/Time:       2023-03-17 16:50:22.541 +0100
+Launch Time:     2023-03-17 16:44:03.272 +0100
+OS Version:      Mac OS X 10.14.6 (18G103)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 11.3.1 (11C505)
+----
+
+leaks Report Version: 4.0
+Process 55983: 215 nodes malloced for 65 KB
+Process 55983: 0 leaks for 0 total leaked bytes.
+
