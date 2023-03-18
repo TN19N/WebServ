@@ -18,9 +18,9 @@ static char *__duplicate_string(const std::string &string)
 	return save_result;
 }
 
-static char **__headers_to_args(const std::string &path, const std::map<std::string, std::string> &headers)
+static char **__headers_to_args(const std::string &path, const IBase::Headers &headers)
 {
-	std::map<std::string, std::string>::const_iterator begin, end;
+	IBase::Headers::const_iterator begin, end;
 	char	**args;
 	
 	begin = headers.begin();
@@ -33,7 +33,7 @@ static char **__headers_to_args(const std::string &path, const std::map<std::str
 	return args;
 }
 
-int	HTTP::cgiExecutor(const std::string &path, const std::map<std::string, std::string> &headers)
+int	HTTP::cgiExecutor(const std::string &path, const IBase::Headers &headers)
 {
 	int		pid;
 	int		fds[2];

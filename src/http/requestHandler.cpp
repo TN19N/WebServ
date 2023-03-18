@@ -18,7 +18,7 @@ static void __print_request_data_for_debug_(Request *request)
 	std::cout << "Ext   : " << request->extension << '\n' ;
 	std::cout << "Query : " << request->query << '\n' ;
 	std::cout << "          --------- headers ---------\n" ;
-	for (std::map<std::string, std::string>::const_iterator b = request->headers.begin(),
+	for (IBase::Headers::const_iterator b = request->headers.begin(),
 			e = request->headers.end(); b != e; ++b)
 		std::cout << b->first << ": " << b->second << '\n';
 	std::cout << "===================== Location =============================\n" ;
@@ -43,7 +43,7 @@ static void __print_request_data_for_debug_(Request *request)
 // 	std::cout << "keepAlive: " << response->keepAlive << std::endl;
 // 	std::cout << "contentLength: " << response->contentLength << std::endl;
 // 	std::cout << "	--------- headers ---------	 " << std::endl;
-// 	for (std::map<std::string, std::string>::const_iterator b = response->headers.begin(), e = response->headers.end(); b != e; ++b) {
+// 	for (IBase::Headers::const_iterator b = response->headers.begin(), e = response->headers.end(); b != e; ++b) {
 // 		std::cout << '\t' << b->first << ": " << b->second << std::endl;
 // 	}
 // }

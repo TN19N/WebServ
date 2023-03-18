@@ -6,9 +6,9 @@
 # include <map>
 # include <unistd.h>
 
-# include "webserv/defines.hpp"
-# include "webserv/context.hpp"
-# include "webserv/Ibase.hpp"
+# include "defines.hpp"
+# include "context.hpp"
+# include "IBase.hpp"
 
 struct Request : public IBase {
     public :

@@ -4,9 +4,11 @@
 # include <map>
 
 class IBase {
+	public:
+		typedef std::map<std::string, std::string> Headers;
     public:
         bool                                keepAlive;
-        std::map<std::string, std::string>  headers;
+        IBase::Headers  headers;
         std::string                         body;
         std::string                         buffer;
         bool                                isChunked;

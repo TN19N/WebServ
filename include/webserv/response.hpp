@@ -5,7 +5,7 @@
 # include <map>
 
 #include "defines.hpp"
-# include "webserv/Ibase.hpp"
+# include "IBase.hpp"
 
 struct Response : public IBase {
     public :

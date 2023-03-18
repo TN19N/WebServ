@@ -43,7 +43,7 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/getMethodHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/postMethodHundler.$(SRC_EXT) \
 		$(SRC_DIR)/http/deleteMethodHundler.$(SRC_EXT) \
-		$(SRC_DIR)/http/Ibase.$(SRC_EXT)
+		$(SRC_DIR)/http/IBase.$(SRC_EXT)
 
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
