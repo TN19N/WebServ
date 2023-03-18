@@ -191,8 +191,8 @@ Request* HTTP::requestParser(Client *client)
 		path = __get_requested_path_(buffer, client->getBuffer());
 		if (path[0] != '/')
 			throw 400;
-		request->query = __get_query_from_path_(path, client->getBuffer());
-		request->path = path;
+		request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
+		request->path = HTTP::urlDecoding(path);
 		request->extension = HTTP::getExtensionFromPath(path);
 		__check_request_protocol_(buffer);
 		if (*buffer == '\r')

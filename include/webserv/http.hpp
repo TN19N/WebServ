@@ -37,6 +37,8 @@ namespace HTTP
 	Request*		requestParser(Client *client);
 	void			requestHandler(Client* client, const Context* const configuration);
 	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
+	const Context*  getMatchedServer(const Client* client, const Context* const configuration);
+	const Context*  __get_match_location_context_(const std::vector<Context*> &locations, const std::string &path);
 	void 			getMethodHandler(Client *client);
 	void 			deleteMethodHandler(Client *client);
 	void 			postMethodHandler(Client *client);
@@ -50,6 +52,7 @@ namespace HTTP
 	const char 			*getExtensionFromPath(const char *path);
 	int					parseContentLength(const char *str);
 	void 				readRequestBufferFromClient(Client* client);
+	const std::string 	urlDecoding(const std::string& url);
 
 } // namespace HTTP
 
