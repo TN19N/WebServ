@@ -1,7 +1,0 @@
-* application/octet-stream should use if the type of the file is unknown
-
-* Bodies can be broadly divided into three categories:
-
-- Single-resource bodies, consisting of a single file of known length, defined by the two headers: Content-Type and Content-Length.
-- Single-resource bodies, consisting of a single file of unknown length, encoded by chunks with Transfer-Encoding set to chunked.
-- Multiple-resource bodies, consisting of a multipart body, each containing a different section of information. These are relatively rare.

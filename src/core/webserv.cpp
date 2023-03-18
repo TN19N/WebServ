@@ -64,7 +64,29 @@ static bool errorHandler(const int statusCode, Client* client) {
         return true;
     } else {
         client->setResponse(new Response(statusCode, KEEP_ALIVE));
-        client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+
+        const Context *location = client->getRequest()->location;
+        if (location != nullptr) {
+            try {
+                int         fd;
+                struct stat pathInfo;
+                std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) 
+                                        + location->getArgs().at(0) 
+                                        + location->getDirective(std::to_string(statusCode)).at(0);
+                if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
+                    client->getResponse()->download_file_fd = fd;
+                    client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
+                    client->getResponse()->buffer.append(CRLF);
+                } else {
+                    client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+                }
+            } catch (std::out_of_range& e) {
+                client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+            }
+        } else {
+            client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+        }
+
         client->switchState();
         return false;
     }

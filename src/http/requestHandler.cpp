@@ -104,7 +104,8 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 			request->body.clear();
 
 			if (request->state == READY) {
-				client->setResponse(new Response(200, request->keepAlive));
+				client->setResponse(new Response(201, request->keepAlive));
+				client->getResponse()->buffer.append(CRLF);
 				client->switchState();
 			}
 		}

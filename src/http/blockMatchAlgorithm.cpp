@@ -101,11 +101,11 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 		if (character == 0 || character == '/')
 			return begin->second;
 	}
+
 	throw 403;
 }
 
-static const Context* __get_location_context_(const Request *request, std::vector<const Context*> &servers)
-{
+static const Context* __get_location_context_(const Request *request, std::vector<const Context*> &servers) {
 	const Context *server = __get_match_server_context_(servers, request->headers.find("Host")->second);
 	return __get_match_location_context_(server->getChildren(), request->path);
 }

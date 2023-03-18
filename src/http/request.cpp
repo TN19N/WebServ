@@ -6,7 +6,8 @@ Request::Request()
     upload_file_fd(-1),
     isChunked(false), 
     contentLength(0), 
-    state(CREATING)
+    state(CREATING),
+    location(nullptr)
 {
     // Nothing to do
 }
