@@ -3,11 +3,7 @@
 // * Constructor ****************************************************************************************************
 Request::Request() 
     : location(nullptr),
-    keepAlive(true),
-    upload_file_fd(-1),
-    isChunked(false), 
-    contentLength(0), 
-    state(CREATING)
+    upload_file_fd(-1)
 {
     // Nothing to do
 }
@@ -17,6 +13,9 @@ Request::Request()
 Request::~Request() {
 	if (upload_file_fd != -1) {
 		close(upload_file_fd);
+        if (state != READY) {
+            unlink(upload_file_name.c_str());
+        }
     }
 }
 // ******************************************************************************************************************

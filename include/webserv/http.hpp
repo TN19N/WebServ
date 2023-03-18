@@ -34,7 +34,7 @@ namespace HTTP
 	bool 	responseHandler(Client *client);
 	
 	// * Request Handler ***************
-	Request*		requestParser(Client *client);
+	IBase* 			baseParser(Client *client);
 	void			requestHandler(Client* client, const Context* const configuration);
 	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
 	const Context*  getMatchedServer(const Client* client, const Context* const configuration);

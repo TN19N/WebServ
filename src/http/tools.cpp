@@ -170,7 +170,7 @@ const std::string HTTP::getDefaultErrorPage(const int statusCode) {
         "       <h1>" + std::to_string(statusCode) + "</h1>\n"
         "       <h2>" + HTTP::getStatusCodeMessage(statusCode) + "</h2>\n"
         "       <h3>BACK TO HOME?</h3>\n"
-        "       <a href=\"https://google.com\" class=\"yes\">YES</a>\n"
+        "       <a href=\"/\" class=\"yes\">YES</a>\n"
         "       <a href=\"https://www.youtube.com/watch?v=NUYvbT6vTPs\">NO</a>\n"
         "       </div>\n"
         "   </section>\n"
