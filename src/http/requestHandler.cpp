@@ -80,6 +80,8 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
 		request->fullPath.append(request->path);
 
+		std::cerr << "fullPath: " << request->fullPath << std::endl;
+
 		# ifdef DEBUG
 			__print_request_data_for_debug_(request);
 		# endif

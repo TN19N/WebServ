@@ -21,11 +21,12 @@ types {
     image/x-icon        ico;
     image/x-jng         jng;
     image/x-ms-bmp      bmp;
+
 #   --- font ---
     font/woff   woff;
     font/woff2  woff2;
 
-#  --- application ---
+#   --- application ---
     application/javascript                                                      js;
     application/atom+xml                                                        atom;
     application/rss+xml                                                         rss;

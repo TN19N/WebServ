@@ -104,6 +104,7 @@ void HTTP::getMethodHandler(Client *client)
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
 	}
+
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode)) {
 		if (request->path.c_str()[request->path.size()-1] != '/') {

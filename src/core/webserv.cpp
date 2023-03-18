@@ -74,7 +74,6 @@ static bool errorHandler(const int statusCode, Client* client, const Context* co
             const Context* location = HTTP::__get_match_location_context_(server->getChildren(), path);
             std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
 
-            std::cerr << "fileName: " << fileName << std::endl;
             if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
                 client->getResponse()->download_file_fd = fd;
                 client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));

@@ -199,6 +199,22 @@ const std::string HTTP::getHttpDate() {
     return buffer;
 }
 
+const std::string HTTP::urlDecoding(const std::string& url) {
+    std::string result;
+
+    for (int i = 0; i < url.length(); i++) {
+        if (url[i] == '%' && i + 2 < url.length()) {
+            std::string hex = url.substr(i + 1, 2);
+            char c = static_cast<char>(strtol(hex.c_str(), nullptr, 16));
+            result += c;
+            i += 2;
+        } else {
+            result += url[i];
+        }
+    }
+    return result;
+}
+
 const std::string HTTP::getStatusCodeMessage(const int statusCode) {
     switch (statusCode) {
         // 1xx: Informational

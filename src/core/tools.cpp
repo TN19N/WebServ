@@ -124,8 +124,6 @@ void CORE::listenToSignals() {
     }
 }
 
-# include <iostream> // TODO: remove
-
 const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients) {
     std::vector<pollfd> fds(serversSocketFd.size() + clients.size());
 

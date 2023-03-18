@@ -52,6 +52,7 @@ namespace HTTP
 	const char 			*getExtensionFromPath(const char *path);
 	int					parseContentLength(const char *str);
 	void 				readRequestBufferFromClient(Client* client);
+	const std::string 	urlDecoding(const std::string& url);
 
 } // namespace HTTP
 
