@@ -37,7 +37,7 @@ Webserv::Webserv(const std::string& configFilePath)
 
 // * Static Tools **********************************************************************************************************************************************************************
 static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data) {
-    for (int i = 0; i < data.size(); ++i) {
+    for (size_t i = 0; i < data.size(); ++i) {
         if (addr->sa_family == data[i]->ai_addr->sa_family) {
             if (addr->sa_family == AF_INET) {
                 const struct sockaddr_in* addr4 = reinterpret_cast<const struct sockaddr_in*>(addr);
@@ -227,7 +227,7 @@ void Webserv::run() {
             throw std::runtime_error("poll() : " + std::string(strerror(errno)));
         }
 
-        for (int i = 0; i < fds.size() && pollResult > 0; ++i) {
+        for (size_t i = 0; i < fds.size() && pollResult > 0; ++i) {
             try {
                 --pollResult;
                 if (fds[i].revents & POLLHUP) {

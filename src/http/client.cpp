@@ -46,7 +46,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 // ******************************************************************************************************************
 
 // * Getters ********************************************************************************************************
-const int Client::getSocketFd() const {
+int Client::getSocketFd() const {
     return this->socketFd;
 }
 
@@ -98,11 +98,11 @@ std::string& Client::getBuffer() {
     return this->buffer;
 }
 
-const int Client::getState() const {
+int Client::getState() const {
     return this->state;
 }
 
-const int Client::getFdOf(const int index) const {
+int Client::getFdOf(const int index) const {
     if (this->isCgi()) {
         return this->getPipeFd()[index];
     }
@@ -155,7 +155,7 @@ void Client::switchState() {
     }
 }
 
-const bool Client::isCgi() const {
+bool Client::isCgi() const {
     return this->getCgiToClient() != nullptr;
 }
 // ******************************************************************************************************************

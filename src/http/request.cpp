@@ -2,12 +2,12 @@
 
 // * Constructor ****************************************************************************************************
 Request::Request() 
-    : keepAlive(true),
+    : location(nullptr),
+    keepAlive(true),
     upload_file_fd(-1),
     isChunked(false), 
     contentLength(0), 
-    state(CREATING),
-    location(nullptr)
+    state(CREATING)
 {
     // Nothing to do
 }

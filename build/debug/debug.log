@@ -748,7 +748,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 57226
+	sin_port: 59169
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -803,7 +803,7 @@ client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 57226
+	sin_port: 59169
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- Leaks --------------------------

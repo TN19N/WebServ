@@ -202,7 +202,7 @@ const std::string HTTP::getHttpDate() {
 const std::string HTTP::urlDecoding(const std::string& url) {
     std::string result;
 
-    for (int i = 0; i < url.length(); i++) {
+    for (size_t i = 0; i < url.length(); i++) {
         if (url[i] == '%' && i + 2 < url.length()) {
             std::string hex = url.substr(i + 1, 2);
             char c = static_cast<char>(strtol(hex.c_str(), nullptr, 16));

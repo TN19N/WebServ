@@ -11,9 +11,9 @@
 
 struct Request {
     public :
+		const Context*						location;
         bool                                keepAlive;
 		int									upload_file_fd;
-		const Context*						location;
         std::map<std::string, std::string>  headers;
         std::string                         body;
         bool                                isChunked;
