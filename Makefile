@@ -42,8 +42,8 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/readBodyFromBuffer.$(SRC_EXT) \
 		$(SRC_DIR)/http/getMethodHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/postMethodHundler.$(SRC_EXT) \
-		$(SRC_DIR)/http/deleteMethodHundler.$(SRC_EXT)
-
+		$(SRC_DIR)/http/deleteMethodHundler.$(SRC_EXT) \
+		$(SRC_DIR)/http/Ibase.$(SRC_EXT)
 
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
@@ -59,7 +59,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += #-g3 -fsanitize=address
+debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
 debug: $(TARGET)
 

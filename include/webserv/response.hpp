@@ -5,17 +5,12 @@
 # include <map>
 
 #include "defines.hpp"
+# include "webserv/Ibase.hpp"
 
-struct Response {
+struct Response : public IBase {
     public :
-		int									download_file_fd;
-        int                                 statusCode;
-        std::map<std::string, std::string>  headers;
-        bool                                keepAlive;
-        size_t                              contentLength;
-
-        std::string                         buffer;
-        int                                 state;
+		int download_file_fd;
+        int statusCode;
     public :
         Response(const int statusCode, const bool keepAlive);
 

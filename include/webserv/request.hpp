@@ -6,24 +6,20 @@
 # include <map>
 # include <unistd.h>
 
-# include "defines.hpp"
-# include "context.hpp"
+# include "webserv/defines.hpp"
+# include "webserv/context.hpp"
+# include "webserv/Ibase.hpp"
 
-struct Request {
+struct Request : public IBase {
     public :
-		const Context*						location;
-        bool                                keepAlive;
-		int									upload_file_fd;
-        std::map<std::string, std::string>  headers;
-        std::string                         body;
-        bool                                isChunked;
-        std::string                         method;
-        std::string                         path;
-		std::string                         fullPath;
-        std::string                         query;
-        std::string                         extension;
-        size_t                              contentLength;
-        int                                 state;
+		const Context*  location;
+		int             upload_file_fd;
+        std::string     upload_file_name;
+        std::string     method;
+        std::string     path;
+		std::string     fullPath;
+        std::string     query;
+        std::string     extension;
     public :
         Request();
 

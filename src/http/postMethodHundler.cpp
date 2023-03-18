@@ -17,6 +17,7 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 	if (request->upload_file_fd < 0) {
 		throw 403;
 	}
+	request->upload_file_name = filepath;
 }
 
 void HTTP::postMethodHandler(Client *client) {

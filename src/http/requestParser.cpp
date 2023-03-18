@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------
 
 # include "../../include/webserv/request.hpp"
+# include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
 
 static bool __is_space_(char c)
@@ -124,28 +125,31 @@ static const char *__get_header_value_(const char * &buffer, std::string &base)
 	return save_buffer;
 }
 
-static void __fill_request_and_check_basic_bad_errors_(Request *request) {
+static void __fill_request_and_check_basic_bad_errors_(IBase *base, bool isCgi) {
 	std::string::size_type pos;
 	std::map<std::string, std::string>::iterator header;
 	
-	header = request->headers.find("Host");
-	if (header == request->headers.end()) {
-		throw 400;
+	if (isCgi == false) {
+		header = base->headers.find("Host");
+		if (header == base->headers.end()) {
+			throw 400;
+		}
+		pos = header->second.rfind(':');
+		if (pos != std::string::npos) {
+			header->second = header->second.substr(0, pos);
+		}
 	}
-	pos = header->second.rfind(':');
-	if (pos != std::string::npos) {
-		header->second = header->second.substr(0, pos);
-	}
-	header = request->headers.find("Transfer-Encoding");
-	if (header != request->headers.end()) {
+
+	header = base->headers.find("Transfer-Encoding");
+	if (header != base->headers.end()) {
 		if (header->second != "chunked") {
 			throw 501;
 		}
-		request->isChunked = true;
+		base->isChunked = true;
 	} else {
-		header =  request->headers.find("Content-Length");
-		if (header != request->headers.end()) {
-			request->contentLength = HTTP::parseContentLength(header->second.c_str());
+		header =  base->headers.find("Content-Length");
+		if (header != base->headers.end()) {
+			base->contentLength = HTTP::parseContentLength(header->second.c_str());
 		}
 	}
 }
@@ -179,25 +183,34 @@ static void __parse_and_fill_request_headers_(const char * &buffer, std::string 
 		throw 400;
 }
 
-Request* HTTP::requestParser(Client *client)
+IBase* HTTP::baseParser(Client *client)
 {
-	Request		*request;
+	IBase		*base;
 	const char	*path, *buffer = client->getBuffer().c_str();
 
-	request = new Request();
+	if (client->isCgi()) {
+		Response* response = new Response(200, CLOSE_CONNECTION);
+
+
+	} else {
+		Request* request = new Request();
+
+
+	}
+
 	try
 	{
-		request->method = __get_request_method_(buffer, client->getBuffer()) ;
-		path = __get_requested_path_(buffer, client->getBuffer());
+		request->method = __get_request_method_(buffer, client->getBuffer()) ; // *
+		path = __get_requested_path_(buffer, client->getBuffer()); // *
 		if (path[0] != '/')
 			throw 400;
-		request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
-		request->path = HTTP::urlDecoding(path);
-		request->extension = HTTP::getExtensionFromPath(path);
-		__check_request_protocol_(buffer);
+		request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer())); // *
+		request->path = HTTP::urlDecoding(path); // *
+		request->extension = HTTP::getExtensionFromPath(path); // *
+		__check_request_protocol_(buffer); // *
 		if (*buffer == '\r')
 			throw 400;
-		__parse_and_fill_request_headers_(buffer,client->getBuffer(), request->headers, client->isCgi());
+		__parse_and_fill_request_headers_(buffer, client->getBuffer(), request->headers, client->isCgi());
 		__fill_request_and_check_basic_bad_errors_(request);
 		buffer += 2;
 		client->getBuffer().erase(0,buffer - client->getBuffer().c_str());

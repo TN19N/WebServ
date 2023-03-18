@@ -66,7 +66,9 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 
 	HTTP::readRequestBufferFromClient(client);
 
-	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
+	if (client->isCgi() && client->getResponse() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
+		Response *response = HTTP::baseParser(client);
+	} else if (!client->isCgi() && client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
 		request = HTTP::requestParser(client);
 		client->setRequest(request);
 		try {
@@ -100,6 +102,9 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 
 		if (request->upload_file_fd != -1) {
 			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0) {
+				unlink(request->upload_file_name.c_str());
+				close(request->upload_file_fd);
+				request->upload_file_fd = -1;
 				throw 500;
 			}
 			request->body.clear();
