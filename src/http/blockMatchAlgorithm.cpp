@@ -81,7 +81,7 @@ static const Context* __get_match_server_context_(std::vector<const Context*> &s
 	return servers.at(0);
 }
 
-static const Context* __get_match_location_context_(const std::vector<Context*> &locations, const std::string &path)
+const Context* HTTP::__get_match_location_context_(const std::vector<Context*> &locations, const std::string &path)
 {
 	int		character;
 	std::map<std::string, const Context*, std::greater<std::string> > locate;
@@ -105,13 +105,8 @@ static const Context* __get_match_location_context_(const std::vector<Context*> 
 	throw 403;
 }
 
-static const Context* __get_location_context_(const Request *request, std::vector<const Context*> &servers) {
-	const Context *server = __get_match_server_context_(servers, request->headers.find("Host")->second);
-	return __get_match_location_context_(server->getChildren(), request->path);
-}
-
-const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* const configuration) {
-    std::vector<const Context*> servers;
+const Context* HTTP::getMatchedServer(const Client* client, const Context* const configuration) {
+	std::vector<const Context*> servers;
 
 	const std::vector<Context*>& children = configuration->getChildren().at(0)->getChildren();
 	for (size_t i = 0; i < children.size(); ++i) {
@@ -120,5 +115,10 @@ const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* co
 		}
 	}
 
-    return __get_location_context_(client->getRequest(), servers);
+	return __get_match_server_context_(servers, client->getRequest()->headers.find("Host")->second);
+}
+
+const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* const configuration) {
+	const Context *server = HTTP::getMatchedServer(client, configuration);
+	return HTTP::__get_match_location_context_(server->getChildren(), client->getRequest()->path);
 }

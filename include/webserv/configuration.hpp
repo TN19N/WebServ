@@ -50,7 +50,7 @@
 # define NAME_DIRECTIVE_POS(context)        (context->getName() == SERVER_CONTEXT)
 # define ROOT_DIRECTIVE_POS(context)        (context->getName() != TYPES_CONTEXT)
 # define INDEX_DIRECTIVE_POS(context)       (context->getName() != TYPES_CONTEXT)
-# define ERROR_DIRECTIVE_POS(context)       (context->getName() != TYPES_CONTEXT)
+# define ERROR_DIRECTIVE_POS(context)       (context->getName() != TYPES_CONTEXT && context->getName() != LOCATION_CONTEXT)
 # define SIZE_DIRECTIVE_POS(context)        (context->getName() != TYPES_CONTEXT)
 # define METHOD_DIRECTIVE_POS(context)      (context->getName() != TYPES_CONTEXT)
 # define AUTOINDEX_DIRECTIVE_POS(context)   (context->getName() != TYPES_CONTEXT)

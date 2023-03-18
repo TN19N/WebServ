@@ -59,31 +59,31 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
     return false;
 }
 
-static bool errorHandler(const int statusCode, Client* client) {
+static bool errorHandler(const int statusCode, Client* client, const Context* const configuration) {
     if (client->getState() == SENDING_RESPONSE) {
         return true;
     } else {
         client->setResponse(new Response(statusCode, KEEP_ALIVE));
+        try {
+            int         fd;
+            struct stat pathInfo;
 
-        const Context *location = client->getRequest()->location;
-        if (location != nullptr) {
-            try {
-                int         fd;
-                struct stat pathInfo;
-                std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) 
-                                        + location->getArgs().at(0) 
-                                        + location->getDirective(std::to_string(statusCode)).at(0);
-                if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
-                    client->getResponse()->download_file_fd = fd;
-                    client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
-                    client->getResponse()->buffer.append(CRLF);
-                } else {
-                    client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
-                }
-            } catch (std::out_of_range& e) {
-                client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+            const Context* server = HTTP::getMatchedServer(client, configuration);
+            const std::string path = server->getDirective(std::to_string(statusCode)).at(0);
+
+            const Context* location = HTTP::__get_match_location_context_(server->getChildren(), path);
+            std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
+
+            std::cerr << "fileName: " << fileName << std::endl;
+            if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
+                client->getResponse()->download_file_fd = fd;
+                client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
+                client->getResponse()->buffer.append(CRLF);
+            } else {
+                throw "exit";
             }
-        } else {
+
+        } catch (...) {
             client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
         }
 
@@ -248,13 +248,13 @@ void Webserv::run() {
                     ++pollResult;
                 }
             } catch (const int statusCode) {
-                if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
+                if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration)) {
                     Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
                 }
             } catch (const std::pair<int, std::string>& redirect) {
                 redirectTo(redirect, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::exception& e) {
-                if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
+                if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration)) {
                     Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
                 }
             }
