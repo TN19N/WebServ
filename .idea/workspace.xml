@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/getMethodHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/postMethodHundler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/postMethodHundler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/requestParser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestParser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/responseHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/responseHandler.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-webserv" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="3.2" />
+  </component>
+  <component name="ProjectId" id="2LmXKIJu5yZGkOT8crZqEnx3lno" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/jchakir/projs/webserv&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/www/site7" />
+      <recent name="$PROJECT_DIR$/www/site6" />
+      <recent name="$PROJECT_DIR$/www/site5" />
+      <recent name="$PROJECT_DIR$/www/site4" />
+      <recent name="$PROJECT_DIR$/www/site3" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2809aae5-811b-4397-bae2-cd514e6b6b25" name="Changes" comment="" />
+      <created>1676477166635</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676477166635</updated>
+      <workItem from="1676477168265" duration="1000" />
+      <workItem from="1676486701050" duration="4200000" />
+      <workItem from="1676550404036" duration="2525000" />
+      <workItem from="1676575448950" duration="971000" />
+      <workItem from="1676581039889" duration="1206000" />
+      <workItem from="1676583306833" duration="977000" />
+      <workItem from="1676584289069" duration="1000" />
+      <workItem from="1676584454993" duration="2000" />
+      <workItem from="1676634094612" duration="338000" />
+      <workItem from="1676636825759" duration="19905000" />
+      <workItem from="1676712632748" duration="3915000" />
+      <workItem from="1676718901041" duration="163000" />
+      <workItem from="1676719071754" duration="2627000" />
+      <workItem from="1676724698149" duration="65000" />
+      <workItem from="1676724796461" duration="7775000" />
+      <workItem from="1676805357987" duration="5197000" />
+      <workItem from="1676882676253" duration="2413000" />
+      <workItem from="1676893459398" duration="4000" />
+      <workItem from="1676896211411" duration="4559000" />
+      <workItem from="1676912564178" duration="2611000" />
+      <workItem from="1676974901066" duration="28802000" />
+      <workItem from="1677012002700" duration="4061000" />
+      <workItem from="1677063919497" duration="2000" />
+      <workItem from="1677066368700" duration="10224000" />
+      <workItem from="1677082300354" duration="4219000" />
+      <workItem from="1677095639837" duration="5183000" />
+      <workItem from="1677152226771" duration="15222000" />
+      <workItem from="1677185900312" duration="1000" />
+      <workItem from="1677235619576" duration="727000" />
+      <workItem from="1677246672081" duration="7905000" />
+      <workItem from="1677261101325" duration="2000" />
+      <workItem from="1677263168098" duration="2000" />
+      <workItem from="1677265694640" duration="1040000" />
+      <workItem from="1677328740656" duration="158000" />
+      <workItem from="1677328908129" duration="17250000" />
+      <workItem from="1677403496207" duration="5060000" />
+      <workItem from="1677412419886" duration="6608000" />
+      <workItem from="1677445129531" duration="2313000" />
+      <workItem from="1677494517954" duration="9133000" />
+      <workItem from="1677517702221" duration="5195000" />
+      <workItem from="1677526792473" duration="2092000" />
+      <workItem from="1677576155810" duration="5507000" />
+      <workItem from="1677587869867" duration="5625000" />
+      <workItem from="1677596816793" duration="8723000" />
+      <workItem from="1677610460469" duration="4332000" />
+      <workItem from="1677668506774" duration="3000" />
+      <workItem from="1677671480457" duration="9882000" />
+      <workItem from="1677696597706" duration="8531000" />
+      <workItem from="1677754723752" duration="407000" />
+      <workItem from="1677761333952" duration="4172000" />
+      <workItem from="1677777367994" duration="1517000" />
+      <workItem from="1677785121513" duration="2330000" />
+      <workItem from="1677840983242" duration="3212000" />
+      <workItem from="1677850071380" duration="4582000" />
+      <workItem from="1678184837721" duration="2263000" />
+      <workItem from="1678191531818" duration="1058000" />
+      <workItem from="1678207730542" duration="4676000" />
+      <workItem from="1678271166641" duration="971000" />
+      <workItem from="1678297793641" duration="1222000" />
+      <workItem from="1678299034000" duration="261000" />
+      <workItem from="1678299305883" duration="128000" />
+      <workItem from="1678299440452" duration="175000" />
+      <workItem from="1678299631096" duration="955000" />
+      <workItem from="1678303543636" duration="6232000" />
+      <workItem from="1678353827762" duration="8653000" />
+      <workItem from="1678444832295" duration="24891000" />
+      <workItem from="1678479987788" duration="14677000" />
+      <workItem from="1678536227167" duration="9213000" />
+      <workItem from="1678576687796" duration="4412000" />
+      <workItem from="1678626205238" duration="4904000" />
+      <workItem from="1678651418121" duration="637000" />
+      <workItem from="1678697242631" duration="3520000" />
+      <workItem from="1678709058222" duration="62000" />
+      <workItem from="1678709206607" duration="3394000" />
+      <workItem from="1678714005901" duration="3381000" />
+      <workItem from="1678734619906" duration="625000" />
+      <workItem from="1678796337505" duration="26987000" />
+      <workItem from="1678887434269" duration="11817000" />
+      <workItem from="1678907346592" duration="17110000" />
+      <workItem from="1678973590366" duration="9215000" />
+      <workItem from="1678983629858" duration="686000" />
+      <workItem from="1678984944712" duration="3575000" />
+      <workItem from="1678992779414" duration="10095000" />
+      <workItem from="1679050126736" duration="5000" />
+      <workItem from="1679053363196" duration="294000" />
+      <workItem from="1679056498925" duration="5114000" />
+      <workItem from="1679069997861" duration="6153000" />
+      <workItem from="1679081352803" duration="6711000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.cfg" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="7ef1c4ae-20ba-4b09-85b1-300ed72aabd8">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/jchakir" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

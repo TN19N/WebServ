@@ -18,7 +18,7 @@ static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::strin
 	body.append(1, '/') ;
 }
 
-static void __do_response_with_dir_content_(Client* client)
+static void __do_response_with_directory_content_(Client* client)
 {
 	Response		*response;
 	std::string		body;
@@ -26,7 +26,7 @@ static void __do_response_with_dir_content_(Client* client)
 	DIR* 			dir;
 	struct dirent*	ent;
 	
-	response = new Response(200, false);
+	response = new Response(200, client->getRequest()->keepAlive);
 	client->setResponse(response);
 	
 	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == nullptr)
@@ -67,6 +67,7 @@ static void __read_file_content_to_do_response_(Client* client) {
 	struct stat		pathInfo;
 	
 	response = new Response(200, client->getRequest()->keepAlive);
+	client->setResponse(response);
 	
 	stat(client->getRequest()->fullPath.c_str(), &pathInfo);
 	if ((response->download_file_fd = open(client->getRequest()->fullPath.c_str(), O_RDONLY)) < 0) {
@@ -82,7 +83,6 @@ static void __read_file_content_to_do_response_(Client* client) {
 	}
 	response->addHeader("Content-Length",std::to_string(pathInfo.st_size));
 	response->buffer.append(CRLF);
-	client->setResponse(response);
 	client->switchState();
 }
 
@@ -123,7 +123,7 @@ void HTTP::getMethodHandler(Client *client)
 				if (request->location->getDirectives().find(AUTOINDEX_DIRECTIVE)->second[0] == "off") {
 					throw 403;
 				} else {
-					__do_response_with_dir_content_(client);
+					__do_response_with_directory_content_(client);
 				}
 				return ;
 			}

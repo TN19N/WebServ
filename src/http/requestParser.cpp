@@ -185,22 +185,32 @@ Request* HTTP::requestParser(Client *client)
 	const char	*path, *buffer = client->getBuffer().c_str();
 
 	request = new Request();
-	request->method = __get_request_method_(buffer, client->getBuffer()) ;
-	path = __get_requested_path_(buffer, client->getBuffer());
-	if (path[0] != '/') {
-		throw 400;
+	try
+	{
+		request->method = __get_request_method_(buffer, client->getBuffer()) ;
+		path = __get_requested_path_(buffer, client->getBuffer());
+		if (path[0] != '/')
+			throw 400;
+		request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
+		request->path = HTTP::urlDecoding(path);
+		request->extension = HTTP::getExtensionFromPath(path);
+		__check_request_protocol_(buffer);
+		if (*buffer == '\r')
+			throw 400;
+		__parse_and_fill_request_headers_(buffer,client->getBuffer(), request->headers, client->isCgi());
+		__fill_request_and_check_basic_bad_errors_(request);
+		buffer += 2;
+		client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
 	}
-	
-	request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
-	request->path = HTTP::urlDecoding(path);
-	request->extension = HTTP::getExtensionFromPath(path);
-
-	__check_request_protocol_(buffer);
-	if (*buffer == '\r')
-		throw 400;
-	__parse_and_fill_request_headers_(buffer,client->getBuffer(), request->headers, client->isCgi());
-	__fill_request_and_check_basic_bad_errors_(request);
-	buffer += 2;
-	client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
+	catch (const int error)
+	{
+		delete request;
+		throw error;
+	}
+	catch (const std::exception &e)
+	{
+		delete request;
+		throw e;
+	}
 	return request;
 }

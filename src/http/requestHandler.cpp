@@ -26,6 +26,8 @@ static void __print_request_data_for_debug_(Request *request)
 	for (std::map<std::string, std::vector<std::string> >::const_iterator
 	b = request->location->getDirectives().begin(), e = request->location->getDirectives().end(); b != e; ++b)
 	{
+		if (b->first[0] == '.')
+			continue;
 		std::cout << b->first << ": ";
 		for (std::vector<std::string>::const_iterator bg = b->second.begin(), ed = b->second.end(); bg != ed; ++bg)
 			std::cout << *bg << ' ' ;
@@ -67,10 +69,9 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 	if (client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
 		request = HTTP::requestParser(client);
 		client->setRequest(request);
-		
 		try {
 			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
-		} catch (std::out_of_range &e) {
+		} catch (std::out_of_range&) {
 			// otherwise keepAlive is true
 		}
 
@@ -110,10 +111,4 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 			}
 		}
 	}
-
-	# ifdef DEBUG
-	if (client->getResponse() != nullptr) {
-		__print_response_data_for_debug_(client->getResponse());
-	}
-	# endif
 }
