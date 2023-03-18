@@ -2,12 +2,11 @@
 //   Created by Jaouad Chakir (jchakir@student.1337.ma) on 12/03/2023 at 18:22.
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
-
+# include <iostream>
 # include "../../include/webserv/context.hpp"
 # include "../../include/webserv/http.hpp"
 
-static void __create_file_to_upload_content_(Client *client, const char *filepath)
-{
+static void __create_file_to_upload_content_(Client *client, const char *filepath) {
 	Request	*request = client->getRequest();
 	
 	if (access(filepath, F_OK) == 0) {
@@ -20,8 +19,7 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 	}
 }
 
-void HTTP::postMethodHandler(Client *client)
-{
+void HTTP::postMethodHandler(Client *client) {
 	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
 	std::vector<std::string>::const_iterator							begin, end;
 	
@@ -38,10 +36,17 @@ void HTTP::postMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
-		// TODO: logic of filepath name here <<<-------
-		
-		__create_file_to_upload_content_(client, (directive->second[0] + "test").c_str());
-		return;
+		try {
+			// Get file name from FILE-NAME header
+			std::string fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");
+			if (request->headers.at("FILE-NAME").find('/') != std::string::npos) {
+				throw 403;
+			}
+			__create_file_to_upload_content_(client, fileName.c_str());
+			return;
+		} catch (std::out_of_range &e) {
+			throw 400;
+		}
 	}
 	// check is exist whatever file or directory
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
