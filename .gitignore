@@ -12,5 +12,5 @@ CMakeLists.txt
 .idea/
 nginx/
 www/
-build/debug/debug.log
-config/config.cfg
+build/
+config/
