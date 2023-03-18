@@ -7,15 +7,16 @@ bool HTTP::responseHandler(Client *client) {
 	Response	*response = client->getResponse();
 	char		buffer[BUFFER_SIZE];
 	ssize_t		readSize;
-	bool		ret = false;
     bool        keepAlive = response->keepAlive;
 
     if (response->download_file_fd != -1) {
-        if ((readSize = read(response->download_file_fd, buffer, BUFFER_SIZE)) < 0) {
-            throw 500;
-        }
+		if (response->buffer.size() < BUFFER_SIZE * 5) {
+			if ((readSize = read(response->download_file_fd, buffer, BUFFER_SIZE)) < 0) {
+				throw 500;
+			}
+			response->buffer.append(buffer, readSize);
+		}
 
-		response->buffer.append(buffer, readSize);
         HTTP::sendResponseBufferToClient(client);
 
         if (readSize == 0) {
@@ -24,6 +25,7 @@ bool HTTP::responseHandler(Client *client) {
         }
     } else if (HTTP::sendResponseBufferToClient(client)) {
         client->switchState();
+		std::cerr<< "**********************\n" ;
         return keepAlive;
     }
 
