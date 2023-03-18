@@ -5,5 +5,5 @@
 *.o
 *.out
 test.cpp
-build/*
-config/*
+build/
+config/
