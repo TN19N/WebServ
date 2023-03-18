@@ -20,7 +20,7 @@ SRC_EXT := cpp
 OBJ_EXT := o
 
 # Flags
-CFLAGS := #-Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror
 CFLAGS += -std=c++98
 
 # Sources
@@ -59,7 +59,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += #-g3 -fsanitize=address
+debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
 debug: $(TARGET)
 

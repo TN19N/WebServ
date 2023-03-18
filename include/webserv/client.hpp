@@ -30,7 +30,7 @@ class Client {
     public:
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
 
-        const int                       getSocketFd() const;
+        int                             getSocketFd() const;
         const struct sockaddr_storage&  getClientAddr() const;
         const struct sockaddr_storage&  getPeerAddr() const;
 
@@ -49,16 +49,16 @@ class Client {
         const std::string&              getBuffer() const;
         std::string&                    getBuffer();
 
-        const int                       getState() const;
+        int                             getState() const;
 
-        const int                       getFdOf(const int index) const;
+        int                             getFdOf(const int index) const;
 
         void                            setClientToCgi(Client* clientToCgi);
         void                            setRequest(Request* request);
         void                            setResponse(Response* response);
         void                            setState(const int &state);
 
-        const bool                      isCgi() const;
+        bool                            isCgi() const;
         void                            switchState();
 
         ~Client();

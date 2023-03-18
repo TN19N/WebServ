@@ -6,7 +6,7 @@
 bool HTTP::responseHandler(Client *client) {
 	Response	*response = client->getResponse();
 	char		buffer[BUFFER_SIZE];
-	ssize_t		readSize;
+	ssize_t		readSize = -1;
     bool        keepAlive = response->keepAlive;
 
     if (response->download_file_fd != -1) {
@@ -25,7 +25,6 @@ bool HTTP::responseHandler(Client *client) {
         }
     } else if (HTTP::sendResponseBufferToClient(client)) {
         client->switchState();
-		std::cerr<< "**********************\n" ;
         return keepAlive;
     }
 
