@@ -36,17 +36,17 @@ void HTTP::postMethodHandler(Client *client) {
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
+		std::string fileName;
 		try {
-			// Get file name from FILE-NAME header
-			std::string fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");
-			if (request->headers.at("FILE-NAME").find('/') != std::string::npos) {
-				throw 403;
-			}
-			__create_file_to_upload_content_(client, fileName.c_str());
-			return;
+			fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");
 		} catch (std::out_of_range &e) {
 			throw 400;
 		}
+		if (request->headers.at("FILE-NAME").find('/') != std::string::npos) {
+			throw 403;
+		}
+		__create_file_to_upload_content_(client, fileName.c_str());
+		return;
 	}
 	// check is exist whatever file or directory
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
