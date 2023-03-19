@@ -36,8 +36,8 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 	
 	// fill args
 	args = new char * [3];
-	args[0] = cgiPath;
-	args[1] = request->fullPath.c_str();
+	args[0] = __set_env__key_and_value_(cgiPath, "");
+	args[1] = __set_env__key_and_value_(request->fullPath.c_str(), "");
 	args[2] = 0;
 
 	// fill env
