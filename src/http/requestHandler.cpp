@@ -23,8 +23,8 @@ static void __print_request_data_for_debug_(Request *request)
 		std::cout << b->first << ": " << b->second << '\n';
 	std::cout << "===================== Location =============================\n" ;
 	std::cout << "Location: " << request->location->getArgs()[0] << '\n' ;
-	for (std::map<std::string, std::vector<std::string> >::const_iterator
-	b = request->location->getDirectives().begin(), e = request->location->getDirectives().end(); b != e; ++b)
+	for (Context::Directives::const_iterator b = request->location->getDirectives().begin(),
+			e = request->location->getDirectives().end(); b != e; ++b)
 	{
 		if (b->first[0] == '.')
 			continue;
@@ -51,9 +51,8 @@ static void __print_request_data_for_debug_(Request *request)
 
 static void __check_allowed_method_(const Context* location, std::string &method)
 {
-	std::vector<std::string>::const_iterator begin;
-	std::vector<std::string>::const_iterator end;
-	const std::vector<std::string> *methods;
+	std::vector<std::string>::const_iterator begin, end;
+	const std::vector<std::string> 			*methods;
 	
 	methods = &(location->getDirectives().find(METHOD_DIRECTIVE)->second);
 	for (begin = methods->begin(), end = methods->end() ; begin != end && *begin != method; ++begin) ;
@@ -61,45 +60,41 @@ static void __check_allowed_method_(const Context* location, std::string &method
 		throw 405;
 }
 
-void HTTP::requestHandler(Client* client, const Context* const configuration) {
+static Client* __client_request_handler_(Client* client, const Context* const configuration)
+{
+	Client	*cgi = 0;
 	Request	*request;
 
-	HTTP::readRequestBufferFromClient(client);
-
-	if (client->isCgi() && client->getResponse() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
-		Response *response = HTTP::baseParser(client);
-	} else if (!client->isCgi() && client->getRequest() == nullptr && client->getBuffer().find(END_HEADERS) != std::string::npos) {
-		request = HTTP::requestParser(client);
+	if (client->getRequest() == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos) {
+		request = static_cast<Request*>(HTTP::baseParser(client));
 		client->setRequest(request);
 		try {
 			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
-		} catch (std::out_of_range&) {
-			// otherwise keepAlive is true
-		}
+		} catch (std::out_of_range&) {}
 
 		request->location = HTTP::blockMatchAlgorithm(client, configuration);
-
+		
 		__check_allowed_method_(request->location, request->method);
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
 		request->fullPath.append(request->path);
 
-		# ifdef DEBUG
-			__print_request_data_for_debug_(request);
-		# endif
+# ifdef DEBUG
+		__print_request_data_for_debug_(request);
+# endif
 
 		if (request->method == "GET") {
-			HTTP::getMethodHandler(client);
+			return HTTP::getMethodHandler(client);
 		} else if (request->method == "POST") {
-			HTTP::postMethodHandler(client);
+			cgi = HTTP::postMethodHandler(client);
 		} else if (request->method == "DELETE") {
-			HTTP::deleteMethodHandler(client);
+			return HTTP::deleteMethodHandler(client);
 		}
 	}
 
 	request = client->getRequest();
 	if (request != nullptr) {
 		HTTP::readBodyFromBuffer(client);
-
+		
 		if (request->upload_file_fd != -1) {
 			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0) {
 				unlink(request->upload_file_name.c_str());
@@ -108,12 +103,30 @@ void HTTP::requestHandler(Client* client, const Context* const configuration) {
 				throw 500;
 			}
 			request->body.clear();
-
+			
 			if (request->state == READY) {
-				client->setResponse(new Response(204, request->keepAlive));
-				client->getResponse()->buffer.append(CRLF);
+				client->setResponse(new Response(201, request->keepAlive));
+				client->getResponse()->addBody("");
 				client->switchState();
 			}
 		}
 	}
+	return cgi;
+}
+
+static void __cgi_response_handler_(Client* client)
+{
+	(void )client;
+	std::cerr << "client is cgi\n" ;
+}
+
+Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
+
+	HTTP::readRequestBufferFromClient(client);
+	if (client->isCgi())
+		__cgi_response_handler_(client);
+	else
+		return __client_request_handler_(client, configuration);
+
+	return 0;
 }

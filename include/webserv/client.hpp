@@ -17,6 +17,7 @@ class Client {
         const struct sockaddr_storage   clientAddr;
         const struct sockaddr_storage   peerAddr;
         int                             pipeFd[2];
+		int								pid;
 
         Request*                        request;
         Response*                       response;
@@ -28,6 +29,7 @@ class Client {
 
         int                             state;
     public:
+		Client(int read, int write, int pid, Client* cgiToClient);
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
 
         int                             getSocketFd() const;

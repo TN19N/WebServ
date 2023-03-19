@@ -43,6 +43,13 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     }
     # endif
 }
+Client::Client(int read, int write, int pid, Client* cgiToClient)
+{
+	pipeFd[READ_END] = read;
+	pipeFd[WRITE_END] = write;
+	this->pid = pid;
+	this->cgiToClient = cgiToClient;
+}
 // ******************************************************************************************************************
 
 // * Getters ********************************************************************************************************

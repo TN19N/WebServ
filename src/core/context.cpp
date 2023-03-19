@@ -41,7 +41,7 @@ const std::vector<std::string>& Context::getArgs() const {
     return this->args;
 }
 
-const std::map<std::string, std::vector<std::string> >& Context::getDirectives() const {
+const Context::Directives& Context::getDirectives() const {
     return this->directives;
 }
 

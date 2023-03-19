@@ -24,7 +24,7 @@ void CORE::display(const Context* context, const size_t level) {
     }
     std::cout << std::endl;
 
-    for (std::map<std::string, std::vector<std::string> >::const_iterator it = context->getDirectives().begin(); it != context->getDirectives().end(); ++it) {
+    for (Context::Directives::const_iterator it = context->getDirectives().begin(); it != context->getDirectives().end(); ++it) {
         std::cout << std::string(level + 1, '\t') << "(" << it->first << ") : ";
         for (size_t i = 0; i < it->second.size(); ++i) {
             std::cout << it->second[i] << " ";

@@ -62,7 +62,7 @@ static void __do_response_with_directory_content_(Client* client)
 }
 
 static void __read_file_content_to_do_response_(Client* client) {
-	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
+	Context::Directives::const_iterator	directive, notFound;
 	Response		*response;
 	struct stat		pathInfo;
 	
@@ -86,10 +86,10 @@ static void __read_file_content_to_do_response_(Client* client) {
 	client->switchState();
 }
 
-void HTTP::getMethodHandler(Client *client)
+Client* HTTP::getMethodHandler(Client *client)
 {
-	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
-	std::vector<std::string>::const_iterator							begin, end;
+	Context::Directives::const_iterator			directive, notFound;
+	std::vector<std::string>::const_iterator	begin, end;
 	
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;
@@ -125,7 +125,7 @@ void HTTP::getMethodHandler(Client *client)
 				} else {
 					__do_response_with_directory_content_(client);
 				}
-				return ;
+				return 0;
 			}
 		}
 	}
@@ -141,4 +141,5 @@ void HTTP::getMethodHandler(Client *client)
 	}
 	// no CGI just a simple file
 	__read_file_content_to_do_response_(client);
+	return 0;
 }

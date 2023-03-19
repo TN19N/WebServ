@@ -5,7 +5,7 @@
 
 #pragma once
 
-# define BUFFER_SIZE 		64000
+# define BUFFER_SIZE 		5120
 
 # define WEB_SERV_RUNNING 0
 # define WEB_SERV_STOPPING 1

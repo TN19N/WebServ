@@ -18,7 +18,7 @@ static char *__duplicate_string(const std::string &string)
 	return save_result;
 }
 
-static char **__headers_to_args(const std::string &path, const IBase::Headers &headers)
+static char **__set_args_(const std::string &path, const IBase::Headers &headers)
 {
 	IBase::Headers::const_iterator begin, end;
 	char	**args;
@@ -33,25 +33,23 @@ static char **__headers_to_args(const std::string &path, const IBase::Headers &h
 	return args;
 }
 
-int	HTTP::cgiExecutor(const std::string &path, const IBase::Headers &headers)
+Client* HTTP::cgiExecutor(Client* client)
 {
+	Client	*cgi;
 	int		pid;
-	int		fds[2];
+	int		_read[2];
+	int		_write[2];
 	char 	**args;
 	
-	if (pipe(fds) < 0)
+	if (pipe(_read) < 0 || pipe(_write))
 		throw 500;
 	pid = fork();
 	if (pid < 0)
 		throw 500;
-	if (pid == 0)
-	{
-		close(fds[0]);
-		dup2(fds[1], STDIN_FILENO);
-		args = __headers_to_args(path, headers);
-		if (execve(path.c_str(), args, nullptr) < 0)
-			exit(127);
-	}
-	close(fds[1]);
-	return fds[0];
+	cgi = new Client(_read[0], _write[1], pid, client);
+	
+	
+	close(_read[1]);
+	close(_write[0]);
+	return cgi;
 }

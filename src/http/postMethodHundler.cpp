@@ -21,8 +21,8 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 }
 
 void HTTP::postMethodHandler(Client *client) {
-	std::map<std::string, std::vector<std::string> >::const_iterator	directive, notFound;
-	std::vector<std::string>::const_iterator							begin, end;
+	Context::Directives::const_iterator			directive, notFound;
+	std::vector<std::string>::const_iterator	begin, end;
 	
 	Request					*request = client->getRequest();
 	struct stat				pathInfo;

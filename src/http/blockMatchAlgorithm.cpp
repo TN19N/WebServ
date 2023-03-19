@@ -65,7 +65,7 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
 
 static const Context* __get_match_server_context_(std::vector<const Context*> &servers, const std::string &host)
 {
-	std::map<std::string, std::vector<std::string> >::const_iterator serv_name, not_found;
+	Context::Directives::const_iterator serv_name, not_found;
 	std::vector<std::string>::const_iterator name, end;
 	
 	for (size_t i = 0; i < servers.size(); ++i) {
@@ -81,7 +81,7 @@ static const Context* __get_match_server_context_(std::vector<const Context*> &s
 	return servers.at(0);
 }
 
-const Context* HTTP::__get_match_location_context_(const std::vector<Context*> &locations, const std::string &path)
+const Context* HTTP::getMatchLocationContext(const std::vector<Context*> &locations, const std::string &path)
 {
 	int		character;
 	std::map<std::string, const Context*, std::greater<std::string> > locate;
@@ -120,5 +120,5 @@ const Context* HTTP::getMatchedServer(const Client* client, const Context* const
 
 const Context* HTTP::blockMatchAlgorithm(const Client* client, const Context* const configuration) {
 	const Context *server = HTTP::getMatchedServer(client, configuration);
-	return HTTP::__get_match_location_context_(server->getChildren(), client->getRequest()->path);
+	return HTTP::getMatchLocationContext(server->getChildren(), client->getRequest()->path);
 }

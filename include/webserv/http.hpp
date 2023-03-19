@@ -35,15 +35,17 @@ namespace HTTP
 	
 	// * Request Handler ***************
 	IBase* 			baseParser(Client *client);
-	void			requestHandler(Client* client, const Context* const configuration);
+	Client*			requestHandler(Client* client, const Context* const configuration);
 	const Context*	blockMatchAlgorithm(const Client* client, const Context* const configuration);
+	const Context*	getMatchLocationContext(const std::vector<Context*> &locations, const std::string &path);
 	const Context*  getMatchedServer(const Client* client, const Context* const configuration);
-	const Context*  __get_match_location_context_(const std::vector<Context*> &locations, const std::string &path);
-	void 			getMethodHandler(Client *client);
-	void 			deleteMethodHandler(Client *client);
-	void 			postMethodHandler(Client *client);
+	Client*			getMethodHandler(Client *client);
+	Client*			deleteMethodHandler(Client *client);
+	Client*			postMethodHandler(Client *client);
 	void 			readBodyFromBuffer(Client* client);
-	
+
+	// * CGI ******************************************************************
+	Client*			cgiExecutor(Client* client);
 	// * Tools **********************************************************************************
 	Client*				getClientWithFd(const int fd, const std::vector<Client*>& clients);
 	const std::string	getDefaultErrorPage(const int statusCode);

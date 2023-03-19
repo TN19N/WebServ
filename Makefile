@@ -37,7 +37,7 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/responseHandler.$(SRC_EXT) \
 		$(SRC_DIR)/http/tools.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
-		$(SRC_DIR)/http/requestParser.$(SRC_EXT) \
+		$(SRC_DIR)/http/baseParser.$(SRC_EXT) \
 		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT) \
 		$(SRC_DIR)/http/readBodyFromBuffer.$(SRC_EXT) \
 		$(SRC_DIR)/http/getMethodHandler.$(SRC_EXT) \

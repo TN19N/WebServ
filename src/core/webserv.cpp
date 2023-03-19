@@ -71,7 +71,7 @@ static bool errorHandler(const int statusCode, Client* client, const Context* co
             const Context* server = HTTP::getMatchedServer(client, configuration);
             const std::string path = server->getDirective(std::to_string(statusCode)).at(0);
 
-            const Context* location = HTTP::__get_match_location_context_(server->getChildren(), path);
+            const Context* location = HTTP::getMatchLocationContext(server->getChildren(), path);
             std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
 
             if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
