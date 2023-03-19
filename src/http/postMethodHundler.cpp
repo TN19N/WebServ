@@ -20,13 +20,12 @@ static void __create_file_to_upload_content_(Client *client, const char *filepat
 	request->upload_file_name = filepath;
 }
 
-void HTTP::postMethodHandler(Client *client) {
+Client* HTTP::postMethodHandler(Client *client) {
 	Context::Directives::const_iterator			directive, notFound;
 	std::vector<std::string>::const_iterator	begin, end;
-	
-	Request					*request = client->getRequest();
-	struct stat				pathInfo;
-	
+	Request										*request = client->getRequest();
+	struct stat									pathInfo;
+
 	notFound = request->location->getDirectives().end();
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
@@ -47,7 +46,7 @@ void HTTP::postMethodHandler(Client *client) {
 			throw 403;
 		}
 		__create_file_to_upload_content_(client, fileName.c_str());
-		return;
+		return 0;
 	}
 	// check is exist whatever file or directory
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
@@ -83,7 +82,8 @@ void HTTP::postMethodHandler(Client *client) {
 			if (*begin == request->extension)
 			{
 				--begin;
-				throw 1337;
+				directive = request->location->getDirectives().find(ROOT_DIRECTIVE);
+				return HTTP::cgiExecutor(client, begin->c_str(), directive->second[0].c_str());
 			}
 	}
 	// no CGI just a simple file

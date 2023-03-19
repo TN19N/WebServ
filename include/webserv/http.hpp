@@ -40,12 +40,12 @@ namespace HTTP
 	const Context*	getMatchLocationContext(const std::vector<Context*> &locations, const std::string &path);
 	const Context*  getMatchedServer(const Client* client, const Context* const configuration);
 	Client*			getMethodHandler(Client *client);
-	Client*			deleteMethodHandler(Client *client);
 	Client*			postMethodHandler(Client *client);
+	Client*			deleteMethodHandler(Client *client);
 	void 			readBodyFromBuffer(Client* client);
 
 	// * CGI ******************************************************************
-	Client*			cgiExecutor(Client* client);
+	Client* cgiExecutor(Client* client, const char *cgiPath, const char *rootDir);
 	// * Tools **********************************************************************************
 	Client*				getClientWithFd(const int fd, const std::vector<Client*>& clients);
 	const std::string	getDefaultErrorPage(const int statusCode);

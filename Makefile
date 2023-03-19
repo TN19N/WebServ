@@ -11,7 +11,7 @@ CONFIG_DIR := ./config
 TEMPLATE_DIR := ./template
 
 # The Target Binary Program
-TARGET := $(TARGET_DIR)/webserv.exe
+TARGET := $(TARGET_DIR)/webserv
 TRACE_FOLDER := $(BUILD_DIR)/debug/trace
 DEBUG_LOG_FILE := $(BUILD_DIR)/debug/debug.log
 

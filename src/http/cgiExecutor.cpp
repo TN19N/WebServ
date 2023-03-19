@@ -4,52 +4,59 @@
 // -------------------------------------------------------------------------------
 
 #include "../../include/webserv/http.hpp"
-
-static char *__duplicate_string(const std::string &string)
+/*
+static char *__new_arg__key_and_value_(const char *key, const std::string &value)
 {
-	const char *str = string.c_str();
-	char *result, *save_result;
+	const char	*val = value.c_str();
+	char 		*result, *save_result;
+	size_t		len = 0;
 	
-	result = new char [string.size() + 1];
+	while (key[len])
+		++len;
+	result = new char [len + value.size() + 1];
 	save_result = result;
-	while (*str)
-		*result++ = *str++;
+	while (*key)
+		*result++ = *key++;
+	while (*val)
+		*result++ = *val++;
 	*result = '\0';
 	return save_result;
 }
 
-static char **__set_args_(const std::string &path, const IBase::Headers &headers)
+static char **__set_args_()
 {
-	IBase::Headers::const_iterator begin, end;
 	char	**args;
 	
-	begin = headers.begin();
-	end = headers.end();
-	args = new char *[headers.size() + 2];
-	args[0] = __duplicate_string(path);
-	for (size_t i = 1; begin != end; ++begin, ++i)
-		args[i] = __duplicate_string(begin->first + ": " + begin->second);
-	args[headers.size() + 1] = nullptr;
+	
 	return args;
 }
+ */
 
-Client* HTTP::cgiExecutor(Client* client)
+static void __run_cgi_script_(Client *client, int _read, int _write, const char *cgiPath)
 {
-	Client	*cgi;
-	int		pid;
-	int		_read[2];
-	int		_write[2];
-	char 	**args;
+
+
+}
+
+Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootDir)
+{
+	int	pid, _read[2], _write[2];
 	
 	if (pipe(_read) < 0 || pipe(_write))
 		throw 500;
 	pid = fork();
 	if (pid < 0)
 		throw 500;
-	cgi = new Client(_read[0], _write[1], pid, client);
-	
-	
-	close(_read[1]);
-	close(_write[0]);
-	return cgi;
+	if (pid == 0)
+	{
+		if (close(_read[0]) < 0 || close(_write[1]) < 0)
+			exit(50);
+		if (chdir(rootDir) < 0)
+			exit(50);
+		__run_cgi_script_(client, _write[0], _read[1], cgiPath);
+	}
+
+	if (close(_read[1]) < 0 || close(_write[0]) < 0)
+		throw 500;
+	return (new Client(_read[0], _write[1], pid, client));
 }

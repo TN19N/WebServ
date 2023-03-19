@@ -25,7 +25,7 @@ static void __do_response_with_directory_content_(Client* client)
 	std::string		&path = client->getRequest()->path;
 	DIR* 			dir;
 	struct dirent*	ent;
-	
+
 	response = new Response(200, client->getRequest()->keepAlive);
 	client->setResponse(response);
 	
@@ -90,9 +90,8 @@ Client* HTTP::getMethodHandler(Client *client)
 {
 	Context::Directives::const_iterator			directive, notFound;
 	std::vector<std::string>::const_iterator	begin, end;
-	
-	Request					*request = client->getRequest();
-	struct stat				pathInfo;
+	Request										*request = client->getRequest();
+	struct stat									pathInfo;
 
 	notFound = request->location->getDirectives().end();
 	// Check for redirection
@@ -136,7 +135,8 @@ Client* HTTP::getMethodHandler(Client *client)
 			if (*begin == request->extension)
 			{
 				--begin;
-				throw 1337;
+				directive = request->location->getDirectives().find(ROOT_DIRECTIVE);
+				return HTTP::cgiExecutor(client, begin->c_str(), directive->second[0].c_str());
 			}
 	}
 	// no CGI just a simple file

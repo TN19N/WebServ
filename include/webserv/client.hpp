@@ -29,7 +29,7 @@ class Client {
 
         int                             state;
     public:
-		Client(int read, int write, int pid, Client* cgiToClient);
+		Client(int read, int write, int pid, Client* client); // for create cgi client
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
 
         int                             getSocketFd() const;

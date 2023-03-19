@@ -43,12 +43,13 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     }
     # endif
 }
-Client::Client(int read, int write, int pid, Client* cgiToClient)
+Client::Client(int read, int write, int pid, Client* client)
+		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
 	this->pid = pid;
-	this->cgiToClient = cgiToClient;
+	this->cgiToClient = client;
 }
 // ******************************************************************************************************************
 
