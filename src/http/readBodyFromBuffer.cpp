@@ -60,12 +60,12 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 void HTTP::readBodyFromBuffer(Client *client)
 {
 	IBase *base;
-
+	
 	if (client->isCgi())
-		base = static_cast<IBase*>(client->getResponse());
+		base = reinterpret_cast<IBase*>(client->getResponse());
 	else
-		base = static_cast<IBase*>(client->getRequest());
-
+		base = reinterpret_cast<IBase*>(client->getRequest());
+	
 	if (base->isChunked) {
 		while (__read_chunked_body_(client, base));
 	} else {

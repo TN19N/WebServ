@@ -120,8 +120,8 @@ void CORE::listenToSignals() {
     sa.sa_flags = SA_RESTART;
 
     if (sigaction(SIGINT, &sa, NULL) == -1) {
-        throw std::runtime_error("sigaction() : " + std::string(strerror(errno)));
-    }
+		throw std::runtime_error("sigaction() : " + std::string(strerror(errno)));
+	}
 }
 
 const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients) {

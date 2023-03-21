@@ -4,6 +4,7 @@
 # include <vector>
 # include <poll.h>
 # include <unistd.h>
+# include <signal.h>
 # ifdef DEBUG
 # include <iostream>
 # endif
@@ -33,24 +34,24 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     # ifdef DEBUG
     std::cout << "-------------------------- new Client --------------------------" << std::endl;
     std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;
-    if (this->isCgi()) {
-        std::cout << "created to handle client: " << std::endl;
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&(this->getCgiToClient()->getClientAddr())));
-    } else {
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getClientAddr()));
-        std::cout << "connected to: " << std::endl;
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
-    }
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getClientAddr()));
+	std::cout << "connected to: " << std::endl;
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
     # endif
 }
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
-		pid(pid), cgiToClient(client), state(SENDING_REQUEST)
+		pid(pid), request(0), response(0), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
-	// TODO remove, this is for bypass warning
-	this->pid = pid;
+
+# ifdef DEBUG
+	std::cout << "-------------------------- new Client --------------------------" << std::endl;
+    std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;
+	std::cout << "created to handle client: " << std::endl;
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&(this->getCgiToClient()->getClientAddr())));
+# endif
 }
 // ******************************************************************************************************************
 
@@ -162,11 +163,6 @@ void Client::switchState() {
             close(this->getFdOf(WRITE_END));
             this->setState(READING_RESPONSE);
             break;
-		case READING_RESPONSE:
-			this->setState(SENDING_REQUEST);
-			delete this->response;
-			this->response = nullptr;
-			break;
     }
 }
 
@@ -177,16 +173,15 @@ bool Client::isCgi() const {
 
 // * Destructor *****************************************************************************************************
 Client::~Client() {
-
     switch (this->getState()) {
         case READING_REQUEST :
         case SENDING_RESPONSE :
             close(this->getSocketFd());
             break;
         case SENDING_REQUEST :
-            close(this->getPipeFd()[WRITE_END]);
+            close(this->getFdOf(WRITE_END));
         case READING_RESPONSE :
-            close(this->getPipeFd()[READ_END]);
+            close(this->getFdOf(READ_END));
     }
 
     if (this->getRequest() != nullptr) {
@@ -196,7 +191,18 @@ Client::~Client() {
     if (this->getResponse() != nullptr) {
         delete this->getResponse();
     }
-    
+	
+	if (this->isCgi()) {
+		if (waitpid(this->pid, NULL, WNOHANG) == 0) {
+			kill(this->pid, SIGKILL);
+		}
+		this->getCgiToClient()->setClientToCgi(nullptr);
+	}
+	
+	if (this->getClientToCgi() != nullptr) {
+		delete this->getClientToCgi();
+	}
+
     # ifdef DEBUG
     std::cout << "-------------------------- client disconnected --------------------------" << std::endl;
     std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;

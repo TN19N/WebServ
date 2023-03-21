@@ -7,37 +7,53 @@
 
 // * Functions *************************************************************************************************************************
 
+static int __get_status_code_from_cgi_status_(const char *status)
+{
+	int statusCode = 0;
+	
+	while (*status != ' ') {
+		if (*status < '0' || *status > '9')
+			throw 400;
+		statusCode += (statusCode * 10) + *status - '0';
+		++status;
+	}
+	return statusCode;
+}
+
 void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 {
 	IBase::Headers::iterator	header, notFound;
 	Response					*response;
 	Client 						*client = cgi->getCgiToClient();
 	int							statusCode;
+
+	if (cgi->getResponse() == nullptr) {
+		throw 500;
+	}
 	
 	notFound = cgi->getResponse()->headers.end();
 	header = cgi->getResponse()->headers.find("Status");
-	if (header == notFound)
-		throw 400;
-	
-	try { statusCode = std::stoi(header->second); }
-	catch (const std::exception&) { throw 400; }
-	
+	if (header == notFound) {
+		header = cgi->getResponse()->headers.find("Location");
+		if (header != notFound) {
+			statusCode = 301;
+		} else {
+			statusCode = 200;
+		}
+	} else {
+		statusCode = __get_status_code_from_cgi_status_(header->second.c_str());
+	}
+
 	response = new Response(statusCode, client->getRequest()->keepAlive);
 	client->setResponse(response);
 	
-	header = cgi->getResponse()->headers.find("Location");
-	if (header != notFound)
-	{
-		response->addHeader("Location", header->second);
-		client->switchState();
-		throw ;
-	}
 	for (header = cgi->getResponse()->headers.begin(); header != notFound; ++header)
 	{
 		if (header->first == "Status")
 			continue;
 		response->addHeader(header->first, header->second);
 	}
+	
 	response->addBody(cgi->getResponse()->body);
 	client->switchState();
 }
@@ -83,21 +99,15 @@ int HTTP::parseContentLength(const char *str)
 
 Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients) {
     for (size_t i = 0; i < clients.size(); ++i) {
-        if (clients[i]->isCgi()) {
-            if (clients[i]->getState() == SENDING_REQUEST) {
-                if (clients[i]->getFdOf(WRITE_END) == fd) {
-                    return clients[i];
-                }
-            } else if (clients[i]->getState() == READING_RESPONSE) {
-                if (clients[i]->getFdOf(READ_END) == fd) {
-                    return clients[i];
-                }
-            }
-        } else {
-            if (clients[i]->getSocketFd() == fd) {
-                return clients[i];
-            }
-        }
+		if (clients[i]->getState() == SENDING_REQUEST || clients[i]->getState() == SENDING_RESPONSE) {
+			if (clients[i]->getFdOf(WRITE_END) == fd) {
+				return clients[i];
+			}
+		} else if (clients[i]->getState() == READING_RESPONSE || clients[i]->getState() == READING_REQUEST) {
+			if (clients[i]->getFdOf(READ_END) == fd) {
+				return clients[i];
+			}
+		}
     }
     return nullptr; // never be reached (I hope so :D)
 }

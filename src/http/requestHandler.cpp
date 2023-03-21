@@ -78,7 +78,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	Request	*request;
 
 	if (client->getRequest() == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos) {
-		request = static_cast<Request*>(HTTP::baseParser(client));
+		request = reinterpret_cast<Request*>(HTTP::baseParser(client));
 		client->setRequest(request);
 		try {
 			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
@@ -105,7 +105,9 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 	request = client->getRequest();
 	if (request) {
-		HTTP::readBodyFromBuffer(client);
+		if (request->state == CREATING) {
+			HTTP::readBodyFromBuffer(client);
+		}
 		
 		if (request->upload_file_fd != -1) {
 			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0) {
@@ -126,7 +128,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	return cgi;
 }
 
-static void __cgi_response_handler_(Client* cgi)
+static Client* __cgi_response_handler_(Client* cgi)
 {
 	Response 					*response = cgi->getResponse();
 	IBase::Headers::iterator	header, notFound;
@@ -134,7 +136,7 @@ static void __cgi_response_handler_(Client* cgi)
 	
 	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos)
 	{
-		response = static_cast<Response*>(HTTP::baseParser(cgi));
+		response = reinterpret_cast<Response*>(HTTP::baseParser(cgi));
 		cgi->setResponse(response);
 		notFound = response->headers.end();
 		header = response->headers.find("Transfer-Encoding");
@@ -153,20 +155,18 @@ static void __cgi_response_handler_(Client* cgi)
 	if (response)
 	{
 		HTTP::readBodyFromBuffer(cgi);
-		if (response->state == READY)
-		{
+		if (response->state == READY) {
 			HTTP::convertCgiResponseToClientResponse(cgi);
+			return cgi;
 		}
-		
 	}
+	return nullptr;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	__read_buffer_from_client_(client);
 	if (client->isCgi())
-		__cgi_response_handler_(client);
+		return __cgi_response_handler_(client);
 	else
 		return __client_request_handler_(client, configuration);
-
-	return 0;
 }

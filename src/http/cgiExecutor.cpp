@@ -24,16 +24,27 @@ static char *__set_env__key_and_value_(const char *key, const char *val)
 	return save_env;
 }
 
+// create env from finding header value or use default value
+static char *__set_new_env_(Request *req, const char *key, const char *env, const char *_default)
+{
+	Request::Headers::const_iterator	header;
+
+	header = req->headers.find(key);
+	if (header ==  req->headers.end())
+		return __set_env__key_and_value_(env, _default);
+	else
+		return __set_env__key_and_value_(env, header->second.c_str());
+}
+
 static void __run_cgi_script_(Client *client, int _read, int _write, const char *cgiPath)
 {
-	Request::Headers::const_iterator	header, notFound;
-	char								**envs, **args;
-	Request								*request = client->getRequest();
+	char		**envs, **args;
+	Request		*request = client->getRequest();
 
 	// dup2 to change 'std in' and 'std out'
-	if (dup2(STDIN_FILENO, _read) < 0 || dup2(STDOUT_FILENO, _write) < 0)
+	if (dup2(_read, STDIN_FILENO) < 0 || dup2(_write, STDOUT_FILENO) < 0)
 		exit(50);
-	
+
 	// fill args
 	args = new char * [3];
 	args[0] = __set_env__key_and_value_(cgiPath, "");
@@ -41,36 +52,19 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 	args[2] = 0;
 
 	// fill env
-	envs = new char * [10];
-	notFound = request->headers.end();
-	
-	header = request->headers.find("Content-Length");
-	if (header == notFound)
-		envs[0] = __set_env__key_and_value_("CONTENT_LENGTH=", "-1");
-	else
-		envs[0] = __set_env__key_and_value_("CONTENT_LENGTH=", header->second.c_str());
+	envs = new char * [10]; // to add more envs don't forget to allocate enough memory
+	envs[0] = __set_env__key_and_value_("GATEWAY_INTERFACE=", "CGI/1.1");
+	envs[1] = __set_env__key_and_value_("QUERY_STRING=", request->query.c_str());
+	envs[2] = __set_env__key_and_value_("REQUEST_METHOD=", request->method.c_str());
+	envs[3] = __set_env__key_and_value_("SCRIPT_FILENAME=", request->fullPath.c_str());
+	envs[4] = __set_env__key_and_value_("SERVER_SOFTWARE=", "webserv/1.0.0");
+	envs[5] = __set_env__key_and_value_("SERVER_PROTOCOL=", "HTTP/1.1");
 
-	header = request->headers.find("Content-Type");
-	if (header == notFound)
-		envs[1] = __set_env__key_and_value_("CONTENT_TYPE=", DEFAULT_MIME_TYPE);
-	else
-		envs[1] = __set_env__key_and_value_("CONTENT_TYPE=", header->second.c_str());
+	envs[6] = __set_new_env_(request, "Content-Length", "CONTENT_LENGTH=", "-1");
+	envs[7] = __set_new_env_(request, "Content-Type", "CONTENT_TYPE=", DEFAULT_MIME_TYPE);
+	envs[8] = __set_new_env_(request, "Cookie", "HTTP_COOKIE=", "");
+	// TODO: add more envs
 
-	header = request->headers.find("Cookie");
-	if (header == notFound)
-		envs[2] = __set_env__key_and_value_("HTTP_COOKIE=", "");
-	else
-		envs[2] = __set_env__key_and_value_("HTTP_COOKIE=", header->second.c_str());
-
-	envs[3] = __set_env__key_and_value_("GATEWAY_INTERFACE=", "CGI/1.1");
-	envs[4] = __set_env__key_and_value_("QUERY_STRING=", request->query.c_str());
-	envs[5] = __set_env__key_and_value_("REQUEST_METHOD=", request->method.c_str());
-	envs[6] = __set_env__key_and_value_("SCRIPT_FILENAME=", request->fullPath.c_str());
-	envs[7] = __set_env__key_and_value_("SERVER_SOFTWARE=", "webserv/1.0.0");
-	envs[8] = __set_env__key_and_value_("SERVER_PROTOCOL=", "HTTP/1.1");
-
-	// TODO: we can add more envs
-	
 	envs[9] = 0;
 	// execute the cgi script
 	if (execve(cgiPath, args, envs) < 0)

@@ -5,11 +5,8 @@ IBase::IBase()
     : keepAlive(true),
     isChunked(false), 
     state(CREATING),
-    contentLength(0) 
-{
+    contentLength(0)
+	
+	{}
 
-}
-
-IBase::~IBase() {
-
-}
+IBase::~IBase() {}
