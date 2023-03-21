@@ -21,39 +21,41 @@ static void __read_content_length_body_(Client* client) {
 }
 
 static bool __read_chunked_body_(Client* client) {
-	const char *buffer = client->getBuffer().c_str();
+	Request			*request = client->getRequest();
+	std::string&	Buffer = client->getBuffer();
+	const char		*buffer = Buffer.c_str();
 
-	if (client->getRequest()->contentLength == 0) {
+	if (request->contentLength == 0) {
 		while (*buffer && (*buffer != '\r' || *(buffer+1) != '\n')) {
 			++buffer;
 		}
 		if (*buffer == '\0') {
 			return false;
 		}
-		client->getBuffer()[buffer - client->getBuffer().c_str()] = '\0';
-		buffer += 2;
-		client->getRequest()->contentLength = HTTP::parseContentLength(client->getBuffer().c_str());
-		if (client->getRequest()->contentLength == 0 && *buffer == '\r' && *(buffer+1) == '\n') {
-			client->getRequest()->state = READY;
+		Buffer[buffer - Buffer.c_str()] = '\0';
+		buffer += 2; // for bypass '\r\n'
+		request->contentLength = HTTP::parseContentLength(Buffer.c_str());
+		if (request->contentLength == 0 && *buffer == '\r' && *(buffer + 1) == '\n') {
+			request->state = READY;
+			Buffer.clear();
 			return false;
 		}
-		client->getRequest()->contentLength += 2; // this is for '\r\n'
-		client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
+		request->contentLength += 2; // this is for '\r\n'
+		Buffer.erase(0,buffer - Buffer.c_str());
 	} else {
-		client->getRequest()->body.append(client->getBuffer(), 0,
-							client->getRequest()->contentLength - 2); // -2 for '\r\n'
-		if (client->getBuffer().size() > client->getRequest()->contentLength)
+		request->body.append(Buffer, 0, request->contentLength - 2); // -2 for '\r\n'
+		if (Buffer.size() > request->contentLength)
 		{
-			client->getBuffer().erase(0, client->getRequest()->contentLength);
-			client->getRequest()->contentLength = 0;
+			Buffer.erase(0, request->contentLength);
+			request->contentLength = 0;
 		}
 		else
 		{
-			client->getRequest()->contentLength -= client->getBuffer().size();
-			client->getBuffer().clear();
+			request->contentLength -= Buffer.size();
+			Buffer.clear();
 		}
 	}
-	return client->getBuffer().size() != 0;
+	return Buffer.size() != 0;
 }
 
 void HTTP::readBodyFromBuffer(Client *client)

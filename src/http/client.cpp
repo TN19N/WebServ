@@ -44,12 +44,13 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     # endif
 }
 Client::Client(int read, int write, int pid, Client* client)
-		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr)
+		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
+		pid(pid), cgiToClient(client), state(SENDING_RESPONSE)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
+	// TODO remove, this is for bypass warning
 	this->pid = pid;
-	this->cgiToClient = client;
 }
 // ******************************************************************************************************************
 
@@ -88,6 +89,14 @@ Request* Client::getRequest() {
 
 Response* Client::getResponse() {
     return this->response;
+}
+
+Client* Client::getCgiToClient() {
+	return this->cgiToClient;
+}
+
+Client* Client::getClientToCgi() {
+	return this->clientToCgi;
 }
 
 const Client* Client::getCgiToClient() const {

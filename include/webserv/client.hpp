@@ -44,9 +44,12 @@ class Client {
 
         const Response*                 getResponse() const;
         Response*                       getResponse();
-
+	
+		Client*                   		getCgiToClient();
+		Client*                   		getClientToCgi();
         const Client*                   getCgiToClient() const;
         const Client*                   getClientToCgi() const;
+		
 
         const std::string&              getBuffer() const;
         std::string&                    getBuffer();

@@ -167,7 +167,7 @@ static void __parse_and_fill_request_headers_(const char * &buffer, std::string 
 		{
 			if (isCgi)
 			{
-				if (HTTP::strcmp(key, "setCookies") == 0)
+				if (HTTP::strcmp(key, "Set-Cookie") == 0)
 					headers[key].append(__get_header_value_(buffer, base));
 				else
 					headers[key] = __get_header_value_(buffer, base);

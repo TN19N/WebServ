@@ -30,7 +30,6 @@ namespace HTTP
 	const std::string getStatusCodeMessage(const int statusCode);
 	
 	// * Response Handler ******************
-	bool 	sendResponseBufferToClient(Client *client);
 	bool 	responseHandler(Client *client);
 	
 	// * Request Handler ***************
@@ -53,8 +52,8 @@ namespace HTTP
 	int					strcmp(const char *s1, const char *s2);
 	const char 			*getExtensionFromPath(const char *path);
 	int					parseContentLength(const char *str);
-	void 				readRequestBufferFromClient(Client* client);
 	const std::string 	urlDecoding(const std::string& url);
+	void 				convertCgiResponseToClientResponse(Client *cgi);
 
 } // namespace HTTP
 

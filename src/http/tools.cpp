@@ -1,30 +1,23 @@
 # include <string>
 # include <vector>
-# include <poll.h>
 # include <time.h>
 # include <iostream>
 
 # include "../../include/webserv/http.hpp"
-# include "../../include/webserv/client.hpp"
 
 // * Functions *************************************************************************************************************************
 
-bool HTTP::sendResponseBufferToClient(Client *client) {
-	Response	*response = client->getResponse();
-	ssize_t		readSize;
+void HTTP::convertCgiResponseToClientResponse(Client *cgi)
+{
+	IBase::Headers::iterator	header, notFound;
+	Client 						*client = cgi->getCgiToClient();
 	
-	if ((readSize = send(client->getFdOf(WRITE_END), response->buffer.c_str(), response->buffer.length(), 0)) < 0) {
-        throw 500;
-    }
-
-	response->buffer.erase(0, readSize);
-
-	return response->buffer.size() == 0;
+	
 }
 
 int HTTP::strcmp(const char *s1, const char *s2) {
 	while (*s1 && *s1 == *s2)
-	{ ++s1; ++s2; }
+			{ ++s1; ++s2; }
 	return *s1 - *s2;
 }
 
@@ -59,19 +52,6 @@ int HTTP::parseContentLength(const char *str)
 	if (*str == '\0')
 		return res;
 	throw 400;
-}
-
-void HTTP::readRequestBufferFromClient(Client* client)
-{
-	char	buffer[BUFFER_SIZE];
-	ssize_t	bytesReceived;
-	
-	bytesReceived = recv(client->getFdOf(READ_END), buffer, BUFFER_SIZE, 0);
-	if (bytesReceived < 0) {
-		throw 500;
-    } else {
-		client->getBuffer().append(buffer, bytesReceived);
-    }
 }
 
 Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients) {

@@ -79,7 +79,8 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 
 Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootDir)
 {
-	int	pid, _read[2], _write[2];
+	Client	*cgi;
+	int		pid, _read[2], _write[2];
 	
 	if (pipe(_read) < 0 || pipe(_write))
 		throw 500;
@@ -97,5 +98,7 @@ Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootD
 
 	if (close(_read[1]) < 0 || close(_write[0]) < 0)
 		throw 500;
-	return (new Client(_read[0], _write[1], pid, client));
+	cgi = new Client(_read[0], _write[1], pid, client);
+	client->setClientToCgi(cgi);
+	return cgi;
 }

@@ -49,6 +49,18 @@ static void __print_request_data_for_debug_(Request *request)
 // }
 # endif
 
+void __read_buffer_from_client_(Client* client)
+{
+	char	buffer[BUFFER_SIZE];
+	ssize_t	readSize;
+	
+	readSize = read(client->getFdOf(READ_END), buffer, BUFFER_SIZE);
+	if (readSize < 0) {
+		throw 500;
+	}
+	client->getBuffer().append(buffer, readSize);
+}
+
 static void __check_allowed_method_(const Context* location, std::string &method)
 {
 	std::vector<std::string>::const_iterator begin, end;
@@ -92,7 +104,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	}
 
 	request = client->getRequest();
-	if (request != nullptr) {
+	if (request) {
 		HTTP::readBodyFromBuffer(client);
 		
 		if (request->upload_file_fd != -1) {
@@ -106,7 +118,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 			
 			if (request->state == READY) {
 				client->setResponse(new Response(201, request->keepAlive));
-				client->getResponse()->addBody("");
+				client->getResponse()->addBody("Created with success");
 				client->switchState();
 			}
 		}
@@ -116,13 +128,17 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 static void __cgi_response_handler_(Client* client)
 {
-	(void )client;
-	std::cerr << "client is cgi\n" ;
+	Response *response = client->getResponse();
+	
+	if (response == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos)
+	{
+		response = static_cast<Response*>(HTTP::baseParser(client));
+		client->setResponse(response);
+	}
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
-
-	HTTP::readRequestBufferFromClient(client);
+	__read_buffer_from_client_(client);
 	if (client->isCgi())
 		__cgi_response_handler_(client);
 	else
