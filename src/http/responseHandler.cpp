@@ -9,7 +9,7 @@ static bool __send_client_body_to_cgi_(Client *client) {
 	std::string&	buffer = client->getBuffer();
 	
 	if (buffer.size() < BUFFER_SIZE) {
-		writeSize = std::min(BUFFER_SIZE, request->body.size());
+		writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
 		buffer.append(request->body, 0, writeSize);
 		request->body.erase(0, writeSize);
 	}
@@ -58,7 +58,6 @@ static bool __send_response_to_client_(Client *client)
 		client->switchState();
 		return keepAlive;
 	}
-	
 	return true;
 }
 

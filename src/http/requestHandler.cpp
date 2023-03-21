@@ -126,14 +126,38 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	return cgi;
 }
 
-static void __cgi_response_handler_(Client* client)
+static void __cgi_response_handler_(Client* cgi)
 {
-	Response *response = client->getResponse();
+	Response 					*response = cgi->getResponse();
+	IBase::Headers::iterator	header, notFound;
 	
-	if (response == 0 && client->getBuffer().find(END_HEADERS) != std::string::npos)
+	
+	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos)
 	{
-		response = static_cast<Response*>(HTTP::baseParser(client));
-		client->setResponse(response);
+		response = static_cast<Response*>(HTTP::baseParser(cgi));
+		cgi->setResponse(response);
+		notFound = response->headers.end();
+		header = response->headers.find("Transfer-Encoding");
+		if (header != notFound) {
+			if (header->second != "chunked") {
+				throw 501;
+			}
+			response->isChunked = true;
+		} else {
+			header = response->headers.find("Content-Length");
+			if (header != notFound) {
+				response->contentLength = HTTP::parseContentLength(header->second.c_str());
+			}
+		}
+	}
+	if (response)
+	{
+		HTTP::readBodyFromBuffer(cgi);
+		if (response->state == READY)
+		{
+			HTTP::convertCgiResponseToClientResponse(cgi);
+		}
+		
 	}
 }
 

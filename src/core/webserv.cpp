@@ -241,7 +241,7 @@ void Webserv::run() {
                 } else if (fds[i].revents & POLLOUT) {
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
 					if (HTTP::responseHandler(client) == false) {
-                        Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
+                        Webserv::removeClient(client);
                     }
                 } else {
                     ++pollResult;

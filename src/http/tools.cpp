@@ -10,9 +10,36 @@
 void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 {
 	IBase::Headers::iterator	header, notFound;
+	Response					*response;
 	Client 						*client = cgi->getCgiToClient();
+	int							statusCode;
 	
+	notFound = cgi->getResponse()->headers.end();
+	header = cgi->getResponse()->headers.find("Status");
+	if (header == notFound)
+		throw 400;
 	
+	try { statusCode = std::stoi(header->second); }
+	catch (const std::exception&) { throw 400; }
+	
+	response = new Response(statusCode, client->getRequest()->keepAlive);
+	client->setResponse(response);
+	
+	header = cgi->getResponse()->headers.find("Location");
+	if (header != notFound)
+	{
+		response->addHeader("Location", header->second);
+		client->switchState();
+		throw ;
+	}
+	for (header = cgi->getResponse()->headers.begin(); header != notFound; ++header)
+	{
+		if (header->first == "Status")
+			continue;
+		response->addHeader(header->first, header->second);
+	}
+	response->addBody(cgi->getResponse()->body);
+	client->switchState();
 }
 
 int HTTP::strcmp(const char *s1, const char *s2) {

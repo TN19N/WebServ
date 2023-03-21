@@ -45,7 +45,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 }
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
-		pid(pid), cgiToClient(client), state(SENDING_RESPONSE)
+		pid(pid), cgiToClient(client), state(SENDING_REQUEST)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
@@ -159,10 +159,8 @@ void Client::switchState() {
             this->response = nullptr;
             break;
         case SENDING_REQUEST :
-            close(this->getFdOf(READ_END));
+            close(this->getFdOf(WRITE_END));
             this->setState(READING_RESPONSE);
-            delete this->request;
-            this->request = nullptr;
             break;
 		case READING_RESPONSE:
 			this->setState(SENDING_REQUEST);
