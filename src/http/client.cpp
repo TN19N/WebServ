@@ -41,7 +41,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 }
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
-		pid(pid), request(0), response(0), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
+		pid(pid), request(nullptr), response(nullptr), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;

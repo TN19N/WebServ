@@ -52,20 +52,21 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 	args[2] = 0;
 
 	// fill env
-	envs = new char * [10]; // to add more envs don't forget to allocate enough memory
+	envs = new char * [11]; // to add more envs don't forget to allocate enough memory
 	envs[0] = __set_env__key_and_value_("GATEWAY_INTERFACE=", "CGI/1.1");
 	envs[1] = __set_env__key_and_value_("QUERY_STRING=", request->query.c_str());
 	envs[2] = __set_env__key_and_value_("REQUEST_METHOD=", request->method.c_str());
 	envs[3] = __set_env__key_and_value_("SCRIPT_FILENAME=", request->fullPath.c_str());
 	envs[4] = __set_env__key_and_value_("SERVER_SOFTWARE=", "webserv/1.0.0");
 	envs[5] = __set_env__key_and_value_("SERVER_PROTOCOL=", "HTTP/1.1");
+	envs[6] = __set_env__key_and_value_("REDIRECT_STATUS=", "200");
 
-	envs[6] = __set_new_env_(request, "Content-Length", "CONTENT_LENGTH=", "-1");
-	envs[7] = __set_new_env_(request, "Content-Type", "CONTENT_TYPE=", DEFAULT_MIME_TYPE);
-	envs[8] = __set_new_env_(request, "Cookie", "HTTP_COOKIE=", "");
+	envs[7] = __set_new_env_(request, "Content-Length", "CONTENT_LENGTH=", "-1");
+	envs[8] = __set_new_env_(request, "Content-Type", "CONTENT_TYPE=", DEFAULT_MIME_TYPE);
+	envs[9] = __set_new_env_(request, "Cookie", "HTTP_COOKIE=", "");
 	// TODO: add more envs
 
-	envs[9] = 0;
+	envs[10] = 0;
 	// execute the cgi script
 	if (execve(cgiPath, args, envs) < 0)
 		exit(50);

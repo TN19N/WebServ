@@ -12,6 +12,7 @@ struct Response : public IBase {
 		int download_file_fd;
         int statusCode;
     public :
+		Response() ;
         Response(const int statusCode, const bool keepAlive);
 
         void addHeader(const std::string& key, const std::string& value);

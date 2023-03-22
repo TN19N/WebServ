@@ -59,18 +59,18 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
     return false;
 }
 
-static bool errorHandler(int statusCode, Client* client, const Context* const configuration) {
-    if (client->getState() == SENDING_RESPONSE) {
-        return true;
+void Webserv::errorHandler(int statusCode, Client* client) {
+	if (client->getState() == SENDING_RESPONSE) {
+       Webserv::removeClient(client);
     } else {
+		if (client->getClientToCgi() != nullptr) {
+			Webserv::removeClient(client->getClientToCgi());
+		}
 		
 		if (client->isCgi()) {
 			client = client->getCgiToClient();
-			statusCode = 500;
-		}
-
-		if (client->getClientToCgi() != nullptr) {
-			delete client->getClientToCgi();
+			Webserv::removeClient(client->getClientToCgi());
+			statusCode = 502;
 		}
 
         client->setResponse(new Response(statusCode, KEEP_ALIVE));
@@ -97,7 +97,6 @@ static bool errorHandler(int statusCode, Client* client, const Context* const co
         }
 
         client->switchState();
-        return false;
     }
 }
 
@@ -239,18 +238,21 @@ void Webserv::run() {
 
         for (size_t i = 0; i < fds.size() && pollResult > 0; ++i) {
             try {
-                --pollResult;
-                if (fds[i].revents & POLLHUP) {
+				if (fds[i].revents & POLLHUP) {
 					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client->isCgi()) {
-						HTTP::convertCgiResponseToClientResponse(client);
+					if (client->isCgi() == false) {
+						Webserv::removeClient(client);
+						--pollResult;
+						continue;
 					}
-					Webserv::removeClient(client);
-                } else if (fds[i].revents & POLLIN) {
-                    if (i < this->serversSocketFd.size()) {
-                        HTTP::acceptConnection(fds[i].fd, this->clients);
-                    } else {
-                        Client* cgi = HTTP::requestHandler(HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration);
+				}
+				if (fds[i].revents & POLLIN) {
+					if (i < this->serversSocketFd.size()) {
+						HTTP::acceptConnection(fds[i].fd, this->clients);
+					} else {
+						Client *cgi = nullptr;
+						Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+						cgi = HTTP::requestHandler(client, this->configuration);
 						if (cgi) {
 							if (cgi->getState() == SENDING_REQUEST) {
 								this->clients.push_back(cgi);
@@ -258,25 +260,22 @@ void Webserv::run() {
 								Webserv::removeClient(cgi);
 							}
 						}
-                    }
-                } else if (fds[i].revents & POLLOUT) {
+					}
+					--pollResult;
+				}
+				if (fds[i].revents & POLLOUT) {
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
 					if (HTTP::responseHandler(client) == false) {
                         Webserv::removeClient(client);
                     }
-                } else {
-                    ++pollResult;
+					--pollResult;
                 }
             } catch (const int statusCode) {
-                if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration)) {
-                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                }
+                errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::pair<int, std::string>& redirect) {
                 redirectTo(redirect, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::exception& e) {
-                if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients), this->configuration)) {
-                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                }
+                errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients));
             }
         }
     }

@@ -49,7 +49,7 @@ static void __print_request_data_for_debug_(Request *request)
 // }
 # endif
 
-void __read_buffer_from_client_(Client* client)
+static bool __read_buffer_from_client_(Client* client)
 {
 	char	buffer[BUFFER_SIZE];
 	ssize_t	readSize;
@@ -57,8 +57,11 @@ void __read_buffer_from_client_(Client* client)
 	readSize = read(client->getFdOf(READ_END), buffer, BUFFER_SIZE);
 	if (readSize < 0) {
 		throw 500;
+	} else if (readSize == 0 && client->isCgi()) {
+		return true;
 	}
 	client->getBuffer().append(buffer, readSize);
+	return false;
 }
 
 static void __check_allowed_method_(const Context* location, std::string &method)
@@ -128,45 +131,32 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	return cgi;
 }
 
-static Client* __cgi_response_handler_(Client* cgi)
-{
-	Response 					*response = cgi->getResponse();
-	IBase::Headers::iterator	header, notFound;
-	
-	
-	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos)
-	{
+static Client* __cgi_response_handler_(Client* cgi, bool cgiFinish) {
+	Response	*response = cgi->getResponse();
+
+	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos) {
 		response = reinterpret_cast<Response*>(HTTP::baseParser(cgi));
 		cgi->setResponse(response);
-		notFound = response->headers.end();
-		header = response->headers.find("Transfer-Encoding");
-		if (header != notFound) {
-			if (header->second != "chunked") {
-				throw 501;
-			}
-			response->isChunked = true;
-		} else {
-			header = response->headers.find("Content-Length");
-			if (header != notFound) {
-				response->contentLength = HTTP::parseContentLength(header->second.c_str());
-			}
-		}
 	}
-	if (response)
-	{
+	if (response) {
 		HTTP::readBodyFromBuffer(cgi);
-		if (response->state == READY) {
+		if (cgiFinish) {
 			HTTP::convertCgiResponseToClientResponse(cgi);
 			return cgi;
 		}
+	} else if (cgiFinish) {
+		throw 502;
 	}
 	return nullptr;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
-	__read_buffer_from_client_(client);
+	bool	cgiFinish = false;
+
+	if (__read_buffer_from_client_(client))
+		cgiFinish = true;
 	if (client->isCgi())
-		return __cgi_response_handler_(client);
+		return __cgi_response_handler_(client, cgiFinish);
 	else
 		return __client_request_handler_(client, configuration);
 }

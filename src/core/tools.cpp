@@ -146,6 +146,7 @@ const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd,
             case READING_RESPONSE :
                 fds[i].fd = client->getFdOf(READ_END);
                 fds[i].events = POLLIN | POLLHUP;
+				break;
             case SENDING_REQUEST :
                 fds[i].fd = client->getFdOf(WRITE_END);
                 fds[i].events = POLLOUT | POLLHUP;

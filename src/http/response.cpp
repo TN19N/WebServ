@@ -5,7 +5,11 @@
 
 
 // * Constructor ****************************************************************************************************
-Response::Response(const int statusCode, const bool keepAlive) 
+// this is for cgi response
+Response::Response() {}
+
+// this is for client response
+Response::Response(const int statusCode, const bool keepAlive)
     : download_file_fd(-1), 
         statusCode(statusCode)
 {

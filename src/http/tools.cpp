@@ -20,13 +20,25 @@ static int __get_status_code_from_cgi_status_(const char *status)
 	return statusCode;
 }
 
+static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
+{
+	const char *headers[5] = {"Connection", "Content-Length", "Date", "Server", nullptr};
+	
+	for (int i = 0; headers[i]; ++i) {
+		if (HTTP::strcmp(key, headers[i]) == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 {
 	IBase::Headers::iterator	header, notFound;
 	Response					*response;
 	Client 						*client = cgi->getCgiToClient();
 	int							statusCode;
-
+	
 	if (cgi->getResponse() == nullptr) {
 		throw 500;
 	}
@@ -49,11 +61,10 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 	
 	for (header = cgi->getResponse()->headers.begin(); header != notFound; ++header)
 	{
-		if (header->first == "Status")
+		if (__is_forbidden_to_send_this_header_to_client_(header->first.c_str()))
 			continue;
 		response->addHeader(header->first, header->second);
 	}
-	
 	response->addBody(cgi->getResponse()->body);
 	client->switchState();
 }

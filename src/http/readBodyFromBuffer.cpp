@@ -8,6 +8,8 @@
 
 static void __read_content_length_body_(Client* client, IBase *base)
 {
+	if (client->isCgi())
+		base->contentLength = client->getBuffer().size();
 	// contentLength always decrement until 0.
 	base->body.append(client->getBuffer(), 0, base->contentLength);
 	if (client->getBuffer().size() < base->contentLength) {

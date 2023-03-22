@@ -155,7 +155,7 @@ static void __fill_request_and_check_basic_bad_errors_(IBase *base, bool isCgi) 
 	}
 }
 
-static void __parse_and_fill_request_headers_(const char * &buffer, std::string &base, IBase::Headers &headers, bool isCgi) {
+static void __headers_parser_(const char * &buffer, std::string &base, IBase::Headers &headers) {
 	const char	*key;
 	
 	while (*buffer && *buffer != '\r')
@@ -163,55 +163,48 @@ static void __parse_and_fill_request_headers_(const char * &buffer, std::string 
 		key = buffer;
 		if (headers[__get_header_key_(buffer, base)].empty())
 			headers[key] = __get_header_value_(buffer, base);
+		else if (HTTP::strcmp(key, "Host") == 0)
+			throw 400;
+		else if (HTTP::strcmp(key, "Set-Cookie") == 0)
+			headers[key].append(__get_header_value_(buffer, base));
 		else
-		{
-			if (isCgi)
-			{
-				if (HTTP::strcmp(key, "Set-Cookie") == 0)
-					headers[key].append(__get_header_value_(buffer, base));
-				else
-					headers[key] = __get_header_value_(buffer, base);
-			}
-			else
-			{
-				if (HTTP::strcmp(key, "Host") == 0)
-					throw 400;
-				headers[key] = __get_header_value_(buffer, base);
-			}
-		}
+			headers[key] = __get_header_value_(buffer, base);
 	}
-	if (*buffer == '\0' || *(buffer+1) != '\n')
+	if (*buffer == '\0' || *(buffer + 1) != '\n')
 		throw 400;
+	buffer += 2;
 }
 
+// parse whatever client request or cgi response
 IBase* HTTP::baseParser(Client *client)
 {
-	Request		*request = 0;
-	Response	*response = 0;
+	Request		*request 	= 0;
+	Response	*response 	= 0;
 	const char	*path, *buffer = client->getBuffer().c_str();
 	
 	try
 	{
 		if (client->isCgi()) {
-			response = new Response(200, CLOSE_CONNECTION);
-			__parse_and_fill_request_headers_(buffer, client->getBuffer(), response->headers, client->isCgi());
-			
+			response = new Response();
+			__headers_parser_(buffer, client->getBuffer(), response->headers);
+			__fill_request_and_check_basic_bad_errors_(response, client->isCgi());
 		} else {
 			request = new Request();
-			request->method = __get_request_method_(buffer, client->getBuffer()) ; // *
-			path = __get_requested_path_(buffer, client->getBuffer()); // *
+			request->method = __get_request_method_(buffer, client->getBuffer()) ;
+			path = __get_requested_path_(buffer, client->getBuffer());
 			if (path[0] != '/')
 				throw 400;
-			request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer())); // *
-			request->path = HTTP::urlDecoding(path); // *
-			request->extension = HTTP::getExtensionFromPath(path); // *
-			__check_request_protocol_(buffer); // *
+			request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
+			request->path = HTTP::urlDecoding(path);
+			request->extension = HTTP::getExtensionFromPath(path);
+			__check_request_protocol_(buffer);
 			if (*buffer == '\r')
 				throw 400;
-			__parse_and_fill_request_headers_(buffer, client->getBuffer(), request->headers, client->isCgi());
+			__headers_parser_(buffer, client->getBuffer(), request->headers);
+			if (request->method != "POST")
+				request->state = READY;
 			__fill_request_and_check_basic_bad_errors_(request, client->isCgi());
 		}
-		buffer += 2;
 		client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
 	}
 	catch (const int error)

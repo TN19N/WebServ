@@ -1,5 +1,5 @@
 # include <unistd.h>
-
+# include <iostream> // TODO: remove this
 # include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
 
@@ -17,6 +17,10 @@ static bool __send_client_body_to_cgi_(Client *client) {
 	if (writeSize < 0) {
 		throw 500;
 	}
+//	if (writeSize != 0) {
+//		std::cerr << " stat: " << request->state << std::endl;
+//		std::cerr << ">> " << std::string(buffer, writeSize) << std::endl;
+//	}
 	buffer.erase(0, writeSize);
 	return buffer.empty() && request->state == READY && request->body.empty();
 }
