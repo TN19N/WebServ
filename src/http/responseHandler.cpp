@@ -76,14 +76,13 @@ bool HTTP::responseHandler(Client *client)
 
 	if (client->isCgi()) {
 		if (__send_client_body_to_cgi_(client)) {
-			clientOfCgi->setLastSeenOfCgi(__get_current_time_on_milli_second_());
-			clientOfCgi->setResponse(new Response(clientOfCgi->getRequest()->keepAlive));
+			clientOfCgi->setCgiLastSeen(__get_current_time_on_milli_second_());
 			clientOfCgi->switchState();
 			client->switchState();
 		}
 	} else {
 		if (client->getClientToCgi()) {
-			if (__get_current_time_on_milli_second_() > client->getLastSeenOfCgi() + CGI_TIMEOUT) {
+			if (__get_current_time_on_milli_second_() > client->getCgiLastSeen() + CGI_TIMEOUT) {
 				throw 504;
 			}
 			return true;

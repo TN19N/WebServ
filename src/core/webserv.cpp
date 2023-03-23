@@ -73,6 +73,8 @@ void Webserv::errorHandler(int statusCode, Client* client) {
             int         fd;
             struct stat pathInfo;
 
+			if (client->getRequest() == nullptr)
+				throw ;
             const Context* server = HTTP::getMatchedServer(client, configuration);
             const std::string path = server->getDirective(std::to_string(statusCode)).at(0);
 
@@ -84,7 +86,7 @@ void Webserv::errorHandler(int statusCode, Client* client) {
                 client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
                 client->getResponse()->buffer.append(CRLF);
             } else {
-                throw "exit";
+                throw ;
             }
 
         } catch (...) {

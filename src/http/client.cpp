@@ -127,8 +127,8 @@ int Client::getFdOf(const int index) const {
     return this->getSocketFd();
 }
 
-size_t Client::getLastSeenOfCgi() {
-	return this->lastSeenOfCgi;
+size_t Client::getCgiLastSeen() {
+	return this->cgiLastSeen;
 }
 
 // ******************************************************************************************************************
@@ -153,8 +153,8 @@ void Client::setState(const int &state) {
     this->state = state;
 }
 
-void Client::setLastSeenOfCgi(size_t lastSeen) {
-	this->lastSeenOfCgi = lastSeen;
+void Client::setCgiLastSeen(size_t lastSeen) {
+	this->cgiLastSeen = lastSeen;
 }
 
 // ******************************************************************************************************************
