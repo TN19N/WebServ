@@ -3,19 +3,14 @@
 # include <iostream>
 # include <vector>
 # include <unistd.h>
-# include <sys/types.h>
 # include <sys/socket.h>
 # include <netdb.h>
 # include <map>
-# include <set>
-# include <algorithm>
 
 # include "../../include/webserv/webserv.hpp"
 # include "../../include/webserv/core.hpp"
-# include "../../include/webserv/context.hpp"
 # include "../../include/webserv/configuration.hpp"
 # include "../../include/webserv/http.hpp"
-# include "../../include/webserv/client.hpp"
 
 # define BIND_REPETITION 5
 
@@ -60,13 +55,13 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
-	if (client->getState() == SENDING_RESPONSE) {
+	if (client->getState() == SENDING_RESPONSE && client->getClientToCgi() == nullptr) {
        Webserv::removeClient(client);
     } else {
 		if (client->getClientToCgi() != nullptr) {
 			Webserv::removeClient(client->getClientToCgi());
 		}
-		
+
 		if (client->isCgi()) {
 			client = client->getCgiToClient();
 			Webserv::removeClient(client->getClientToCgi());
@@ -95,8 +90,8 @@ void Webserv::errorHandler(int statusCode, Client* client) {
         } catch (...) {
             client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
         }
-
-        client->switchState();
+		if (client->getState() != SENDING_RESPONSE)
+        	client->switchState();
     }
 }
 

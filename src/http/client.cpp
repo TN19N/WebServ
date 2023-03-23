@@ -126,6 +126,11 @@ int Client::getFdOf(const int index) const {
     }
     return this->getSocketFd();
 }
+
+size_t Client::getLastSeenOfCgi() {
+	return this->lastSeenOfCgi;
+}
+
 // ******************************************************************************************************************
 
 // * Setters ********************************************************************************************************
@@ -138,12 +143,20 @@ void Client::setRequest(Request* request) {
 }
 
 void Client::setResponse(Response* response) {
+	// this for delete a response if one already exist
+	delete this->response;
+	// to set new one
     this->response = response;
 }
 
 void Client::setState(const int &state) {
     this->state = state;
 }
+
+void Client::setLastSeenOfCgi(size_t lastSeen) {
+	this->lastSeenOfCgi = lastSeen;
+}
+
 // ******************************************************************************************************************
 
 // * Methods ********************************************************************************************************
@@ -151,11 +164,13 @@ void Client::switchState() {
     switch (this->getState()) {
         case READING_REQUEST :
             this->setState(SENDING_RESPONSE);
-            delete this->request;
-            this->request = nullptr;
             break;
         case SENDING_RESPONSE :
             this->setState(READING_REQUEST);
+			// TODO: remove it from here
+            delete this->request;
+            this->request = nullptr;
+			// ==============
             delete this->response;
             this->response = nullptr;
             break;
@@ -193,12 +208,12 @@ Client::~Client() {
     }
 	
 	if (this->isCgi()) {
-		if (waitpid(this->pid, NULL, WNOHANG) == 0) {
+		if (waitpid(this->pid, nullptr, WNOHANG) == 0) {
 			kill(this->pid, SIGKILL);
 		}
 		this->getCgiToClient()->setClientToCgi(nullptr);
 	}
-	
+
 	if (this->getClientToCgi() != nullptr) {
 		delete this->getClientToCgi();
 	}

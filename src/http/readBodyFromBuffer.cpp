@@ -41,6 +41,12 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 			Buffer.clear();
 			return false;
 		}
+
+		// this for max body size checker
+		if (base->maxBodySize < base->contentLength)
+			throw 413;
+		base->maxBodySize -= base->contentLength;
+
 		base->contentLength += 2; // this is for '\r\n'
 		Buffer.erase(0,buffer - Buffer.c_str());
 	} else {

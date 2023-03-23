@@ -61,7 +61,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += -g3 -fsanitize=address
+#debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
 debug: $(TARGET)
 

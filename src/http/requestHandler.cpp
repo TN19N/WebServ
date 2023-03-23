@@ -49,6 +49,20 @@ static void __print_request_data_for_debug_(Request *request)
 // }
 # endif
 
+static unsigned long long __calc_max_body_size_(const Context::Directives::const_iterator& maxSize)
+{
+	const char	*str = maxSize->second[0].c_str();
+	size_t		max = 0;
+	
+	while (*str != 'M')
+	{
+		max += max * 10 ;
+		max += *str - '0' ;
+		++str;
+	}
+	return max * 1024 * 1024 ;
+}
+
 static bool __read_buffer_from_client_(Client* client)
 {
 	char	buffer[BUFFER_SIZE];
@@ -92,6 +106,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		__check_allowed_method_(request->location, request->method);
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
 		request->fullPath.append(request->path);
+		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
 
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);

@@ -22,8 +22,9 @@ static int __get_status_code_from_cgi_status_(const char *status)
 
 static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
 {
-	const char *headers[5] = {"Connection", "Content-Length", "Date", "Server", nullptr};
-	
+	const char *headers[6] = {"Connection", "Content-Length",
+							  "Date", "Server", "Status", nullptr};
+
 	for (int i = 0; headers[i]; ++i) {
 		if (HTTP::strcmp(key, headers[i]) == 0) {
 			return true;
@@ -35,14 +36,13 @@ static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
 void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 {
 	IBase::Headers::iterator	header, notFound;
-	Response					*response;
-	Client 						*client = cgi->getCgiToClient();
+	Response					*response = cgi->getCgiToClient()->getResponse();
 	int							statusCode;
-	
+
 	if (cgi->getResponse() == nullptr) {
 		throw 500;
 	}
-	
+
 	notFound = cgi->getResponse()->headers.end();
 	header = cgi->getResponse()->headers.find("Status");
 	if (header == notFound) {
@@ -55,10 +55,8 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 	} else {
 		statusCode = __get_status_code_from_cgi_status_(header->second.c_str());
 	}
-
-	response = new Response(statusCode, client->getRequest()->keepAlive);
-	client->setResponse(response);
-	
+	response->statusCode = statusCode;
+	response->initializeResponse();
 	for (header = cgi->getResponse()->headers.begin(); header != notFound; ++header)
 	{
 		if (__is_forbidden_to_send_this_header_to_client_(header->first.c_str()))
@@ -66,7 +64,6 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 		response->addHeader(header->first, header->second);
 	}
 	response->addBody(cgi->getResponse()->body);
-	client->switchState();
 }
 
 int HTTP::strcmp(const char *s1, const char *s2) {

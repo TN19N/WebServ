@@ -6,8 +6,12 @@
 
 // * Constructor ****************************************************************************************************
 // this is for cgi response
-Response::Response() {}
+Response::Response() : download_file_fd(-1), statusCode(0) {}
 
+Response::Response(bool keepAlive) : download_file_fd(-1), statusCode(0)
+{
+	this->keepAlive = keepAlive;
+}
 // this is for client response
 Response::Response(const int statusCode, const bool keepAlive)
     : download_file_fd(-1), 
@@ -32,6 +36,15 @@ void Response::addBody(const std::string& body) {
     this->contentLength = body.length();
     this->addHeader("Content-Length", std::to_string(this->contentLength));
     this->buffer += CRLF + body;
+}
+
+void Response::initializeResponse() {
+	if (statusCode == 0)
+		throw "Please Initialize Status code initialize response" ;
+	this->buffer.append("HTTP/1.1 " + std::to_string(statusCode) + " " + HTTP::getStatusCodeMessage(statusCode) + CRLF);
+	this->addHeader("Date", HTTP::getHttpDate());
+	this->addHeader("Connection", (keepAlive) ? "keep-alive" : "close");
+	this->addHeader("Server", "webserv/1.0.0");
 }
 // ******************************************************************************************************************
 

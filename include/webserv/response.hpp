@@ -3,6 +3,7 @@
 
 # include <string>
 # include <map>
+#include <sys/time.h>
 
 #include "defines.hpp"
 # include "IBase.hpp"
@@ -13,10 +14,12 @@ struct Response : public IBase {
         int statusCode;
     public :
 		Response() ;
+		Response(bool keepAlive);
         Response(const int statusCode, const bool keepAlive);
 
         void addHeader(const std::string& key, const std::string& value);
         void addBody(const std::string& body);
+		void initializeResponse() ;
 
         ~Response();
 };

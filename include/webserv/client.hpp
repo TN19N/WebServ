@@ -28,6 +28,8 @@ class Client {
         std::string                     buffer;
 
         int                             state;
+		
+		size_t							lastSeenOfCgi;
     public:
 		Client(int read, int write, int pid, Client* client); // for create cgi client
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
@@ -58,10 +60,13 @@ class Client {
 
         int                             getFdOf(const int index) const;
 
+		size_t							getLastSeenOfCgi() ;
+		
         void                            setClientToCgi(Client* clientToCgi);
         void                            setRequest(Request* request);
         void                            setResponse(Response* response);
         void                            setState(const int &state);
+		void							setLastSeenOfCgi(size_t lastSeen);
 
         bool                            isCgi() const;
         void                            switchState();
