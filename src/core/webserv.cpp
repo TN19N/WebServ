@@ -76,7 +76,7 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 			if (client->getRequest() == nullptr)
 				throw ;
             const Context* server = HTTP::getMatchedServer(client, configuration);
-            const std::string path = server->getDirective(std::to_string(statusCode)).at(0);
+            const std::string& path = server->getDirective(std::to_string(statusCode)).at(0);
 
             const Context* location = HTTP::getMatchLocationContext(server->getChildren(), path);
             std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
@@ -247,9 +247,8 @@ void Webserv::run() {
 					if (i < this->serversSocketFd.size()) {
 						HTTP::acceptConnection(fds[i].fd, this->clients);
 					} else {
-						Client *cgi = nullptr;
-						Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-						cgi = HTTP::requestHandler(client, this->configuration);
+						Client*	client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+						Client*	cgi = HTTP::requestHandler(client, this->configuration);
 						if (cgi) {
 							if (cgi->getState() == SENDING_REQUEST) {
 								this->clients.push_back(cgi);

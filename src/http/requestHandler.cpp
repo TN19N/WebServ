@@ -102,11 +102,13 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		} catch (std::out_of_range&) {}
 
 		request->location = HTTP::blockMatchAlgorithm(client, configuration);
-		
+
 		__check_allowed_method_(request->location, request->method);
+		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
+		if (request->maxBodySize < request->contentLength)
+			throw 413;
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
 		request->fullPath.append(request->path);
-		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
 
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
@@ -114,9 +116,11 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 		if (request->method == "GET") {
 			return HTTP::getMethodHandler(client);
-		} else if (request->method == "POST") {
+		}
+		if (request->method == "POST") {
 			cgi = HTTP::postMethodHandler(client);
-		} else if (request->method == "DELETE") {
+		}
+		if (request->method == "DELETE") {
 			return HTTP::deleteMethodHandler(client);
 		}
 	}
@@ -124,9 +128,11 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	request = client->getRequest();
 	if (request) {
 		if (request->state == CREATING) {
-			HTTP::readBodyFromBuffer(client);
+			try { HTTP::readBodyFromBuffer(client); }
+			catch (const std::exception& e) { delete cgi; throw e; }
+			catch (const int error) { delete cgi; throw error; }
+			catch (...) { delete cgi; throw ; }
 		}
-		
 		if (request->upload_file_fd != -1) {
 			if (write(request->upload_file_fd, request->body.c_str(), request->body.size()) < 0) {
 				unlink(request->upload_file_name.c_str());
@@ -146,7 +152,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 	return cgi;
 }
 
-static Client* __cgi_response_handler_(Client* cgi, bool cgiFinish) {
+static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 	Response	*response = cgi->getResponse();
 
 	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos) {
@@ -155,23 +161,23 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinish) {
 	}
 	if (response) {
 		HTTP::readBodyFromBuffer(cgi);
-		if (cgiFinish) {
+		if (cgiFinished) {
 			HTTP::convertCgiResponseToClientResponse(cgi);
 			return cgi;
 		}
-	} else if (cgiFinish) {
+	} else if (cgiFinished) {
 		throw 502;
 	}
 	return nullptr;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
-	bool	cgiFinish = false;
+	bool	cgiFinished = false;
 
 	if (__read_buffer_from_client_(client))
-		cgiFinish = true;
+		cgiFinished = true;
 	if (client->isCgi())
-		return __cgi_response_handler_(client, cgiFinish);
+		return __cgi_response_handler_(client, cgiFinished);
 	else
 		return __client_request_handler_(client, configuration);
 }

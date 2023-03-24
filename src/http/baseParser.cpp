@@ -151,8 +151,6 @@ static void __fill_request_and_check_basic_bad_errors_(IBase *base, bool isCgi) 
 		header =  base->headers.find("Content-Length");
 		if (header != notFound) {
 			base->contentLength = HTTP::parseContentLength(header->second.c_str());
-			if (base->maxBodySize < base->contentLength)
-				throw 413;
 		}
 	}
 }
