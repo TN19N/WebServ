@@ -116,11 +116,9 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 		if (request->method == "GET") {
 			return HTTP::getMethodHandler(client);
-		}
-		if (request->method == "POST") {
+		} else if (request->method == "POST") {
 			cgi = HTTP::postMethodHandler(client);
-		}
-		if (request->method == "DELETE") {
+		} else if (request->method == "DELETE") {
 			return HTTP::deleteMethodHandler(client);
 		}
 	}
@@ -130,7 +128,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		if (request->state == CREATING) {
 			try { HTTP::readBodyFromBuffer(client); }
 			catch (const std::exception& e) { delete cgi; throw e; }
-			catch (const int error) { delete cgi; throw error; }
+			catch (int error) { delete cgi; throw error; }
 			catch (...) { delete cgi; throw ; }
 		}
 		if (request->upload_file_fd != -1) {

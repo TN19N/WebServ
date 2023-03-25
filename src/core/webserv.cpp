@@ -222,7 +222,7 @@ void Webserv::run() {
     std::cerr << "**********************************" << std::endl;
     std::cerr << RESET;
 
-    int    pollResult = 0;
+    int    pollResult;
     while (Webserv::webservState == WEB_SERV_RUNNING) {
         std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
 
@@ -237,7 +237,9 @@ void Webserv::run() {
             try {
 				if (fds[i].revents & POLLHUP) {
 					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client->isCgi() == false) {
+					if (client->isCgi()) {
+					
+					} else {
 						Webserv::removeClient(client);
 						--pollResult;
 						continue;
@@ -258,10 +260,9 @@ void Webserv::run() {
 						}
 					}
 					--pollResult;
-				}
-				if (fds[i].revents & POLLOUT) {
+				} else if (fds[i].revents & POLLOUT) {
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (HTTP::responseHandler(client) == false) {
+					if (client && HTTP::responseHandler(client) == 0) {
                         Webserv::removeClient(client);
                     }
 					--pollResult;

@@ -39,6 +39,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
     # endif
 }
+
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
 		pid(pid), request(nullptr), response(nullptr), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
@@ -167,10 +168,8 @@ void Client::switchState() {
             break;
         case SENDING_RESPONSE :
             this->setState(READING_REQUEST);
-			// TODO: remove it from here
             delete this->request;
             this->request = nullptr;
-			// ==============
             delete this->response;
             this->response = nullptr;
             break;

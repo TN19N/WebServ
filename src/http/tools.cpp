@@ -67,6 +67,15 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 	response->addBody(cgi->getResponse()->body);
 }
 
+size_t HTTP::getCurrentTimeOnMilliSecond()
+{
+	timeval	tv;
+	
+	gettimeofday(&tv, 0);
+	
+	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
 int HTTP::strcmp(const char *s1, const char *s2) {
 	while (*s1 && *s1 == *s2)
 			{ ++s1; ++s2; }

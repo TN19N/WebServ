@@ -27,12 +27,14 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 	const char		*buffer = Buffer.c_str();
 
 	if (base->contentLength == 0) {
-		while (*buffer && (*buffer != '\r' || *(buffer+1) != '\n')) {
+		while (std::isdigit(*buffer)) {
 			++buffer;
 		}
 		if (*buffer == '\0') {
 			return false;
 		}
+		if (*buffer != '\r' || *(buffer + 1) != '\n')
+			throw 400;
 		Buffer[buffer - Buffer.c_str()] = '\0';
 		buffer += 2; // for bypass '\r\n'
 		base->contentLength = HTTP::parseContentLength(Buffer.c_str());

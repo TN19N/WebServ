@@ -3,20 +3,11 @@
 # include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
 
-static size_t __get_current_time_on_milli_second_()
-{
-	timeval	tv;
-
-	gettimeofday(&tv, 0);
-
-	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
 static bool __send_client_body_to_cgi_(Client *client) {
 	Request			*request = client->getCgiToClient()->getRequest();
 	ssize_t			writeSize;
 	std::string&	buffer = client->getBuffer();
-	
+
 	if (buffer.size() < BUFFER_SIZE) {
 		writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
 		buffer.append(request->body, 0, writeSize);
@@ -76,13 +67,13 @@ bool HTTP::responseHandler(Client *client)
 
 	if (client->isCgi()) {
 		if (__send_client_body_to_cgi_(client)) {
-			clientOfCgi->setCgiLastSeen(__get_current_time_on_milli_second_());
+			clientOfCgi->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
 			clientOfCgi->switchState();
 			client->switchState();
 		}
 	} else {
 		if (client->getClientToCgi()) {
-			if (__get_current_time_on_milli_second_() > client->getCgiLastSeen() + CGI_TIMEOUT) {
+			if (HTTP::getCurrentTimeOnMilliSecond() > client->getCgiLastSeen() + CGI_TIMEOUT) {
 				throw 504;
 			}
 			return true;
