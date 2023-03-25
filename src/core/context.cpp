@@ -26,7 +26,7 @@ Context::Context(const std::string& name, const std::vector<std::string>& args, 
         this->addDirective(HOST_DIRECTIVE, CORE::split(DEFAULT_HOST, WHITE_SPACE));
     }
 
-    if (parent != nullptr) {
+    if (parent != NULL) {
         this->directives.insert(parent->getDirectives().begin(), parent->getDirectives().end());
     }
 }

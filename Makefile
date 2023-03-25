@@ -53,9 +53,9 @@ TEMPLATES := $(wildcard $(TEMPLATE_DIR)/*)
 CONFIGS := $(TEMPLATES:$(TEMPLATE_DIR)/%=$(CONFIG_DIR)/%)
 
 # colors
-RED := \033[0;31m
-GREEN := \033[0;32m
-END := \033[0m
+RED := \e[0;31m
+GREEN := \e[0;32m
+END := \e[0m
 
 .PHONY: all
 all: debug
@@ -74,19 +74,19 @@ run: debug
 	
 .PHONY: instruments
 instruments: debug # Just in MAC
-	@ echo "$(GREEN)Running instruments ...$(END)"
+	@ echo -e "$(GREEN)Running instruments ...$(END)"
 	@ rm -rf $(TRACE_FOLDER).trace
 	@ instruments -t "Leaks" -D $(TRACE_FOLDER) ./$(TARGET) $(ARGS) 2> /dev/null
-	@ echo "$(GREEN)Done!$(END)"
+	@ echo -e "$(GREEN)Done!$(END)"
 
 .PHONY: generate
 generate: $(CONFIGS)
-	@ echo "$(GREEN)Generate config Done!$(END)"
+	@ echo -e "$(GREEN)Generate config Done!$(END)"
 
 $(TARGET) : $(OBJS)
-	@ echo "$(GREEN)Compiling ...$(END)"
+	@ echo -e "$(GREEN)Compiling ...$(END)"
 	@ $(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-	@ echo "$(GREEN)Done!$(END)"
+	@ echo -e "$(GREEN)Done!$(END)"
 
 $(OBJ_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT)
 	@ $(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)
@@ -96,9 +96,9 @@ $(CONFIG_DIR)/%: $(TEMPLATE_DIR)/%
 
 .PHONY: clean
 clean:
-	@ echo "$(RED)Cleaning ...$(END)"
+	@ echo -e "$(RED)Cleaning ...$(END)"
 	@ rm -rf $(OBJS)
-	@ echo "$(RED)Done!$(END)"
+	@ echo -e "$(RED)Done!$(END)"
 
 .PHONY: fclean
 fclean: clean

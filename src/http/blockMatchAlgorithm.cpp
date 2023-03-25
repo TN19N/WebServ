@@ -4,6 +4,7 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <iostream>
+# include <string.h>
 
 # include "../../include/webserv/configuration.hpp"
 # include "../../include/webserv/request.hpp"
@@ -54,9 +55,15 @@ static void isValidServer(const Context* context,  const Client* client, std::ve
 			const struct sockaddr_in6* addr6 = reinterpret_cast<const struct sockaddr_in6*>(&addr);
 			struct sockaddr_in6* serverAddr6 = reinterpret_cast<struct sockaddr_in6*>(res->ai_addr);
 			if (addr6->sin6_port == serverAddr6->sin6_port) {
+				# ifdef __APPLE__
 				if (memcmp(&(addr6->sin6_addr.__u6_addr), &(serverAddr6->sin6_addr), 16) == 0 || memcmp(&(serverAddr6->sin6_addr), &(in6addr_any), 16) == 0) {
 					servers.push_back(context);
 				}
+				# elif defined(__linux__)
+				if (memcmp(&(addr6->sin6_addr.__in6_u), &(serverAddr6->sin6_addr), 16) == 0 || memcmp(&(serverAddr6->sin6_addr), &(in6addr_any), 16) == 0) {
+					servers.push_back(context);
+				}
+				# endif
 			}
 		}
 	}

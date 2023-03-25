@@ -6,6 +6,8 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <map>
+# include <string.h>
+# include <sstream>
 
 # include "../../include/webserv/webserv.hpp"
 # include "../../include/webserv/core.hpp"
@@ -55,10 +57,10 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
-	if (client->getState() == SENDING_RESPONSE && client->getClientToCgi() == nullptr) {
+	if (client->getState() == SENDING_RESPONSE && client->getClientToCgi() == NULL) {
        Webserv::removeClient(client);
     } else {
-		if (client->getClientToCgi() != nullptr) {
+		if (client->getClientToCgi() != NULL) {
 			Webserv::removeClient(client->getClientToCgi());
 		}
 
@@ -69,21 +71,25 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 		}
 
         client->setResponse(new Response(statusCode, KEEP_ALIVE));
+        std::stringstream statusCodeString;
+        statusCodeString << statusCode;
         try {
             int         fd;
             struct stat pathInfo;
 
-			if (client->getRequest() == nullptr)
+			if (client->getRequest() == NULL)
 				throw ;
             const Context* server = HTTP::getMatchedServer(client, configuration);
-            const std::string& path = server->getDirective(std::to_string(statusCode)).at(0);
+            const std::string& path = server->getDirective(statusCodeString.str()).at(0);
 
             const Context* location = HTTP::getMatchLocationContext(server->getChildren(), path);
             std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
 
+            std::stringstream sizeStr;
             if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
                 client->getResponse()->download_file_fd = fd;
-                client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
+                sizeStr << pathInfo.st_size;
+                client->getResponse()->addHeader("Content-Length", sizeStr.str());
                 client->getResponse()->buffer.append(CRLF);
             } else {
                 throw ;

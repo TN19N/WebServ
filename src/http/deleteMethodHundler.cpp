@@ -3,6 +3,8 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
+#include <string.h>
+
 # include "../../include/webserv/context.hpp"
 # include "../../include/webserv/http.hpp"
 
@@ -77,7 +79,7 @@ Client* HTTP::deleteMethodHandler(Client *client)
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != request->location->getDirectives().end()) {
-		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
+		throw std::make_pair(std::strtol(directive->second[0].c_str(), NULL, 10), directive->second[1]);
 	}
 	// check whatever file or folder exist to remove it
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
@@ -89,7 +91,8 @@ Client* HTTP::deleteMethodHandler(Client *client)
 			throw std::make_pair(301, request->path + '/');
 		} else {
 			// remove hole directory
-			request->fullPath.pop_back();
+			request->fullPath.erase(request->fullPath.size() - 1);
+			// request->fullPath.pop_back();
 			__check_if_ready_to_remove_this_directory_(request->fullPath);
 			__remove_this_directory_(request->fullPath);
 		}

@@ -18,7 +18,7 @@ class Context {
         std::vector<Context*>               children;
         Context*                            parent;
     public:
-        Context(const std::string& name, const std::vector<std::string>& args = std::vector<std::string>(), Context* parent = nullptr);
+        Context(const std::string& name, const std::vector<std::string>& args = std::vector<std::string>(), Context* parent = NULL);
 
         const std::string&                                      getName() const;
         const std::vector<std::string>&                         getArgs() const;

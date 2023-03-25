@@ -32,7 +32,7 @@ class Client {
 		size_t							cgiLastSeen;
     public:
 		Client(int read, int write, int pid, Client* client); // for create cgi client
-        Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = nullptr);
+        Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = NULL);
 
         int                             getSocketFd() const;
         const struct sockaddr_storage&  getClientAddr() const;

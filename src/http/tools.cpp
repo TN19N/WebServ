@@ -2,6 +2,8 @@
 # include <vector>
 # include <time.h>
 # include <iostream>
+# include <sstream>
+# include <string.h>
 
 # include "../../include/webserv/http.hpp"
 
@@ -23,7 +25,7 @@ static int __get_status_code_from_cgi_status_(const char *status)
 static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
 {
 	const char *headers[6] = {"Connection", "Content-Length",
-							  "Date", "Server", "Status", nullptr};
+							  "Date", "Server", "Status", NULL};
 
 	for (int i = 0; headers[i]; ++i) {
 		if (HTTP::strcmp(key, headers[i]) == 0) {
@@ -40,7 +42,7 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 	Client						*client = cgi->getCgiToClient();
 	int							statusCode;
 
-	if (cgi->getResponse() == nullptr) {
+	if (cgi->getResponse() == NULL) {
 		throw 500;
 	}
 
@@ -118,10 +120,12 @@ Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients)
 			}
 		}
     }
-    return nullptr; // never be reached (I hope so :D)
+    return NULL; // never be reached (I hope so :D)
 }
 
 const std::string HTTP::getDefaultErrorPage(const int statusCode) {
+	std::stringstream statusCodeStr;
+	statusCodeStr << statusCode;
     return ("<style> @import 'https://fonts.googleapis.com/css?family=Inconsolata';\n"
 			"\n"
 			"html { min-height: 100%; }"
@@ -235,7 +239,7 @@ const std::string HTTP::getDefaultErrorPage(const int statusCode) {
 			"<div class=\"noise\"></div>\n"
 			"<div class=\"overlay\"></div>\n"
 			"<div class=\"terminal\">\n"
-			"  <h1><span class=\"errorcode\">" + std::to_string(statusCode) +  "</span> " + HTTP::getStatusCodeMessage(statusCode) + "  </h1>\n"
+			"  <h1><span class=\"errorcode\">" + statusCodeStr.str() +  "</span> " + HTTP::getStatusCodeMessage(statusCode) + "  </h1>\n"
 			"  <p class=\"output\">Good luck.</p>\n"
 			"</div>");
 }
@@ -251,7 +255,7 @@ const std::string HTTP::getHttpDate() {
     }
 
     timeInfo = gmtime(&rawTime);
-    if (timeInfo == nullptr) {
+    if (timeInfo == NULL) {
         std::cerr << "webserv: gmtime(): " << strerror(errno) << std::endl;
         throw 500;
     }
@@ -267,7 +271,7 @@ const std::string HTTP::urlDecoding(const std::string& url) {
     for (size_t i = 0; i < url.length(); i++) {
         if (url[i] == '%' && i + 2 < url.length()) {
             std::string hex = url.substr(i + 1, 2);
-            char c = static_cast<char>(strtol(hex.c_str(), nullptr, 16));
+            char c = static_cast<char>(strtol(hex.c_str(), NULL, 16));
             result += c;
             i += 2;
         } else {

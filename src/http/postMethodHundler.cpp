@@ -30,7 +30,8 @@ Client* HTTP::postMethodHandler(Client *client) {
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound) {
-		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
+		throw std::make_pair(std::strtol(directive->second[0].c_str(), NULL, 10), directive->second[1]);
+		// throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
 	}
 	// check for file upload
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);

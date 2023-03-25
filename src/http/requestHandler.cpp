@@ -168,7 +168,7 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 	} else if (cgiFinished) {
 		throw 502;
 	}
-	return nullptr;
+	return NULL;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
