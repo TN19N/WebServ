@@ -16,14 +16,14 @@
 # define READ_END 	0
 # define WRITE_END 	1
 
-# define CGI_TIMEOUT 10000 // on millisecond
+# define CGI_TIMEOUT 2000 // on millisecond
 
 // client state
 enum { 
-	READING_REQUEST,
-	SENDING_RESPONSE,
-	READING_RESPONSE,
-	SENDING_REQUEST
+	FROM_CLIENT,
+	TO_CLIENT,
+	FROM_CGI,
+	TO_CGI
 };
 
 // request and response state

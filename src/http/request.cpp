@@ -2,7 +2,7 @@
 
 // * Constructor ****************************************************************************************************
 Request::Request() 
-    : location(nullptr),
+    : location(NULL),
     upload_file_fd(-1)
 {
     // Nothing to do

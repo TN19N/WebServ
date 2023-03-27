@@ -7,8 +7,9 @@ static bool __send_client_body_to_cgi_(Client *client) {
 	Request			*request = client->getCgiToClient()->getRequest();
 	ssize_t			writeSize;
 	std::string&	buffer = client->getBuffer();
-
+	
 	if (buffer.size() < BUFFER_SIZE) {
+		
 		writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
 		buffer.append(request->body, 0, writeSize);
 		request->body.erase(0, writeSize);
@@ -66,6 +67,7 @@ bool HTTP::responseHandler(Client *client)
 	Client	*clientOfCgi = client->getCgiToClient();
 
 	if (client->isCgi()) {
+		clientOfCgi->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
 		if (__send_client_body_to_cgi_(client)) {
 			clientOfCgi->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
 			clientOfCgi->switchState();
@@ -73,9 +75,6 @@ bool HTTP::responseHandler(Client *client)
 		}
 	} else {
 		if (client->getClientToCgi()) {
-			if (HTTP::getCurrentTimeOnMilliSecond() > client->getCgiLastSeen() + CGI_TIMEOUT) {
-				throw 504;
-			}
 			return true;
 		}
 		return __send_response_to_client_(client);

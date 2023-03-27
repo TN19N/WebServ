@@ -67,7 +67,7 @@ static bool __read_buffer_from_client_(Client* client)
 {
 	char	buffer[BUFFER_SIZE];
 	ssize_t	readSize;
-	
+
 	readSize = read(client->getFdOf(READ_END), buffer, BUFFER_SIZE);
 	if (readSize < 0) {
 		throw 500;
@@ -152,7 +152,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 	Response	*response = cgi->getResponse();
-
+	
 	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos) {
 		response = reinterpret_cast<Response*>(HTTP::baseParser(cgi));
 		cgi->setResponse(response);
@@ -161,17 +161,22 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 		HTTP::readBodyFromBuffer(cgi);
 		if (cgiFinished) {
 			HTTP::convertCgiResponseToClientResponse(cgi);
+			if (cgi->getState() == TO_CGI)
+			{
+				cgi->switchState();
+				cgi->getCgiToClient()->switchState();
+			}
 			return cgi;
 		}
 	} else if (cgiFinished) {
 		throw 502;
 	}
-	return nullptr;
+	return NULL;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
-
+	
 	if (__read_buffer_from_client_(client))
 		cgiFinished = true;
 	if (client->isCgi())

@@ -6,6 +6,8 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <map>
+# include <string.h>
+# include <sstream>
 
 # include "../../include/webserv/webserv.hpp"
 # include "../../include/webserv/core.hpp"
@@ -55,10 +57,10 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
-	if (client->getState() == SENDING_RESPONSE && client->getClientToCgi() == nullptr) {
+	if (client->getState() == TO_CLIENT && client->getClientToCgi() == NULL) {
        Webserv::removeClient(client);
     } else {
-		if (client->getClientToCgi() != nullptr) {
+		if (client->getClientToCgi() != NULL) {
 			Webserv::removeClient(client->getClientToCgi());
 		}
 
@@ -69,21 +71,25 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 		}
 
         client->setResponse(new Response(statusCode, KEEP_ALIVE));
+        std::stringstream statusCodeString;
+        statusCodeString << statusCode;
         try {
             int         fd;
             struct stat pathInfo;
 
-			if (client->getRequest() == nullptr)
+			if (client->getRequest() == NULL)
 				throw ;
             const Context* server = HTTP::getMatchedServer(client, configuration);
-            const std::string& path = server->getDirective(std::to_string(statusCode)).at(0);
+            const std::string& path = server->getDirective(statusCodeString.str()).at(0);
 
             const Context* location = HTTP::getMatchLocationContext(server->getChildren(), path);
             std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
 
+            std::stringstream sizeStr;
             if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
                 client->getResponse()->download_file_fd = fd;
-                client->getResponse()->addHeader("Content-Length", std::to_string(pathInfo.st_size));
+                sizeStr << pathInfo.st_size;
+                client->getResponse()->addHeader("Content-Length", sizeStr.str());
                 client->getResponse()->buffer.append(CRLF);
             } else {
                 throw ;
@@ -92,7 +98,7 @@ void Webserv::errorHandler(int statusCode, Client* client) {
         } catch (...) {
             client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
         }
-		if (client->getState() != SENDING_RESPONSE)
+		if (client->getState() != TO_CLIENT)
         	client->switchState();
     }
 }
@@ -103,6 +109,24 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
     client->getResponse()->buffer += "\r\n";
     client->switchState();
 }
+
+void Webserv::checkGgiTimeout()
+{
+	std::vector<Client*>::iterator	begin, end;
+	Client							*client;
+	
+	for (begin = clients.begin(), end = clients.end(); begin != end; ++begin)
+	{
+		client = *begin;
+		if (client->isCgi() || client->getClientToCgi() == 0) // if cgi or client haven't cgi
+			continue;
+		if (HTTP::getCurrentTimeOnMilliSecond() - CGI_TIMEOUT > client->getCgiLastSeen()) {
+			errorHandler(504, client);
+			begin = clients.begin(), end = clients.end();
+		}
+	}
+}
+
 // *************************************************************************************************************************************************************************************
 
 // * Methods ***************************************************************************************************************************************************************************
@@ -224,15 +248,15 @@ void Webserv::run() {
 
     int    pollResult;
     while (Webserv::webservState == WEB_SERV_RUNNING) {
+		checkGgiTimeout(); // this for check timeout of all client and its cgi
         std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
 
-        if ((pollResult = poll(fds.data(), fds.size(), -1)) == -1) {
+        if ((pollResult = poll(fds.data(), fds.size(), -1)) == 0) {
             if (errno == EINTR) {
                 continue;
             }
             throw std::runtime_error("poll() : " + std::string(strerror(errno)));
         }
-
         for (size_t i = 0; i < fds.size() && pollResult > 0; ++i) {
             try {
 				if (fds[i].revents & POLLHUP) {
@@ -252,7 +276,7 @@ void Webserv::run() {
 						Client*	client = HTTP::getClientWithFd(fds[i].fd, this->clients);
 						Client*	cgi = HTTP::requestHandler(client, this->configuration);
 						if (cgi) {
-							if (cgi->getState() == SENDING_REQUEST) {
+							if (cgi->getState() == TO_CGI) {
 								this->clients.push_back(cgi);
 							} else {
 								Webserv::removeClient(cgi);

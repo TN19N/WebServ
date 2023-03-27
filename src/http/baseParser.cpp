@@ -188,6 +188,7 @@ IBase* HTTP::baseParser(Client *client)
 			response = new Response();
 			__headers_parser_(buffer, client->getBuffer(), response->headers);
 			__fill_request_and_check_basic_bad_errors_(response, client->isCgi());
+			client->getBuffer().erase(0,buffer - client->getBuffer().c_str()); // here erase buffer until body begin
 		} else {
 			request = new Request();
 			request->method = __get_request_method_(buffer, client->getBuffer()) ;
@@ -201,11 +202,14 @@ IBase* HTTP::baseParser(Client *client)
 			if (*buffer == '\r')
 				throw 400;
 			__headers_parser_(buffer, client->getBuffer(), request->headers);
-			if (request->method != "POST")
-				request->state = READY;
 			__fill_request_and_check_basic_bad_errors_(request, client->isCgi());
+			client->getBuffer().erase(0,buffer - client->getBuffer().c_str()); // here erase buffer until body begin
+			if (request->method != "POST")
+			{
+				client->getBuffer().clear();
+				request->state = READY;
+			}
 		}
-		client->getBuffer().erase(0,buffer - client->getBuffer().c_str());
 	}
 	catch (const int error)
 	{

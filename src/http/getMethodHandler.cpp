@@ -3,6 +3,9 @@
 //   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
 // -------------------------------------------------------------------------------
 
+# include <string.h>
+# include <sstream>
+
 # include "../../include/webserv/context.hpp"
 # include "../../include/webserv/http.hpp"
 
@@ -29,7 +32,7 @@ static void __do_response_with_directory_content_(Client* client)
 	response = new Response(200, client->getRequest()->keepAlive);
 	client->setResponse(response);
 	
-	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == nullptr)
+	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == NULL)
 		throw 403;
 	body = " <!DOCTYPE html>\n<html>\n<head>\n<title>";
 	body.append(path);
@@ -81,7 +84,9 @@ static void __read_file_content_to_do_response_(Client* client) {
 	} else {
 		response->addHeader("Content-Type", DEFAULT_MIME_TYPE);
 	}
-	response->addHeader("Content-Length",std::to_string(pathInfo.st_size));
+	std::stringstream contentLengthStr;
+	contentLengthStr << pathInfo.st_size;
+	response->addHeader("Content-Length", contentLengthStr.str());
 	response->buffer.append(CRLF);
 	client->switchState();
 }
@@ -97,7 +102,8 @@ Client* HTTP::getMethodHandler(Client *client)
 	// Check for redirection
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound) {
-		throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
+		throw std::make_pair(std::strtol(directive->second[0].c_str(), NULL, 10), directive->second[1]);
+		// throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
 	}
 
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {

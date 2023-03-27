@@ -5,6 +5,7 @@
 # include <poll.h>
 # include <unistd.h>
 # include <signal.h>
+# include <sys/wait.h>
 # ifdef DEBUG
 # include <iostream>
 # endif
@@ -18,13 +19,14 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     : socketFd(*fd),
     clientAddr(clientAddr),
     peerAddr(peerAddr),
-    request(cgiToClient == nullptr ? nullptr : cgiToClient->getRequest()),
-    response(nullptr),
+    request(cgiToClient == NULL ? NULL : cgiToClient->getRequest()),
+    response(NULL),
     cgiToClient(cgiToClient),
-    clientToCgi(nullptr),
-    state(cgiToClient == nullptr ? READING_REQUEST : SENDING_REQUEST)
+    clientToCgi(NULL),
+    state(cgiToClient == NULL ? FROM_CLIENT : TO_CGI),
+	cgiLastSeen(ULLONG_MAX)
 {
-    if (cgiToClient != nullptr) {
+    if (cgiToClient != NULL) {
         this->pipeFd[READ_END] = fd[READ_END];
         this->pipeFd[WRITE_END] = fd[WRITE_END];
 
@@ -42,7 +44,8 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
-		pid(pid), request(nullptr), response(nullptr), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
+		pid(pid), request(NULL), response(NULL), cgiToClient(client),
+		clientToCgi(0), state(TO_CGI), cgiLastSeen(ULLONG_MAX)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
@@ -163,57 +166,61 @@ void Client::setCgiLastSeen(size_t lastSeen) {
 // * Methods ********************************************************************************************************
 void Client::switchState() {
     switch (this->getState()) {
-        case READING_REQUEST :
-            this->setState(SENDING_RESPONSE);
+        case FROM_CLIENT :
+            this->setState(TO_CLIENT);
             break;
-        case SENDING_RESPONSE :
-            this->setState(READING_REQUEST);
+        case TO_CLIENT :
+            this->setState(FROM_CLIENT);
             delete this->request;
-            this->request = nullptr;
+            this->request = NULL;
             delete this->response;
-            this->response = nullptr;
+            this->response = NULL;
             break;
-        case SENDING_REQUEST :
+        case TO_CGI :
             close(this->getFdOf(WRITE_END));
-            this->setState(READING_RESPONSE);
+            this->setState(FROM_CGI);
             break;
     }
 }
 
 bool Client::isCgi() const {
-    return this->getCgiToClient() != nullptr;
+    return this->getCgiToClient() != NULL;
 }
 // ******************************************************************************************************************
 
 // * Destructor *****************************************************************************************************
 Client::~Client() {
     switch (this->getState()) {
-        case READING_REQUEST :
-        case SENDING_RESPONSE :
+        case FROM_CLIENT :
             close(this->getSocketFd());
             break;
-        case SENDING_REQUEST :
+        case TO_CLIENT :
+            close(this->getSocketFd());
+            break;
+        case TO_CGI :
             close(this->getFdOf(WRITE_END));
-        case READING_RESPONSE :
+            close(this->getFdOf(READ_END));
+            break;
+        case FROM_CGI :
             close(this->getFdOf(READ_END));
     }
 
-    if (this->getRequest() != nullptr) {
+    if (this->getRequest() != NULL) {
         delete this->getRequest();
     }
 
-    if (this->getResponse() != nullptr) {
+    if (this->getResponse() != NULL) {
         delete this->getResponse();
     }
 	
 	if (this->isCgi()) {
-		if (waitpid(this->pid, nullptr, WNOHANG) == 0) {
+		if (waitpid(this->pid, NULL, WNOHANG) == 0) {
 			kill(this->pid, SIGKILL);
 		}
-		this->getCgiToClient()->setClientToCgi(nullptr);
+		this->getCgiToClient()->setClientToCgi(NULL);
 	}
 
-	if (this->getClientToCgi() != nullptr) {
+	if (this->getClientToCgi() != NULL) {
 		delete this->getClientToCgi();
 	}
 

@@ -3,6 +3,8 @@
 # include <signal.h>
 # include <sys/errno.h>
 # include <poll.h>
+# include <cstring>
+# include <stdexcept>
 # ifdef DEBUG
 # include <iostream>
 # include <arpa/inet.h>
@@ -57,7 +59,9 @@ void CORE::display(const struct sockaddr* addr) {
     if (addr->sa_family == AF_INET) {
         char ipv4[INET_ADDRSTRLEN];
         const struct sockaddr_in* addrIpv4 = reinterpret_cast<const struct sockaddr_in*>(addr);
+        # ifdef __APPLE__
         std::cout << "\tsin_len: " << int(addrIpv4->sin_len) << std::endl;
+        # endif
         std::cout << "\tsin_family: " << int(addrIpv4->sin_family) << std::endl;
         std::cout << "\tsin_port: " << ntohs(addrIpv4->sin_port) << std::endl;
         std::cout << "\tsin_addr: " << inet_ntop(AF_INET, &addrIpv4->sin_addr, ipv4, INET_ADDRSTRLEN) << std::endl;
@@ -65,7 +69,9 @@ void CORE::display(const struct sockaddr* addr) {
     } else if (addr->sa_family == AF_INET6) {
         char ipv6[INET6_ADDRSTRLEN];
         const struct sockaddr_in6* addrIpv6 = reinterpret_cast<const struct sockaddr_in6*>(addr);
+        # ifdef __APPLE__
         std::cout << "\tsin6_len: " << int(addrIpv6->sin6_len) << std::endl;
+        # endif
         std::cout << "\tsin6_family: " << int(addrIpv6->sin6_family) << std::endl;
         std::cout << "\tsin6_port: " << ntohs(addrIpv6->sin6_port) << std::endl;
         std::cout << "\tsin6_flowinfo: " << int(addrIpv6->sin6_flowinfo) << std::endl;
@@ -132,24 +138,28 @@ const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd,
         fds[i].events = POLLIN;
     }
 
-    for (size_t i = serversSocketFd.size(); i < fds.size(); ++i) {
+    for (size_t i = fds.size() - 1; i > serversSocketFd.size() - 1; --i) {
         Client *client = clients[i - serversSocketFd.size()];
         switch (client->getState()) {
-            case READING_REQUEST :
+            case FROM_CLIENT :
                 fds[i].fd = client->getFdOf(READ_END);
                 fds[i].events = POLLIN | POLLHUP;
                 break;
-            case SENDING_RESPONSE :
+            case TO_CLIENT :
                 fds[i].fd = client->getFdOf(WRITE_END);
                 fds[i].events = POLLOUT | POLLHUP;
                 break;
-            case READING_RESPONSE :
+            case FROM_CGI :
                 fds[i].fd = client->getFdOf(READ_END);
                 fds[i].events = POLLIN | POLLHUP;
 				break;
-            case SENDING_REQUEST :
+            case TO_CGI :
                 fds[i].fd = client->getFdOf(WRITE_END);
                 fds[i].events = POLLOUT | POLLHUP;
+				struct pollfd extraFd;
+				extraFd.fd = client->getFdOf(READ_END);
+				extraFd.events = POLLIN | POLLHUP;
+				fds.push_back(extraFd);
                 break;
         }
     }
