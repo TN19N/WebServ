@@ -3,23 +3,16 @@
 # include "../../include/webserv/response.hpp"
 # include "../../include/webserv/http.hpp"
 
-static bool __send_client_body_to_cgi_(Client *client) {
-	Request			*request = client->getCgiToClient()->getRequest();
+static bool __send_client_body_to_cgi_(Client *cgi) {
+	Request			*request = cgi->getCgiToClient()->getRequest();
 	ssize_t			writeSize;
-	std::string&	buffer = client->getBuffer();
-	
-	if (buffer.size() < BUFFER_SIZE) {
-		
-		writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
-		buffer.append(request->body, 0, writeSize);
-		request->body.erase(0, writeSize);
-	}
-	writeSize = write(client->getFdOf(WRITE_END), buffer.c_str(), buffer.size());
+
+	writeSize = write(cgi->getFdOf(WRITE_END), request->body.c_str(), BUFFER_SIZE);
 	if (writeSize < 0) {
 		throw 500;
 	}
-	buffer.erase(0, writeSize);
-	return buffer.empty() && request->state == READY && request->body.empty();
+	request->body.erase(0, writeSize);
+	return request->state == READY && request->body.empty();
 }
 
 static bool __send_response_buffer_to_client_(Client *client) {
