@@ -115,11 +115,15 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 # endif
 
 		if (request->method == "GET") {
-			return HTTP::getMethodHandler(client);
+			client->switchState();
+			cgi = HTTP::getMethodHandler(client);
+			return cgi;
 		} else if (request->method == "POST") {
 			cgi = HTTP::postMethodHandler(client);
 		} else if (request->method == "DELETE") {
-			return HTTP::deleteMethodHandler(client);
+			client->switchState();
+			cgi = HTTP::deleteMethodHandler(client);
+			return cgi;
 		}
 	}
 
@@ -145,31 +149,28 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 				client->getResponse()->addBody("Created with success");
 				client->switchState();
 			}
+		} else if (request->state == READY) {
+			client->switchState();
 		}
 	}
 	return cgi;
 }
 
 static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
-	Response	*response = cgi->getResponse();
+	Response	*response ;
 	
-	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos) {
+	if (cgiFinished)
+	{
 		response = reinterpret_cast<Response*>(HTTP::baseParser(cgi));
 		cgi->setResponse(response);
-	}
-	if (response) {
 		HTTP::readBodyFromBuffer(cgi);
-		if (cgiFinished) {
-			HTTP::convertCgiResponseToClientResponse(cgi);
-			if (cgi->getState() == TO_CGI)
-			{
-				cgi->switchState();
-				cgi->getCgiToClient()->switchState();
-			}
-			return cgi;
+		HTTP::convertCgiResponseToClientResponse(cgi);
+		if (cgi->getState() == TO_CGI)
+		{
+			cgi->switchState();
+			cgi->getCgiToClient()->switchState();
 		}
-	} else if (cgiFinished) {
-		throw 502;
+		return cgi;
 	}
 	return NULL;
 }
@@ -179,6 +180,7 @@ Client* HTTP::requestHandler(Client* client, const Context* const configuration)
 	
 	if (__read_buffer_from_client_(client))
 		cgiFinished = true;
+	client->updateLastEvent();
 	if (client->isCgi())
 		return __cgi_response_handler_(client, cgiFinished);
 	else

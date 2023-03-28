@@ -37,19 +37,21 @@ static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
 
 void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 {
-	IBase::Headers::iterator	header, notFound;
-	Response					*response;
-	Client						*client = cgi->getCgiToClient();
-	int							statusCode;
+	IBase::Headers::iterator			header, notFound;
+	std::vector<std::string>::iterator	setCookie, endCookie;
+	Response							*clientRes;
+	Response							*cgiRes = cgi->getResponse();
+	Client								*client = cgi->getCgiToClient();
+	int									statusCode;
 
-	if (cgi->getResponse() == NULL) {
+	if (cgiRes == NULL) {
 		throw 500;
 	}
 
-	notFound = cgi->getResponse()->headers.end();
-	header = cgi->getResponse()->headers.find("Status");
+	notFound = cgiRes->headers.end();
+	header = cgiRes->headers.find("Status");
 	if (header == notFound) {
-		header = cgi->getResponse()->headers.find("Location");
+		header = cgiRes->headers.find("Location");
 		if (header != notFound) {
 			statusCode = 301;
 		} else {
@@ -58,15 +60,18 @@ void HTTP::convertCgiResponseToClientResponse(Client *cgi)
 	} else {
 		statusCode = __get_status_code_from_cgi_status_(header->second.c_str());
 	}
-	response = new Response(statusCode, client->getRequest()->keepAlive);
-	client->setResponse(response);
-	for (header = cgi->getResponse()->headers.begin(); header != notFound; ++header)
+	clientRes = new Response(statusCode, client->getRequest()->keepAlive);
+	client->setResponse(clientRes);
+	for (header = cgiRes->headers.begin(); header != notFound; ++header)
 	{
 		if (__is_forbidden_to_send_this_header_to_client_(header->first.c_str()))
 			continue;
-		response->addHeader(header->first, header->second);
+		clientRes->addHeader(header->first, header->second);
 	}
-	response->addBody(cgi->getResponse()->body);
+	for (setCookie = cgiRes->setCookie.begin(), endCookie = cgiRes->setCookie.end(); setCookie != endCookie; ++setCookie) {
+		clientRes->addHeader("Set-Cookie", *setCookie);
+	}
+	clientRes->addBody(cgiRes->body);
 }
 
 size_t HTTP::getCurrentTimeOnMilliSecond()

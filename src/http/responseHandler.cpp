@@ -7,7 +7,8 @@ static bool __send_client_body_to_cgi_(Client *cgi) {
 	Request			*request = cgi->getCgiToClient()->getRequest();
 	ssize_t			writeSize;
 
-	writeSize = write(cgi->getFdOf(WRITE_END), request->body.c_str(), BUFFER_SIZE);
+	writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
+	writeSize = write(cgi->getFdOf(WRITE_END), request->body.c_str(), writeSize);
 	if (writeSize < 0) {
 		throw 500;
 	}
@@ -57,13 +58,9 @@ static bool __send_response_to_client_(Client *client)
 
 bool HTTP::responseHandler(Client *client)
 {
-	Client	*clientOfCgi = client->getCgiToClient();
-
+	client->updateLastEvent();
 	if (client->isCgi()) {
-		clientOfCgi->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
 		if (__send_client_body_to_cgi_(client)) {
-			clientOfCgi->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
-			clientOfCgi->switchState();
 			client->switchState();
 		}
 	} else {
@@ -72,6 +69,6 @@ bool HTTP::responseHandler(Client *client)
 		}
 		return __send_response_to_client_(client);
 	}
-		
+
 	return true;
 }

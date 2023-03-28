@@ -12,6 +12,7 @@ struct Response : public IBase {
     public :
 		int download_file_fd;
         int statusCode;
+
     public :
 		Response() ;
 		Response(bool keepAlive);

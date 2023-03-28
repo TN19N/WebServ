@@ -57,50 +57,51 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
-	if (client->getState() == TO_CLIENT && client->getClientToCgi() == NULL) {
-       Webserv::removeClient(client);
-    } else {
-		if (client->getClientToCgi() != NULL) {
-			Webserv::removeClient(client->getClientToCgi());
-		}
+	if (client->getClientToCgi() != NULL) {
+		Webserv::removeClient(client->getClientToCgi());
+	}
 
-		if (client->isCgi()) {
-			client = client->getCgiToClient();
-			Webserv::removeClient(client->getClientToCgi());
+	if (client->isCgi()) {
+		client = client->getCgiToClient();
+		Webserv::removeClient(client->getClientToCgi());
+		if (statusCode < 500)
 			statusCode = 502;
+	}
+	client->setResponse(new Response(statusCode, KEEP_ALIVE));
+	std::stringstream statusCodeString;
+	statusCodeString << statusCode;
+
+	try {
+		if (client->getRequest()) {
+			int fd;
+			struct stat pathInfo;
+			
+			const Context *server = HTTP::getMatchedServer(client, configuration);
+			const std::string &path = server->getDirective(statusCodeString.str()).at(0);
+			
+			const Context *location = HTTP::getMatchLocationContext(server->getChildren(), path);
+			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
+			
+			std::stringstream sizeStr;
+			if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
+				client->getResponse()->download_file_fd = fd;
+				sizeStr << pathInfo.st_size;
+				client->getResponse()->addHeader("Content-Length", sizeStr.str());
+				client->getResponse()->buffer.append(CRLF);
+			} else {
+				client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+			}
+		} else {
+			client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
 		}
-
-        client->setResponse(new Response(statusCode, KEEP_ALIVE));
-        std::stringstream statusCodeString;
-        statusCodeString << statusCode;
-        try {
-            int         fd;
-            struct stat pathInfo;
-
-			if (client->getRequest() == NULL)
-				throw ;
-            const Context* server = HTTP::getMatchedServer(client, configuration);
-            const std::string& path = server->getDirective(statusCodeString.str()).at(0);
-
-            const Context* location = HTTP::getMatchLocationContext(server->getChildren(), path);
-            std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
-
-            std::stringstream sizeStr;
-            if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
-                client->getResponse()->download_file_fd = fd;
-                sizeStr << pathInfo.st_size;
-                client->getResponse()->addHeader("Content-Length", sizeStr.str());
-                client->getResponse()->buffer.append(CRLF);
-            } else {
-                throw ;
-            }
-
-        } catch (...) {
-            client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
-        }
-		if (client->getState() != TO_CLIENT)
-        	client->switchState();
-    }
+		
+		if (client->getState() != TO_CLIENT) {
+			client->switchState();
+		}
+	}
+	catch (const std::exception&) {
+		client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+	}
 }
 
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
@@ -110,7 +111,7 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
     client->switchState();
 }
 
-void Webserv::checkGgiTimeout()
+void Webserv::checkClientsTimeout()
 {
 	std::vector<Client*>::iterator	begin, end;
 	Client							*client;
@@ -118,10 +119,11 @@ void Webserv::checkGgiTimeout()
 	for (begin = clients.begin(), end = clients.end(); begin != end; ++begin)
 	{
 		client = *begin;
-		if (client->isCgi() || client->getClientToCgi() == 0) // if cgi or client haven't cgi
-			continue;
-		if (HTTP::getCurrentTimeOnMilliSecond() - CGI_TIMEOUT > client->getCgiLastSeen()) {
-			errorHandler(504, client);
+		if (HTTP::getCurrentTimeOnMilliSecond() - CGI_TIMEOUT > client->getLastEvent()) {
+			if (client->isCgi() || client->getClientToCgi())
+				errorHandler(504, client);
+			else
+				errorHandler(408, client);
 			begin = clients.begin(), end = clients.end();
 		}
 	}
@@ -248,10 +250,12 @@ void Webserv::run() {
 
     int    pollResult;
     while (Webserv::webservState == WEB_SERV_RUNNING) {
-		checkGgiTimeout(); // this for check timeout of all client and its cgi
+
+		checkClientsTimeout(); // this for check timeout of all client and its cgi
+
         std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
 
-        if ((pollResult = poll(fds.data(), fds.size(), -1)) == 0) {
+        if ((pollResult = poll(fds.data(), fds.size(), 1000)) == -1) {
             if (errno == EINTR) {
                 continue;
             }
@@ -261,9 +265,7 @@ void Webserv::run() {
             try {
 				if (fds[i].revents & POLLHUP) {
 					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client->isCgi()) {
-					
-					} else {
+					if (client->isCgi() == false) {
 						Webserv::removeClient(client);
 						--pollResult;
 						continue;
@@ -286,7 +288,7 @@ void Webserv::run() {
 					--pollResult;
 				} else if (fds[i].revents & POLLOUT) {
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client && HTTP::responseHandler(client) == 0) {
+					if (client && HTTP::responseHandler(client) == false) {
                         Webserv::removeClient(client);
                     }
 					--pollResult;

@@ -155,20 +155,22 @@ static void __fill_request_and_check_basic_bad_errors_(IBase *base, bool isCgi) 
 	}
 }
 
-static void __headers_parser_(const char * &buffer, std::string &base, IBase::Headers &headers) {
+static void __headers_parser_(const char * &buffer, std::string &Buffer, IBase *base, bool isCgi) {
 	const char	*key;
-	
+	IBase::Headers				&headers = base->headers;
+	std::vector<std::string>	&setCookie = base->setCookie;
+
 	while (*buffer && *buffer != '\r')
 	{
 		key = buffer;
-		if (headers[__get_header_key_(buffer, base)].empty())
-			headers[key] = __get_header_value_(buffer, base);
+		if (headers[__get_header_key_(buffer, Buffer)].empty())
+			headers[key] = __get_header_value_(buffer, Buffer);
 		else if (HTTP::strcmp(key, "Host") == 0)
 			throw 400;
-		else if (HTTP::strcmp(key, "Set-Cookie") == 0)
-			headers[key].append(__get_header_value_(buffer, base));
+		else if (HTTP::strcmp(key, "Set-Cookie") == 0 && isCgi)
+			setCookie.push_back(__get_header_value_(buffer, Buffer));
 		else
-			headers[key] = __get_header_value_(buffer, base);
+			headers[key] = __get_header_value_(buffer, Buffer);
 	}
 	if (*buffer == '\0' || *(buffer + 1) != '\n')
 		throw 400;
@@ -186,7 +188,7 @@ IBase* HTTP::baseParser(Client *client)
 	{
 		if (client->isCgi()) {
 			response = new Response();
-			__headers_parser_(buffer, client->getBuffer(), response->headers);
+			__headers_parser_(buffer, client->getBuffer(), response, client->isCgi());
 			__fill_request_and_check_basic_bad_errors_(response, client->isCgi());
 			client->getBuffer().erase(0,buffer - client->getBuffer().c_str()); // here erase buffer until body begin
 		} else {
@@ -201,7 +203,7 @@ IBase* HTTP::baseParser(Client *client)
 			__check_request_protocol_(buffer);
 			if (*buffer == '\r')
 				throw 400;
-			__headers_parser_(buffer, client->getBuffer(), request->headers);
+			__headers_parser_(buffer, client->getBuffer(), request, client->isCgi());
 			__fill_request_and_check_basic_bad_errors_(request, client->isCgi());
 			client->getBuffer().erase(0,buffer - client->getBuffer().c_str()); // here erase buffer until body begin
 			if (request->method != "POST")

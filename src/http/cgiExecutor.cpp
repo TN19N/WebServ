@@ -101,6 +101,6 @@ Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootD
 	}
 	cgi = new Client(_read[0], _write[1], pid, client);
 	client->setClientToCgi(cgi);
-	client->setCgiLastSeen(HTTP::getCurrentTimeOnMilliSecond());
+	cgi->updateLastEvent();
 	return cgi;
 }

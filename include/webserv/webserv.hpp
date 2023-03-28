@@ -20,7 +20,7 @@ class Webserv {
 
         void removeClient(const Client* client);
 		void errorHandler(int statusCode, Client* client);
-		void checkGgiTimeout();
+		void checkClientsTimeout();
     public:
         Webserv(const std::string& configFile);
 

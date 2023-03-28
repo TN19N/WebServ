@@ -23,8 +23,8 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     response(NULL),
     cgiToClient(cgiToClient),
     clientToCgi(NULL),
-    state(cgiToClient == NULL ? FROM_CLIENT : TO_CGI),
-	cgiLastSeen(ULLONG_MAX)
+    state(FROM_CLIENT),
+	lastEvent(ULLONG_MAX)
 {
     if (cgiToClient != NULL) {
         this->pipeFd[READ_END] = fd[READ_END];
@@ -45,7 +45,7 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
 		pid(pid), request(NULL), response(NULL), cgiToClient(client),
-		clientToCgi(0), state(TO_CGI), cgiLastSeen(ULLONG_MAX)
+		clientToCgi(0), state(TO_CGI), lastEvent(ULLONG_MAX)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
@@ -131,10 +131,13 @@ int Client::getFdOf(const int index) const {
     return this->getSocketFd();
 }
 
-size_t Client::getCgiLastSeen() {
-	return this->cgiLastSeen;
+size_t Client::getLastEvent() {
+	return this->lastEvent;
 }
 
+void Client::updateLastEvent() {
+	this->lastEvent = HTTP::getCurrentTimeOnMilliSecond();
+}
 // ******************************************************************************************************************
 
 // * Setters ********************************************************************************************************
@@ -156,11 +159,6 @@ void Client::setResponse(Response* response) {
 void Client::setState(const int &state) {
     this->state = state;
 }
-
-void Client::setCgiLastSeen(size_t lastSeen) {
-	this->cgiLastSeen = lastSeen;
-}
-
 // ******************************************************************************************************************
 
 // * Methods ********************************************************************************************************
