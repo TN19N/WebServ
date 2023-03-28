@@ -1,8 +1,6 @@
 .vscode/
-*.DS_Store
-*.swp
-*.exe
-*.o
-*.out
-test.cpp
-./build/debug/*.trace
+build/*.exe
+build/*.log
+build/*.o
+config/*.cfg
+config/*.types

@@ -1,5 +1,5 @@
 types {
-    # text
+#   --- text ---
     text/html                           html htm shtml;
     text/css                            css;
     text/xml                            xml;
@@ -9,7 +9,7 @@ types {
     text/vnd.wap.wml                    wml;
     text/x-component                    htc;
 
-    # image
+#   --- image ---
     image/gif           gif;
     image/jpeg          jpeg jpg;
     image/avif          avif;
@@ -22,11 +22,11 @@ types {
     image/x-jng         jng;
     image/x-ms-bmp      bmp;
 
-    # font
+#   --- font ---
     font/woff   woff;
     font/woff2  woff2;
 
-    # application
+#   --- application ---
     application/javascript                                                      js;
     application/atom+xml                                                        atom;
     application/rss+xml                                                         rss;
@@ -76,14 +76,14 @@ types {
     application/octet-stream                                                    iso img;
     application/octet-stream                                                    msi msp msm;
 
-    # audio
+#   --- audio ---
     audio/midi          mid midi kar;
     audio/mpeg          mp3;
     audio/ogg           ogg;
     audio/x-m4a         m4a;
     audio/x-realaudio   ra;
 
-    # video
+#   --- video ---
     video/3gpp      3gpp 3gp;
     video/mp2t      ts;
     video/mp4       mp4;

@@ -1,43 +1,74 @@
 # include <unistd.h>
+# include <iostream> // TODO: remove this
+# include "../../include/webserv/response.hpp"
+# include "../../include/webserv/http.hpp"
 
-# include "webserv/response.hpp"
-# include "webserv/http.hpp"
-# include "webserv/client.hpp"
+static bool __send_client_body_to_cgi_(Client *cgi) {
+	Request			*request = cgi->getCgiToClient()->getRequest();
+	ssize_t			writeSize;
 
-# define SEND_BUFFER_SIZE 4096UL
+	writeSize = std::min((size_t)BUFFER_SIZE, request->body.size());
+	writeSize = write(cgi->getFdOf(WRITE_END), request->body.c_str(), writeSize);
+	if (writeSize < 0) {
+		throw 500;
+	}
+	request->body.erase(0, writeSize);
+	return request->state == READY && request->body.empty();
+}
 
-const bool HTTP::sendResponse(Client* client) {
-    int res = 0;
+static bool __send_response_buffer_to_client_(Client *client) {
+	ssize_t			writeSize;
+	std::string&	buffer = client->getResponse()->buffer;
+	
+	writeSize = send(client->getFdOf(WRITE_END), buffer.c_str(), buffer.size(), 0);
+	if (writeSize < 0) {
+		throw 500;
+	}
+	buffer.erase(0, writeSize);
+	return buffer.empty();
+}
 
-    if (client->isCgi()) {
-        Request* request = client->getRequest();
+static bool __send_response_to_client_(Client *client)
+{
+	Response	*response = client->getResponse();
+	char		buffer[BUFFER_SIZE];
+	ssize_t		readSize = -1;
+	bool        keepAlive = response->keepAlive;
+	
+	if (response->download_file_fd != -1) {
+		if (response->buffer.size() < BUFFER_SIZE * 5) {
+			if ((readSize = read(response->download_file_fd, buffer, BUFFER_SIZE)) < 0) {
+				throw 500;
+			}
+			response->buffer.append(buffer, readSize);
+		}
+		
+		__send_response_buffer_to_client_(client);
+		
+		if (readSize == 0) {
+			close(response->download_file_fd);
+			response->download_file_fd = -1;
+		}
+	} else if (__send_response_buffer_to_client_(client)) {
+		client->switchState();
+		return keepAlive;
+	}
+	return true;
+}
 
-        if (request->body.empty() == false) {
-            if ((res = write(client->getFdOf(WRITE_END), request->body.c_str(), std::min(SEND_BUFFER_SIZE, request->body.length()))) == -1) {
-                throw 500;
-            }
-            request->body.erase(0, res);
-        }
+bool HTTP::responseHandler(Client *client)
+{
+	client->updateLastEvent();
+	if (client->isCgi()) {
+		if (__send_client_body_to_cgi_(client)) {
+			client->switchState();
+		}
+	} else {
+		if (client->getClientToCgi()) {
+			return true;
+		}
+		return __send_response_to_client_(client);
+	}
 
-        if (request->body.empty() == true) {
-            return true;
-        }
-    } else {
-        Response* response = client->getResponse();
-
-        if (response->buffer.empty() == false) {
-            if ((res = send(client->getFdOf(WRITE_END), response->buffer.c_str(), std::min(SEND_BUFFER_SIZE, response->buffer.length()), 0)) == -1) {
-                throw 500;
-            }
-            response->buffer.erase(0, res);
-        }
-
-        if (response->buffer.empty() == true) {
-            if (response->keepAlive == false) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+	return true;
 }

@@ -1,13 +1,9 @@
 # include <vector>
-# include <poll.h>
 # include <sys/socket.h>
 # include <iostream>
 # include <fcntl.h>
-# include <unistd.h>
 
-# include "webserv/http.hpp"
-# include "webserv/client.hpp"
-# include "webserv/core.hpp"
+# include "../../include/webserv/http.hpp"
 
 void HTTP::acceptConnection(const int serverFd, std::vector<Client*>& clients) {
     int clientFd = 0;

@@ -6,19 +6,23 @@
 # include <map>
 # include <sys/socket.h>
 
+#include "defines.hpp"
+
 class Context {
+	public:
+		typedef std::map<std::string, std::vector<std::string> > Directives;
     private:
-        const std::string                                   name;
-        const std::vector<std::string>                      args;
-        std::map<std::string, std::vector<std::string> >    directives;
-        std::vector<Context*>                               children;
-        Context*                                            parent;
+        const std::string             		name;
+        const std::vector<std::string>		args;
+        Context::Directives    				directives;
+        std::vector<Context*>               children;
+        Context*                            parent;
     public:
-        Context(const std::string& name, const std::vector<std::string>& args = std::vector<std::string>(), Context* parent = nullptr);
+        Context(const std::string& name, const std::vector<std::string>& args = std::vector<std::string>(), Context* parent = NULL);
 
         const std::string&                                      getName() const;
         const std::vector<std::string>&                         getArgs() const;
-        const std::map<std::string, std::vector<std::string> >& getDirectives() const;
+        const Context::Directives& getDirectives() const;
         const std::vector<std::string>&                         getDirective(const std::string& name) const;
         const std::vector<Context*>&                            getChildren() const;
         const Context*                                          getParent() const;

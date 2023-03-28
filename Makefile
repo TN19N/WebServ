@@ -12,7 +12,6 @@ TEMPLATE_DIR := ./template
 
 # The Target Binary Program
 TARGET := $(TARGET_DIR)/webserv.exe
-TRACE_FOLDER := $(BUILD_DIR)/debug/trace
 DEBUG_LOG_FILE := $(BUILD_DIR)/debug/debug.log
 
 # extentions
@@ -20,7 +19,7 @@ SRC_EXT := cpp
 OBJ_EXT := o
 
 # Flags
-CFLAGS := #-Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror
 CFLAGS += -std=c++98
 
 # Sources
@@ -35,8 +34,17 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/request.$(SRC_EXT) \
 		$(SRC_DIR)/http/response.$(SRC_EXT) \
 		$(SRC_DIR)/http/responseHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/tools.$(SRC_EXT) \
 		$(SRC_DIR)/http/requestHandler.$(SRC_EXT) \
-		$(SRC_DIR)/http/tools.$(SRC_EXT)
+		$(SRC_DIR)/http/baseParser.$(SRC_EXT) \
+		$(SRC_DIR)/http/blockMatchAlgorithm.$(SRC_EXT) \
+		$(SRC_DIR)/http/readBodyFromBuffer.$(SRC_EXT) \
+		$(SRC_DIR)/http/getMethodHandler.$(SRC_EXT) \
+		$(SRC_DIR)/http/postMethodHundler.$(SRC_EXT) \
+		$(SRC_DIR)/http/deleteMethodHundler.$(SRC_EXT) \
+		$(SRC_DIR)/http/IBase.$(SRC_EXT) \
+		$(SRC_DIR)/http/cgiExecutor.$(SRC_EXT)
+
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
 TEMPLATES := $(wildcard $(TEMPLATE_DIR)/*)
@@ -51,7 +59,7 @@ END := \033[0m
 all: debug
 
 .PHONY: debug
-debug: CFLAGS += -g3 #-fsanitize=address
+#debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
 debug: $(TARGET)
 
@@ -61,13 +69,6 @@ release: $(TARGET)
 .PHONY: run
 run: debug
 	@ ./$(TARGET) $(ARGS) > $(DEBUG_LOG_FILE)
-	
-.PHONY: instruments
-instruments: debug # Just in MAC
-	@ echo "$(GREEN)Running instruments ...$(END)"
-	@ rm -rf $(TRACE_FOLDER).trace
-	@ instruments -t "Leaks" -D $(TRACE_FOLDER) ./$(TARGET) $(ARGS) 2> /dev/null
-	@ echo "$(GREEN)Done!$(END)"
 
 .PHONY: generate
 generate: $(CONFIGS)

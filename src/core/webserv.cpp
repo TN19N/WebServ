@@ -3,19 +3,16 @@
 # include <iostream>
 # include <vector>
 # include <unistd.h>
-# include <sys/types.h>
 # include <sys/socket.h>
 # include <netdb.h>
 # include <map>
-# include <set>
-# include <algorithm>
+# include <string.h>
+# include <sstream>
 
-# include "webserv/webserv.hpp"
-# include "webserv/core.hpp"
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
-# include "webserv/http.hpp"
-# include "webserv/client.hpp"
+# include "../../include/webserv/webserv.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/configuration.hpp"
+# include "../../include/webserv/http.hpp"
 
 # define BIND_REPETITION 5
 
@@ -36,8 +33,8 @@ Webserv::Webserv(const std::string& configFilePath)
 // *************************************************************************************************************************************************************************************
 
 // * Static Tools **********************************************************************************************************************************************************************
-static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data, const int end) {
-    for (int i = 0; i < end; ++i) {
+static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
         if (addr->sa_family == data[i]->ai_addr->sa_family) {
             if (addr->sa_family == AF_INET) {
                 const struct sockaddr_in* addr4 = reinterpret_cast<const struct sockaddr_in*>(addr);
@@ -59,16 +56,82 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
     return false;
 }
 
-static bool errorHandler(const int statusCode, Client* client) {
-    if (client->getState() == SENDING_RESPONSE) {
-        return true;
-    } else {
-        client->setResponse(new Response(statusCode, CLOSE_CONNECTION));
-        client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
-        client->switchState();
-        return false;
-    }
+void Webserv::errorHandler(int statusCode, Client* client) {
+	if (client->getClientToCgi() != NULL) {
+		Webserv::removeClient(client->getClientToCgi());
+	}
+
+	if (client->isCgi()) {
+		client = client->getCgiToClient();
+		Webserv::removeClient(client->getClientToCgi());
+		if (statusCode < 500)
+			statusCode = 502;
+	}
+	client->setResponse(new Response(statusCode, KEEP_ALIVE));
+	std::stringstream statusCodeString;
+	statusCodeString << statusCode;
+
+	try {
+		if (client->getRequest()) {
+			int fd;
+			struct stat pathInfo;
+			
+			const Context *server = HTTP::getMatchedServer(client, configuration);
+			const std::string& path = server->getDirective(statusCodeString.str()).at(0);
+			
+			const Context *location = HTTP::getMatchLocationContext(server->getChildren(), path);
+			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0);
+            fileName += "/" + path.substr(location->getArgs().at(0).size());
+			// std::cerr << "--> fileName: " << fileName << std::endl; // TODO: remove
+			std::stringstream sizeStr;
+			if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
+				client->getResponse()->download_file_fd = fd;
+				sizeStr << pathInfo.st_size;
+				client->getResponse()->addHeader("Content-Length", sizeStr.str());
+				client->getResponse()->buffer.append(CRLF);
+			} else {
+				client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+			}
+		} else {
+			client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+		}
+		
+		if (client->getState() != TO_CLIENT) {
+			client->switchState();
+		}
+	}
+	catch (const std::exception&) {
+		client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+	}
 }
+
+# include <iostream> // TODO: remove
+
+static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
+    client->setResponse(new Response(redirect.first, KEEP_ALIVE));
+    client->getResponse()->addHeader("Location", redirect.second);
+    client->getResponse()->buffer += "\r\n";
+    client->switchState();
+}
+
+void Webserv::checkClientsTimeout()
+{
+	std::vector<Client*>::iterator	begin, end;
+	Client							*client;
+	
+	for (begin = clients.begin(), end = clients.end(); begin != end; ++begin)
+	{
+		client = *begin;
+		if (HTTP::getCurrentTimeOnMilliSecond() - CGI_TIMEOUT > client->getLastEvent()) {
+			if (client->isCgi() || client->getClientToCgi())
+				errorHandler(504, client);
+			else
+				errorHandler(408, client);
+			begin = clients.begin(), end = clients.end();
+		}
+	}
+}
+
 // *************************************************************************************************************************************************************************************
 
 // * Methods ***************************************************************************************************************************************************************************
@@ -79,7 +142,7 @@ void Webserv::startServers() {
     for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
         if ((*context)->getName() == HTTP_CONTEXT) {
             const std::vector<Context*>& contexts = (*context)->getChildren();
-            for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
+			for (std::vector<Context*>::const_iterator context = contexts.begin(); context != contexts.end(); ++context) {
                 if ((*context)->getName() == SERVER_CONTEXT) {
                     struct addrinfo hints, *res = NULL;
                     int sockfd;
@@ -90,7 +153,7 @@ void Webserv::startServers() {
 
                     const std::string& port = (*context)->getDirective(PORT_DIRECTIVE).at(0);
                     const std::string& host = (*context)->getDirective(HOST_DIRECTIVE).at(0);
-
+					
                     if (getaddrinfo(host.c_str(), port.c_str(), &hints, &res) != 0 || res == NULL) {
                         throw std::runtime_error("getaddrinfo() : " + std::string(gai_strerror(errno)));
                     }
@@ -108,14 +171,14 @@ void Webserv::startServers() {
                         }
                     }
 
-                    serversAddress.push_back(res);
-
-                    if (isInRange(res->ai_addr, serversAddress, (context - contexts.begin()))) {
+                    if (isInRange(res->ai_addr, serversAddress)) {
                         freeaddrinfo(res->ai_next);
-                        continue;
+						serversAddress.push_back(res);
+						continue;
                     }
-
-                    if ((sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1) {
+					serversAddress.push_back(res);
+	
+					if ((sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1) {
                         freeaddrinfo(res->ai_next);
                         throw std::runtime_error("socket() : " + std::string(strerror(errno)));
                     }
@@ -148,7 +211,7 @@ void Webserv::startServers() {
                         freeaddrinfo(res->ai_next);
                         throw std::runtime_error("listen() : " + std::string(strerror(errno)));
                     }
-
+					
                     this->serversSocketFd.push_back(sockfd);
 
                     # ifdef DEBUG
@@ -187,49 +250,57 @@ void Webserv::run() {
     std::cerr << "**********************************" << std::endl;
     std::cerr << RESET;
 
-    int    pollResult = 0;
+    int    pollResult;
     while (Webserv::webservState == WEB_SERV_RUNNING) {
+
+		checkClientsTimeout(); // this for check timeout of all client and its cgi
+
         std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
 
-        if ((pollResult = poll(fds.data(), fds.size(), -1)) == -1) {
+        if ((pollResult = poll(fds.data(), fds.size(), 1000)) == -1) {
             if (errno == EINTR) {
                 continue;
             }
             throw std::runtime_error("poll() : " + std::string(strerror(errno)));
         }
-
-        for (int i = 0; i < fds.size() && pollResult > 0; ++i) {
+        for (size_t i = 0; i < fds.size() && pollResult > 0; ++i) {
             try {
-                --pollResult;
-                if (fds[i].revents & POLLHUP) {
-                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                } else if (fds[i].revents & POLLIN) {
-                    if (i < this->serversSocketFd.size()) {
-                        HTTP::acceptConnection(fds[i].fd, this->clients);
-                    } else {
-                        throw 404;
-                        HTTP::requestHandler(HTTP::getClientWithFd(fds[i].fd, this->clients));
+				if (fds[i].revents & POLLHUP) {
+					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+					if (client->isCgi() == false) {
+						Webserv::removeClient(client);
+						--pollResult;
+						continue;
+					}
+				}
+				if (fds[i].revents & POLLIN) {
+					if (i < this->serversSocketFd.size()) {
+						HTTP::acceptConnection(fds[i].fd, this->clients);
+					} else {
+						Client*	client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+						Client*	cgi = HTTP::requestHandler(client, this->configuration);
+						if (cgi) {
+							if (cgi->getState() == TO_CGI) {
+								this->clients.push_back(cgi);
+							} else {
+								Webserv::removeClient(cgi);
+							}
+						}
+					}
+					--pollResult;
+				} else if (fds[i].revents & POLLOUT) {
+					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
+					if (client && HTTP::responseHandler(client) == false) {
+                        Webserv::removeClient(client);
                     }
-                } else if (fds[i].revents & POLLOUT) {
-                    Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-                    if (HTTP::sendResponse(client) == true) {
-                        if (client->isCgi()) {
-                            client->switchState();
-                        } else {
-                            Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                        }
-                    }
-                } else {
-                    ++pollResult;
+                    --pollResult;
                 }
             } catch (const int statusCode) {
-                if (errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
-                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                }
+                errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients));
+            } catch (const std::pair<int, std::string>& redirect) {
+                redirectTo(redirect, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::exception& e) {
-                if (errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients))) {
-                    Webserv::removeClient(HTTP::getClientWithFd(fds[i].fd, this->clients));
-                }
+                errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients));
             }
         }
     }
@@ -241,6 +312,8 @@ Webserv::~Webserv() {
     for (size_t i = 0; i < this->serversSocketFd.size(); ++i) {
         close(this->serversSocketFd[i]);
     }
+	for (size_t i = 0; i < this->clients.size(); ++i)
+		delete this->clients[i] ;
 
     delete this->configuration;
 }

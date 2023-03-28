@@ -3,9 +3,9 @@
 # include <map>
 # include <sys/socket.h>
 
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
-# include "webserv/core.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/configuration.hpp"
+# include "../../include/webserv/core.hpp"
 
 # define WHITE_SPACE " \t\r\n\v\f"
 
@@ -26,7 +26,7 @@ Context::Context(const std::string& name, const std::vector<std::string>& args, 
         this->addDirective(HOST_DIRECTIVE, CORE::split(DEFAULT_HOST, WHITE_SPACE));
     }
 
-    if (parent != nullptr) {
+    if (parent != NULL) {
         this->directives.insert(parent->getDirectives().begin(), parent->getDirectives().end());
     }
 }
@@ -41,7 +41,7 @@ const std::vector<std::string>& Context::getArgs() const {
     return this->args;
 }
 
-const std::map<std::string, std::vector<std::string> >& Context::getDirectives() const {
+const Context::Directives& Context::getDirectives() const {
     return this->directives;
 }
 

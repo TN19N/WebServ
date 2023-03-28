@@ -1,9 +1,12 @@
 # include <string>
 # include <fstream>
+# include <algorithm>
+# include <cstring>
+# include <sstream>
 
-# include "webserv/core.hpp"
-# include "webserv/context.hpp"
-# include "webserv/configuration.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/context.hpp"
+# include "../../include/webserv/configuration.hpp"
 
 # define WHITE_SPACE " \t\r\n\v\f"
 # define NEW_LINE '\n'
@@ -61,7 +64,7 @@ static Context* addContext(const std::vector<std::string>& args, Context* curren
         checkRequirements(SERVER_CONTEXT_ARGS(contextArgs), SERVER_CONTEXT_POS(currentContext), contextName, "context");
     } else if (contextName == LOCATION_CONTEXT) {
         checkRequirements(LOCATION_CONTEXT_ARGS(contextArgs), LOCATION_CONTEXT_POS(currentContext), contextName, "context");
-        if (contextArgs.at(0).front() != '/') {
+        if (contextArgs.at(0).at(0) != '/') {
             throw std::runtime_error("invalid location '" + contextArgs.at(0) + "' in '" + contextName + "' context");
         }
     } else if (contextName == TYPES_CONTEXT) {
@@ -90,7 +93,7 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
         const std::string portStr = directiveArgs.at(0);
         long port = strtol(portStr.c_str(), &end, 10);
 
-        if (*end != '\0' || (portStr.front() == '0' && portStr.length() > 0) || port < MIN_PORT || port > MAX_PORT) {
+        if (*end != '\0' || (portStr.at(0) == '0' && portStr.length() > 0) || port < MIN_PORT || port > MAX_PORT) {
             throw std::runtime_error("invalid port '" + portStr + "' in '" + directiveName + "' directive");
         }
     } else if (directiveName == HOST_DIRECTIVE) {
@@ -102,8 +105,14 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
 
         const std::string& rootStr = directiveArgs.at(0);
 
-        if (rootStr.front() != '/') {
+        if (rootStr.at(0) != '/') {
             throw std::runtime_error("invalid root '" + rootStr + "' in '" + directiveName + "' directive");
+        }
+        if (rootStr.at(rootStr.size() - 1) == '/' && rootStr.length() > 1) {
+            std::vector<std::string> newDirectiveArgs;
+            newDirectiveArgs.push_back(rootStr.substr(0, rootStr.length() - 1));
+            currentContext->addDirective(directiveName, newDirectiveArgs);
+            return ;
         }
     } else if (directiveName == INDEX_DIRECTIVE) {
         checkRequirements(INDEX_DIRECTIVE_ARGS(directiveArgs), INDEX_DIRECTIVE_POS(currentContext), directiveName, "directive");
@@ -112,7 +121,7 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
 
         const std::vector<std::string> errorFilePath(directiveArgs.end() - 1, directiveArgs.end());
 
-        if (errorFilePath.at(0).front() != '/') {
+        if (errorFilePath.at(0).at(0) != '/') {
             throw std::runtime_error("invalid error page '" + errorFilePath.at(0) + "' in '" + directiveName + "' directive");
         }
 
@@ -129,7 +138,7 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
         char *end = NULL;
         const std::string sizeStr = directiveArgs.at(0);
         long size = strtol(sizeStr.c_str(), &end, 10);
-        if (*end != 'M' || *(end + 1) != '\0' || (sizeStr.length() > 2 && sizeStr.front() == '0') || size < 0) {
+        if (*end != 'M' || *(end + 1) != '\0' || (sizeStr.length() > 2 && sizeStr.at(0) == '0') || size < 0) {
             throw std::runtime_error("invalid size '" + sizeStr + "' in '" + directiveName + "' directive");
         }
     } else if (directiveName == METHOD_DIRECTIVE) {
@@ -153,11 +162,17 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
         }
     } else if (directiveName == CGI_DIRECTIVE) {
         checkRequirements(CGI_DIRECTIVE_ARGS(directiveArgs), CGI_DIRECTIVE_POS(currentContext), directiveName, "directive");
+
+        for (size_t i = 1; i < directiveArgs.size(); i += 2) {
+            if (directiveArgs.at(i).at(0) != '.' || directiveArgs.at(i).length() < 2 || std::count(directiveArgs.at(i).begin(), directiveArgs.at(i).end(), '.') > 1) {
+                throw std::runtime_error("invalid extension '" + directiveArgs.at(i) + "' in '" + directiveName + "' directive");
+            }
+        }
     } else if (directiveName == UPLOAD_DIRECTIVE) {
         checkRequirements(UPLOAD_DIRECTIVE_ARGS(directiveArgs), UPLOAD_DIRECTIVE_POS(currentContext), directiveName, "directive");
 
         const std::string& uploadPathStr = directiveArgs.at(0);
-        if (uploadPathStr.front() != '/') {
+        if (uploadPathStr.at(0) != '/') {
             throw std::runtime_error("invalid upload path '" + uploadPathStr + "' in '" + directiveName + "' directive");
         }
     } else if (directiveName == REDIRECT_DIRECTIVE) {
@@ -173,7 +188,10 @@ static void addDirective(const std::vector<std::string>& args, Context* currentC
     } else if (currentContext->getName() == TYPES_CONTEXT) {
         std::vector<std::string> mimeType = CORE::split(directiveName, WHITE_SPACE);
         for (std::vector<std::string>::const_iterator it = directiveArgs.begin(); it != directiveArgs.end(); ++it) {
-            currentContext->getParent()->addDirective((*it), mimeType);
+            if (std::find((*it).begin(), (*it).end(), '.') != (*it).end()) {
+                throw std::runtime_error("invalid extension '" + (*it) + "' in '" + directiveName + "' directive");
+            }
+            currentContext->getParent()->addDirective("." + (*it), mimeType);
         }
         return ;
     } else {
@@ -187,7 +205,7 @@ const Context* CORE::loadConfiguration(const std::string& configFilePath, Contex
         throw std::runtime_error("too many nested includes");
     }
     
-    std::ifstream configFile(configFilePath);
+    std::ifstream configFile(configFilePath.c_str());
     if (configFile.is_open() == false) {
         throw std::runtime_error("open('" + configFilePath + "'): " + strerror(errno));
     }
@@ -216,23 +234,31 @@ const Context* CORE::loadConfiguration(const std::string& configFilePath, Contex
                     break;
                 case '#':
                     while (configFile.good() && configFile.get() != NEW_LINE);
+                    ++line;
+                    break;
                 case NEW_LINE:
                     ++line;
                     break;
                 case ESCAPE:
                     token += c;
                     c = configFile.get();
+                    token += c;
+                    break;
                 default:
                     token += c;
             }
             c = configFile.get();
         }
     } catch (const std::exception& e) {
-        throw std::runtime_error("('" + configFilePath + "' line: " + std::to_string(line) + "): " + e.what());
+        std::stringstream lineStr;
+        lineStr << line;
+        throw std::runtime_error("('" + configFilePath + "' line: " + lineStr.str() + "): " + e.what());
     }
 
     if (token.find_first_not_of(WHITE_SPACE) != std::string::npos) {
-        throw std::runtime_error("('" + configFilePath + "' line: " + std::to_string(line) + "): unexpected end of file");
+        std::stringstream lineStr;
+        lineStr << line;
+        throw std::runtime_error("('" + configFilePath + "' line: " + lineStr.str() + "): unexpected end of file");
     }
 
     return configuration;

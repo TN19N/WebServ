@@ -5,11 +5,9 @@
 # include <vector>
 # include <poll.h>
 
-# include "webserv/context.hpp"
-# include "webserv/client.hpp"
-
-# define WEB_SERV_RUNNING 0
-# define WEB_SERV_STOPPING 1
+# include "defines.hpp"
+# include "context.hpp"
+# include "client.hpp"
 
 class Webserv {
     private:
@@ -21,6 +19,8 @@ class Webserv {
         void startServers();
 
         void removeClient(const Client* client);
+		void errorHandler(int statusCode, Client* client);
+		void checkClientsTimeout();
     public:
         Webserv(const std::string& configFile);
 

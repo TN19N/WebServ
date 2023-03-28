@@ -4,26 +4,29 @@
 # include <vector>
 # include <poll.h>
 # include <unistd.h>
+# include <signal.h>
+# include <sys/wait.h>
 # ifdef DEBUG
 # include <iostream>
 # endif
 
-# include "webserv/client.hpp"
-# include "webserv/core.hpp"
-# include "webserv/http.hpp"
+# include "../../include/webserv/client.hpp"
+# include "../../include/webserv/core.hpp"
+# include "../../include/webserv/http.hpp"
 
 // * Constructor ****************************************************************************************************
 Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient)
     : socketFd(*fd),
     clientAddr(clientAddr),
     peerAddr(peerAddr),
-    request(cgiToClient == nullptr ? nullptr : cgiToClient->getRequest()),
-    response(nullptr),
+    request(cgiToClient == NULL ? NULL : cgiToClient->getRequest()),
+    response(NULL),
     cgiToClient(cgiToClient),
-    clientToCgi(nullptr),
-    state(cgiToClient == nullptr ? RIDING_REQUEST : SENDING_REQUEST)
+    clientToCgi(NULL),
+    state(FROM_CLIENT),
+	lastEvent(ULLONG_MAX)
 {
-    if (cgiToClient != nullptr) {
+    if (cgiToClient != NULL) {
         this->pipeFd[READ_END] = fd[READ_END];
         this->pipeFd[WRITE_END] = fd[WRITE_END];
 
@@ -33,20 +36,31 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     # ifdef DEBUG
     std::cout << "-------------------------- new Client --------------------------" << std::endl;
     std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;
-    if (this->isCgi()) {
-        std::cout << "created to handle client: " << std::endl;
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&(this->getCgiToClient()->getClientAddr())));
-    } else {
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getClientAddr()));
-        std::cout << "connected to: " << std::endl;
-        CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
-    }
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getClientAddr()));
+	std::cout << "connected to: " << std::endl;
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
     # endif
+}
+
+Client::Client(int read, int write, int pid, Client* client)
+		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
+		pid(pid), request(NULL), response(NULL), cgiToClient(client),
+		clientToCgi(0), state(TO_CGI), lastEvent(ULLONG_MAX)
+{
+	pipeFd[READ_END] = read;
+	pipeFd[WRITE_END] = write;
+
+# ifdef DEBUG
+	std::cout << "-------------------------- new Client --------------------------" << std::endl;
+    std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;
+	std::cout << "created to handle client: " << std::endl;
+	CORE::display(reinterpret_cast<const struct sockaddr*>(&(this->getCgiToClient()->getClientAddr())));
+# endif
 }
 // ******************************************************************************************************************
 
 // * Getters ********************************************************************************************************
-const int Client::getSocketFd() const {
+int Client::getSocketFd() const {
     return this->socketFd;
 }
 
@@ -82,6 +96,14 @@ Response* Client::getResponse() {
     return this->response;
 }
 
+Client* Client::getCgiToClient() {
+	return this->cgiToClient;
+}
+
+Client* Client::getClientToCgi() {
+	return this->clientToCgi;
+}
+
 const Client* Client::getCgiToClient() const {
     return this->cgiToClient;
 }
@@ -98,15 +120,23 @@ std::string& Client::getBuffer() {
     return this->buffer;
 }
 
-const int Client::getState() const {
+int Client::getState() const {
     return this->state;
 }
 
-const int Client::getFdOf(const int index) const {
+int Client::getFdOf(const int index) const {
     if (this->isCgi()) {
         return this->getPipeFd()[index];
     }
     return this->getSocketFd();
+}
+
+size_t Client::getLastEvent() {
+	return this->lastEvent;
+}
+
+void Client::updateLastEvent() {
+	this->lastEvent = HTTP::getCurrentTimeOnMilliSecond();
 }
 // ******************************************************************************************************************
 
@@ -120,10 +150,13 @@ void Client::setRequest(Request* request) {
 }
 
 void Client::setResponse(Response* response) {
+	// this for delete a response if one already exist
+	delete this->response;
+	// to set new one
     this->response = response;
 }
 
-void Client::setState(const bool& state) {
+void Client::setState(const int &state) {
     this->state = state;
 }
 // ******************************************************************************************************************
@@ -131,52 +164,64 @@ void Client::setState(const bool& state) {
 // * Methods ********************************************************************************************************
 void Client::switchState() {
     switch (this->getState()) {
-        case RIDING_REQUEST :
-            this->setState(SENDING_RESPONSE);
-            delete this->request;
-            this->request = nullptr;
+        case FROM_CLIENT :
+            this->setState(TO_CLIENT);
             break;
-        case SENDING_RESPONSE :
-            this->setState(SENDING_RESPONSE);
+        case TO_CLIENT :
+            this->setState(FROM_CLIENT);
+            delete this->request;
+            this->request = NULL;
             delete this->response;
-            this->response = nullptr;
+            this->response = NULL;
             break;
-        case SENDING_REQUEST :
-            close(this->getFdOf(READ_END));
-            this->setState(RIDING_REQUEST);
-            delete this->request;
-            this->request = nullptr;
+        case TO_CGI :
+            close(this->getFdOf(WRITE_END));
+            this->setState(FROM_CGI);
             break;
     }
 }
 
-const bool Client::isCgi() const {
-    return this->getCgiToClient() != nullptr;
+bool Client::isCgi() const {
+    return this->getCgiToClient() != NULL;
 }
 // ******************************************************************************************************************
 
 // * Destructor *****************************************************************************************************
 Client::~Client() {
-
     switch (this->getState()) {
-        case RIDING_REQUEST :
-        case SENDING_RESPONSE :
+        case FROM_CLIENT :
             close(this->getSocketFd());
             break;
-        case SENDING_REQUEST :
-            close(this->getPipeFd()[WRITE_END]);
-        case RIDING_RESPONSE :
-            close(this->getPipeFd()[READ_END]);
+        case TO_CLIENT :
+            close(this->getSocketFd());
+            break;
+        case TO_CGI :
+            close(this->getFdOf(WRITE_END));
+            close(this->getFdOf(READ_END));
+            break;
+        case FROM_CGI :
+            close(this->getFdOf(READ_END));
     }
 
-    if (this->getRequest() != nullptr) {
+    if (this->getRequest() != NULL) {
         delete this->getRequest();
     }
 
-    if (this->getResponse() != nullptr) {
+    if (this->getResponse() != NULL) {
         delete this->getResponse();
     }
-    
+	
+	if (this->isCgi()) {
+		if (waitpid(this->pid, NULL, WNOHANG) == 0) {
+			kill(this->pid, SIGKILL);
+		}
+		this->getCgiToClient()->setClientToCgi(NULL);
+	}
+
+	if (this->getClientToCgi() != NULL) {
+		delete this->getClientToCgi();
+	}
+
     # ifdef DEBUG
     std::cout << "-------------------------- client disconnected --------------------------" << std::endl;
     std::cout << "client type: " << (this->isCgi() ? "CGI_CLIENT" : "USER_CLIENT") << std::endl;

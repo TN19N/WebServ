@@ -3,24 +3,24 @@
 
 # include <string>
 # include <map>
+#include <sys/time.h>
 
-# define CLOSE_CONNECTION   false
-# define KEEP_ALIVE         true
+#include "defines.hpp"
+# include "IBase.hpp"
 
-struct Response {
+struct Response : public IBase {
     public :
-        int                                 statusCode;
-        std::map<std::string, std::string>  headers;
-        bool                                keepAlive;
-        size_t                              contentLength;
-        std::string                         protocol;
+		int download_file_fd;
+        int statusCode;
 
-        std::string                         buffer;
     public :
+		Response() ;
+		Response(bool keepAlive);
         Response(const int statusCode, const bool keepAlive);
 
         void addHeader(const std::string& key, const std::string& value);
         void addBody(const std::string& body);
+		void initializeResponse() ;
 
         ~Response();
 };
