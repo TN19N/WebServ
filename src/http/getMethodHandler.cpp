@@ -89,6 +89,8 @@ static void __read_file_content_to_do_response_(Client* client) {
 	response->buffer.append(CRLF);
 }
 
+# include <iostream> // TODO: remove
+
 Client* HTTP::getMethodHandler(Client *client)
 {
 	Context::Directives::const_iterator			directive, notFound;
@@ -110,11 +112,14 @@ Client* HTTP::getMethodHandler(Client *client)
 
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode)) {
-		if (request->path.c_str()[request->path.size()-1] != '/') {
+		if (request->path.c_str()[request->path.size() - 1] != '/') {
+			// std::cerr << "redirecting to: " << request->path + '/' << std::endl;
 			throw std::make_pair(301, request->path + '/');
 		} else {
 			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
+			// std::cerr << "directive->second.size(): " << directive->second.size() << std::endl;
 			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin) {
+				// std::cerr << "Trying: " << request->fullPath + *begin << std::endl;
 				if (access((request->fullPath + *begin).c_str(), F_OK) == 0) {
 					request->fullPath.append(*begin);
 					request->path.append(*begin);
@@ -132,6 +137,9 @@ Client* HTTP::getMethodHandler(Client *client)
 			}
 		}
 	}
+
+	// std::cerr << "** fullPath: " << request->fullPath << std::endl;
+
 	// Check for CGI
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound) {

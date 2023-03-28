@@ -77,11 +77,12 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 			struct stat pathInfo;
 			
 			const Context *server = HTTP::getMatchedServer(client, configuration);
-			const std::string &path = server->getDirective(statusCodeString.str()).at(0);
+			const std::string& path = server->getDirective(statusCodeString.str()).at(0);
 			
 			const Context *location = HTTP::getMatchLocationContext(server->getChildren(), path);
-			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
-			
+			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0);
+            fileName += "/" + path.substr(location->getArgs().at(0).size());
+			// std::cerr << "--> fileName: " << fileName << std::endl; // TODO: remove
 			std::stringstream sizeStr;
 			if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
 				client->getResponse()->download_file_fd = fd;
@@ -104,8 +105,10 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 	}
 }
 
+# include <iostream> // TODO: remove
+
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
-    client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
+    client->setResponse(new Response(redirect.first, KEEP_ALIVE));
     client->getResponse()->addHeader("Location", redirect.second);
     client->getResponse()->buffer += "\r\n";
     client->switchState();
@@ -167,7 +170,6 @@ void Webserv::startServers() {
                             res = tmp2;
                         }
                     }
-
 
                     if (isInRange(res->ai_addr, serversAddress)) {
                         freeaddrinfo(res->ai_next);
@@ -291,7 +293,7 @@ void Webserv::run() {
 					if (client && HTTP::responseHandler(client) == false) {
                         Webserv::removeClient(client);
                     }
-					--pollResult;
+                    --pollResult;
                 }
             } catch (const int statusCode) {
                 errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients));

@@ -99,17 +99,20 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		client->setRequest(request);
 		try {
 			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
-		} catch (std::out_of_range&) {}
+		} catch (std::out_of_range&) {
+			// keepAlive = true;
+		}
 
 		request->location = HTTP::blockMatchAlgorithm(client, configuration);
 
 		__check_allowed_method_(request->location, request->method);
 		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
-		if (request->maxBodySize < request->contentLength)
+		if (request->maxBodySize < request->contentLength) {
 			throw 413;
+		}
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
-		request->fullPath.append(request->path);
-
+		request->fullPath.append("/" + request->path.substr(request->location->getArgs().at(0).size()));
+		// std::cerr << "fullPath: " << request->fullPath << std::endl;
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
 # endif
