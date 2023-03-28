@@ -118,14 +118,14 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 # endif
 
 		if (request->method == "GET") {
-			client->switchState();
 			cgi = HTTP::getMethodHandler(client);
+			client->switchState();
 			return cgi;
 		} else if (request->method == "POST") {
 			cgi = HTTP::postMethodHandler(client);
 		} else if (request->method == "DELETE") {
-			client->switchState();
 			cgi = HTTP::deleteMethodHandler(client);
+			client->switchState();
 			return cgi;
 		}
 	}

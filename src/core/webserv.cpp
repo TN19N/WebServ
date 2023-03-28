@@ -108,7 +108,7 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 # include <iostream> // TODO: remove
 
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
-    client->setResponse(new Response(redirect.first, KEEP_ALIVE));
+    client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
     client->getResponse()->addHeader("Location", redirect.second);
     client->getResponse()->buffer += "\r\n";
     client->switchState();
