@@ -6,7 +6,7 @@ form = cgi.FieldStorage()
 cookies = environ["HTTP_COOKIE"].split(";")
 for cookie in cookies:
     if cookie.find("code=123") != -1:
-        print ("Location: /app", end="\r\n")
+        print ("Location: /app/", end="\r\n")
         print (end="\r\n")
         exit()
 
@@ -22,7 +22,7 @@ print("""
     </head>
     <body>
         <h1>First Time</h1>
-        <form action="/app" method="GET">
+        <form action="/app/" method="GET">
             <input type="submit" value="Go to /app">
         </form>
     </body>
