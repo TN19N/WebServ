@@ -66,7 +66,7 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 	envs[9] = __set_new_env_(request, "Cookie", "HTTP_COOKIE=", "");
 	// TODO: add more envs
 
-	envs[10] = 0;
+	envs[10] = NULL;
 	// execute the cgi script
 	if (execve(cgiPath, args, envs) < 0)
 		exit(50);

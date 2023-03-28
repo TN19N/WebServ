@@ -58,7 +58,7 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 
 void Webserv::errorHandler(int statusCode, Client* client) {
 	if (client->getState() == SENDING_RESPONSE && client->getClientToCgi() == NULL) {
-       Webserv::removeClient(client);
+        Webserv::removeClient(client);
     } else {
 		if (client->getClientToCgi() != NULL) {
 			Webserv::removeClient(client->getClientToCgi());
@@ -98,8 +98,9 @@ void Webserv::errorHandler(int statusCode, Client* client) {
         } catch (...) {
             client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
         }
-		if (client->getState() != SENDING_RESPONSE)
-        	client->switchState();
+		if (client->getState() != SENDING_RESPONSE) {
+            client->switchState();
+        }
     }
 }
 

@@ -11,8 +11,7 @@ CONFIG_DIR := ./config
 TEMPLATE_DIR := ./template
 
 # The Target Binary Program
-TARGET := $(TARGET_DIR)/webserv
-TRACE_FOLDER := $(BUILD_DIR)/debug/trace
+TARGET := $(TARGET_DIR)/webserv.exe
 DEBUG_LOG_FILE := $(BUILD_DIR)/debug/debug.log
 
 # extentions
@@ -46,16 +45,15 @@ SRCS := $(SRC_DIR)/core/luncher.$(SRC_EXT) \
 		$(SRC_DIR)/http/IBase.$(SRC_EXT) \
 		$(SRC_DIR)/http/cgiExecutor.$(SRC_EXT)
 
-
 # -------------------------------------------------------------
 OBJS := $(SRCS:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.$(OBJ_EXT))
 TEMPLATES := $(wildcard $(TEMPLATE_DIR)/*)
 CONFIGS := $(TEMPLATES:$(TEMPLATE_DIR)/%=$(CONFIG_DIR)/%)
 
 # colors
-RED := \e[0;31m
-GREEN := \e[0;32m
-END := \e[0m
+RED := \033[0;31m
+GREEN := \033[0;32m
+END := \033[0m
 
 .PHONY: all
 all: debug
@@ -71,22 +69,15 @@ release: $(TARGET)
 .PHONY: run
 run: debug
 	@ ./$(TARGET) $(ARGS) > $(DEBUG_LOG_FILE)
-	
-.PHONY: instruments
-instruments: debug # Just in MAC
-	@ echo -e "$(GREEN)Running instruments ...$(END)"
-	@ rm -rf $(TRACE_FOLDER).trace
-	@ instruments -t "Leaks" -D $(TRACE_FOLDER) ./$(TARGET) $(ARGS) 2> /dev/null
-	@ echo -e "$(GREEN)Done!$(END)"
 
 .PHONY: generate
 generate: $(CONFIGS)
-	@ echo -e "$(GREEN)Generate config Done!$(END)"
+	@ echo "$(GREEN)Generate config Done!$(END)"
 
 $(TARGET) : $(OBJS)
-	@ echo -e "$(GREEN)Compiling ...$(END)"
+	@ echo "$(GREEN)Compiling ...$(END)"
 	@ $(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-	@ echo -e "$(GREEN)Done!$(END)"
+	@ echo "$(GREEN)Done!$(END)"
 
 $(OBJ_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT)
 	@ $(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)
@@ -96,9 +87,9 @@ $(CONFIG_DIR)/%: $(TEMPLATE_DIR)/%
 
 .PHONY: clean
 clean:
-	@ echo -e "$(RED)Cleaning ...$(END)"
+	@ echo "$(RED)Cleaning ...$(END)"
 	@ rm -rf $(OBJS)
-	@ echo -e "$(RED)Done!$(END)"
+	@ echo "$(RED)Done!$(END)"
 
 .PHONY: fclean
 fclean: clean
