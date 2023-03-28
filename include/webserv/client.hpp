@@ -29,7 +29,7 @@ class Client {
 
         int                             state;
 		
-		size_t							cgiLastSeen;
+		size_t							lastEvent;
     public:
 		Client(int read, int write, int pid, Client* client); // for create cgi client
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = NULL);
@@ -60,13 +60,13 @@ class Client {
 
         int                             getFdOf(const int index) const;
 
-		size_t							getCgiLastSeen() ;
-		
+		size_t							getLastEvent() ;
+		void							updateLastEvent();
+
         void                            setClientToCgi(Client* clientToCgi);
         void                            setRequest(Request* request);
         void                            setResponse(Response* response);
         void                            setState(const int &state);
-		void							setCgiLastSeen(size_t lastSeen);
 
         bool                            isCgi() const;
         void                            switchState();

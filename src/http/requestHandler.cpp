@@ -67,7 +67,7 @@ static bool __read_buffer_from_client_(Client* client)
 {
 	char	buffer[BUFFER_SIZE];
 	ssize_t	readSize;
-	
+
 	readSize = read(client->getFdOf(READ_END), buffer, BUFFER_SIZE);
 	if (readSize < 0) {
 		throw 500;
@@ -115,13 +115,15 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 # endif
 
 		if (request->method == "GET") {
-			return HTTP::getMethodHandler(client);
-		}
-		if (request->method == "POST") {
+			client->switchState();
+			cgi = HTTP::getMethodHandler(client);
+			return cgi;
+		} else if (request->method == "POST") {
 			cgi = HTTP::postMethodHandler(client);
-		}
-		if (request->method == "DELETE") {
-			return HTTP::deleteMethodHandler(client);
+		} else if (request->method == "DELETE") {
+			client->switchState();
+			cgi = HTTP::deleteMethodHandler(client);
+			return cgi;
 		}
 	}
 
@@ -130,7 +132,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		if (request->state == CREATING) {
 			try { HTTP::readBodyFromBuffer(client); }
 			catch (const std::exception& e) { delete cgi; throw e; }
-			catch (const int error) { delete cgi; throw error; }
+			catch (int error) { delete cgi; throw error; }
 			catch (...) { delete cgi; throw ; }
 		}
 		if (request->upload_file_fd != -1) {
@@ -147,35 +149,38 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 				client->getResponse()->addBody("Created with success");
 				client->switchState();
 			}
+		} else if (request->state == READY) {
+			client->switchState();
 		}
 	}
 	return cgi;
 }
 
 static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
-	Response	*response = cgi->getResponse();
-
-	if (response == 0 && cgi->getBuffer().find(END_HEADERS) != std::string::npos) {
+	Response	*response ;
+	
+	if (cgiFinished)
+	{
 		response = reinterpret_cast<Response*>(HTTP::baseParser(cgi));
 		cgi->setResponse(response);
-	}
-	if (response) {
 		HTTP::readBodyFromBuffer(cgi);
-		if (cgiFinished) {
-			HTTP::convertCgiResponseToClientResponse(cgi);
-			return cgi;
+		HTTP::convertCgiResponseToClientResponse(cgi);
+		if (cgi->getState() == TO_CGI)
+		{
+			cgi->switchState();
+			cgi->getCgiToClient()->switchState();
 		}
-	} else if (cgiFinished) {
-		throw 502;
+		return cgi;
 	}
 	return NULL;
 }
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
-
+	
 	if (__read_buffer_from_client_(client))
 		cgiFinished = true;
+	client->updateLastEvent();
 	if (client->isCgi())
 		return __cgi_response_handler_(client, cgiFinished);
 	else

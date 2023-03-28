@@ -2,7 +2,6 @@
 # include <sys/socket.h>
 # include <iostream>
 # include <fcntl.h>
-# include <string.h>
 
 # include "../../include/webserv/http.hpp"
 

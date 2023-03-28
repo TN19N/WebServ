@@ -9,11 +9,12 @@
 # include <string>
 # include <poll.h>
 # include <sys/socket.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <fstream>
-#include <fcntl.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <fstream>
+# include <fcntl.h>
+# include <cstring>
 
 # include "defines.hpp"
 # include "client.hpp"
@@ -54,6 +55,7 @@ namespace HTTP
 	int					parseContentLength(const char *str);
 	const std::string 	urlDecoding(const std::string& url);
 	void 				convertCgiResponseToClientResponse(Client *cgi);
+	size_t				getCurrentTimeOnMilliSecond();
 
 } // namespace HTTP
 

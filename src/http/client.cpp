@@ -23,7 +23,8 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
     response(NULL),
     cgiToClient(cgiToClient),
     clientToCgi(NULL),
-    state(cgiToClient == NULL ? READING_REQUEST : SENDING_REQUEST)
+    state(FROM_CLIENT),
+	lastEvent(ULLONG_MAX)
 {
     if (cgiToClient != NULL) {
         this->pipeFd[READ_END] = fd[READ_END];
@@ -40,9 +41,11 @@ Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const s
 	CORE::display(reinterpret_cast<const struct sockaddr*>(&this->getPeerAddr()));
     # endif
 }
+
 Client::Client(int read, int write, int pid, Client* client)
 		: socketFd(0), clientAddr(client->clientAddr), peerAddr(client->peerAddr),
-		pid(pid), request(NULL), response(NULL), cgiToClient(client), clientToCgi(0), state(SENDING_REQUEST)
+		pid(pid), request(NULL), response(NULL), cgiToClient(client),
+		clientToCgi(0), state(TO_CGI), lastEvent(ULLONG_MAX)
 {
 	pipeFd[READ_END] = read;
 	pipeFd[WRITE_END] = write;
@@ -128,10 +131,13 @@ int Client::getFdOf(const int index) const {
     return this->getSocketFd();
 }
 
-size_t Client::getCgiLastSeen() {
-	return this->cgiLastSeen;
+size_t Client::getLastEvent() {
+	return this->lastEvent;
 }
 
+void Client::updateLastEvent() {
+	this->lastEvent = HTTP::getCurrentTimeOnMilliSecond();
+}
 // ******************************************************************************************************************
 
 // * Setters ********************************************************************************************************
@@ -153,31 +159,24 @@ void Client::setResponse(Response* response) {
 void Client::setState(const int &state) {
     this->state = state;
 }
-
-void Client::setCgiLastSeen(size_t lastSeen) {
-	this->cgiLastSeen = lastSeen;
-}
-
 // ******************************************************************************************************************
 
 // * Methods ********************************************************************************************************
 void Client::switchState() {
     switch (this->getState()) {
-        case READING_REQUEST :
-            this->setState(SENDING_RESPONSE);
+        case FROM_CLIENT :
+            this->setState(TO_CLIENT);
             break;
-        case SENDING_RESPONSE :
-            this->setState(READING_REQUEST);
-			// TODO: remove it from here
+        case TO_CLIENT :
+            this->setState(FROM_CLIENT);
             delete this->request;
             this->request = NULL;
-			// ==============
             delete this->response;
             this->response = NULL;
             break;
-        case SENDING_REQUEST :
+        case TO_CGI :
             close(this->getFdOf(WRITE_END));
-            this->setState(READING_RESPONSE);
+            this->setState(FROM_CGI);
             break;
     }
 }
@@ -190,17 +189,17 @@ bool Client::isCgi() const {
 // * Destructor *****************************************************************************************************
 Client::~Client() {
     switch (this->getState()) {
-        case READING_REQUEST :
+        case FROM_CLIENT :
             close(this->getSocketFd());
             break;
-        case SENDING_RESPONSE :
+        case TO_CLIENT :
             close(this->getSocketFd());
             break;
-        case SENDING_REQUEST :
+        case TO_CGI :
             close(this->getFdOf(WRITE_END));
             close(this->getFdOf(READ_END));
             break;
-        case READING_RESPONSE :
+        case FROM_CGI :
             close(this->getFdOf(READ_END));
     }
 

@@ -61,14 +61,13 @@ static void __do_response_with_directory_content_(Client* client)
 	closedir(dir);
 	response->addHeader("Content-Type", "text/html");
 	response->addBody(body);
-	client->switchState();
 }
 
 static void __read_file_content_to_do_response_(Client* client) {
 	Context::Directives::const_iterator	directive, notFound;
 	Response		*response;
 	struct stat		pathInfo;
-	
+
 	response = new Response(200, client->getRequest()->keepAlive);
 	client->setResponse(response);
 	
@@ -88,7 +87,6 @@ static void __read_file_content_to_do_response_(Client* client) {
 	contentLengthStr << pathInfo.st_size;
 	response->addHeader("Content-Length", contentLengthStr.str());
 	response->buffer.append(CRLF);
-	client->switchState();
 }
 
 Client* HTTP::getMethodHandler(Client *client)

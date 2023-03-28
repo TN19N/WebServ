@@ -102,6 +102,5 @@ Client* HTTP::deleteMethodHandler(Client *client)
 	
 	client->setResponse(new Response(200, request->keepAlive));
 	client->getResponse()->addBody("<html>\n<body>\n<h1>Resource deleted successfully.</h1>\n</body>\n</html>");
-	client->switchState();
 	return 0;
 }
