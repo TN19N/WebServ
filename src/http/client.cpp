@@ -165,9 +165,11 @@ void Client::setState(const int &state) {
 void Client::switchState() {
     switch (this->getState()) {
         case FROM_CLIENT :
+			this->lastEvent = ULLONG_MAX;
             this->setState(TO_CLIENT);
             break;
         case TO_CLIENT :
+			this->lastEvent = ULLONG_MAX;
             this->setState(FROM_CLIENT);
             delete this->request;
             this->request = NULL;
@@ -175,6 +177,7 @@ void Client::switchState() {
             this->response = NULL;
             break;
         case TO_CGI :
+			this->updateLastEvent();
             close(this->getFdOf(WRITE_END));
             this->setState(FROM_CGI);
             break;
