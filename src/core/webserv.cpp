@@ -80,8 +80,9 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 			const std::string &path = server->getDirective(statusCodeString.str()).at(0);
 			
 			const Context *location = HTTP::getMatchLocationContext(server->getChildren(), path);
-			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0) + path;
-			
+			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0);
+			fileName += "/" + path.substr(location->getArgs().at(0).size());
+
 			std::stringstream sizeStr;
 			if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
 				client->getResponse()->download_file_fd = fd;

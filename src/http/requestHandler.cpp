@@ -108,7 +108,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		if (request->maxBodySize < request->contentLength)
 			throw 413;
 		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
-		request->fullPath.append(request->path);
+		request->fullPath.append("/" + request->path.substr(request->location->getArgs().at(0).size()));
 
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
