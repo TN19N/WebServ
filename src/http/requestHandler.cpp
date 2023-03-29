@@ -114,10 +114,12 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
 		if (realpath(relativePath.c_str(), absolutePath) == 0)
 			throw 404;
-		if (HTTP::strcmp(absolutePath, root.c_str()) != '/')
+		if (relativePath.back() == '/')
+			request->fullPath.append(absolutePath).append("/");
+		else
+			request->fullPath.append(absolutePath);
+		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/')
 			throw 403;
-		request->fullPath = absolutePath;
-
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
 # endif
@@ -174,10 +176,7 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 		HTTP::readBodyFromBuffer(cgi);
 		HTTP::convertCgiResponseToClientResponse(cgi);
 		if (cgi->getState() == TO_CGI)
-		{
 			cgi->switchState();
-			cgi->getCgiToClient()->switchState();
-		}
 		return cgi;
 	}
 	return NULL;
