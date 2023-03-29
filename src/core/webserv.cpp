@@ -297,7 +297,7 @@ void Webserv::run() {
                 }
             } catch (const int statusCode) {
                 errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients));
-            } catch (const std::pair<int, std::string>& redirect) {
+            } catch (const std::pair<long, std::string>& redirect) {
                 redirectTo(redirect, HTTP::getClientWithFd(fds[i].fd, this->clients));
             } catch (const std::exception& e) {
                 errorHandler(500, HTTP::getClientWithFd(fds[i].fd, this->clients));

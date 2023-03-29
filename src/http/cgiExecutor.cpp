@@ -64,12 +64,12 @@ static void __run_cgi_script_(Client *client, int _read, int _write, const char 
 	envs[7] = __set_new_env_(request, "Content-Length", "CONTENT_LENGTH=", "-1");
 	envs[8] = __set_new_env_(request, "Content-Type", "CONTENT_TYPE=", DEFAULT_MIME_TYPE);
 	envs[9] = __set_new_env_(request, "Cookie", "HTTP_COOKIE=", "");
-	// TODO: add more envs
 
 	envs[10] = NULL;
 	// execute the cgi script
-	if (execve(cgiPath, args, envs) < 0)
+	if (execve(cgiPath, args, envs) < 0) {
 		exit(50);
+	}
 }
 
 Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootDir)

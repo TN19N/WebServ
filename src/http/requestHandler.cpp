@@ -89,8 +89,7 @@ static void __check_allowed_method_(const Context* location, std::string &method
 		throw 405;
 }
 
-static Client* __client_request_handler_(Client* client, const Context* const configuration)
-{
+static Client* __client_request_handler_(Client* client, const Context* const configuration) {
 	Client	*cgi = 0;
 	Request	*request;
 
@@ -109,6 +108,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
 		if (request->maxBodySize < request->contentLength) {
 			throw 413;
+		}
 
 		char		absolutePath[PATH_MAX];
 		std::string	relativePath;
@@ -187,8 +187,9 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
 	
-	if (__read_buffer_from_client_(client))
+	if (__read_buffer_from_client_(client)) {
 		cgiFinished = true;
+	}
 	client->updateLastEvent();
 	if (client->isCgi())
 		return __cgi_response_handler_(client, cgiFinished);

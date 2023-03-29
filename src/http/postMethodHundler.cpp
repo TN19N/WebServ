@@ -31,7 +31,6 @@ Client* HTTP::postMethodHandler(Client *client) {
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound) {
 		throw std::make_pair(std::strtol(directive->second[0].c_str(), NULL, 10), directive->second[1]);
-		// throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
 	}
 	// check for file upload
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
@@ -56,8 +55,8 @@ Client* HTTP::postMethodHandler(Client *client) {
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode))
 	{
-		if (request->path.c_str()[request->path.size()-1] != '/') {
-			throw std::make_pair(301, request->path + '/');
+		if (request->path.c_str()[request->path.size() - 1] != '/') {
+			throw std::make_pair(301L, request->path + '/');
 		} else {
 			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
 			for (begin = directive->second.begin(), end = directive->second.end(); begin != end; ++begin)

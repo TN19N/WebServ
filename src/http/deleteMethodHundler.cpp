@@ -88,7 +88,7 @@ Client* HTTP::deleteMethodHandler(Client *client)
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode)) {
 		if (request->path.c_str()[request->path.size()-1] != '/') {
-			throw std::make_pair(301, request->path + '/');
+			throw std::make_pair(301L, request->path + '/');
 		} else {
 			// remove hole directory
 			request->fullPath.erase(request->fullPath.size() - 1);
