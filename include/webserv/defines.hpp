@@ -16,7 +16,7 @@
 # define READ_END 	0
 # define WRITE_END 	1
 
-# define CGI_TIMEOUT 2000 // on millisecond
+# define TIMEOUT 2000 // on millisecond
 
 // client state
 enum { 

@@ -199,6 +199,8 @@ IBase* HTTP::baseParser(Client *client)
 				throw 400;
 			request->query = HTTP::urlDecoding(__get_query_from_path_(path, client->getBuffer()));
 			request->path = HTTP::urlDecoding(path);
+			if (PATH_MAX < request->path.size())
+				throw 414;
 			request->extension = HTTP::getExtensionFromPath(path);
 			__check_request_protocol_(buffer);
 			if (*buffer == '\r')

@@ -4,8 +4,8 @@
 # include <map>
 # include <vector>
 # include <climits>
-
-# include <algorithm> // for std::min
+#include <stdlib.h>
+# include <algorithm>
 
 class IBase {
 	public:

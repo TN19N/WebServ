@@ -6,7 +6,6 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <map>
-# include <string.h>
 # include <sstream>
 
 # include "../../include/webserv/webserv.hpp"
@@ -81,8 +80,8 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 			
 			const Context *location = HTTP::getMatchLocationContext(server->getChildren(), path);
 			std::string fileName = location->getDirective(ROOT_DIRECTIVE).at(0);
-            fileName += "/" + path.substr(location->getArgs().at(0).size());
-			// std::cerr << "--> fileName: " << fileName << std::endl; // TODO: remove
+			fileName += "/" + path.substr(location->getArgs().at(0).size());
+
 			std::stringstream sizeStr;
 			if (stat(fileName.c_str(), &pathInfo) != -1 && (fd = open(fileName.c_str(), O_RDONLY)) != -1) {
 				client->getResponse()->download_file_fd = fd;
@@ -95,13 +94,12 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 		} else {
 			client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
 		}
-		
-		if (client->getState() != TO_CLIENT) {
-			client->switchState();
-		}
 	}
 	catch (const std::exception&) {
 		client->getResponse()->addBody(HTTP::getDefaultErrorPage(statusCode));
+	}
+	if (client->getState() == FROM_CLIENT) {
+		client->switchState();
 	}
 }
 
@@ -111,7 +109,9 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
     client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
     client->getResponse()->addHeader("Location", redirect.second);
     client->getResponse()->buffer += "\r\n";
-    client->switchState();
+	if (client->getState() == FROM_CLIENT) {
+		client->switchState();
+	}
 }
 
 void Webserv::checkClientsTimeout()
@@ -122,7 +122,7 @@ void Webserv::checkClientsTimeout()
 	for (begin = clients.begin(), end = clients.end(); begin != end; ++begin)
 	{
 		client = *begin;
-		if (HTTP::getCurrentTimeOnMilliSecond() - CGI_TIMEOUT > client->getLastEvent()) {
+		if (HTTP::getCurrentTimeOnMilliSecond() - TIMEOUT > client->getLastEvent()) {
 			if (client->isCgi() || client->getClientToCgi())
 				errorHandler(504, client);
 			else
@@ -267,13 +267,14 @@ void Webserv::run() {
             try {
 				if (fds[i].revents & POLLHUP) {
 					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client->isCgi() == false) {
+					if (client->isCgi() == 0) {
 						Webserv::removeClient(client);
 						--pollResult;
 						continue;
 					}
 				}
 				if (fds[i].revents & POLLIN) {
+					--pollResult;
 					if (i < this->serversSocketFd.size()) {
 						HTTP::acceptConnection(fds[i].fd, this->clients);
 					} else {
@@ -287,13 +288,12 @@ void Webserv::run() {
 							}
 						}
 					}
-					--pollResult;
 				} else if (fds[i].revents & POLLOUT) {
+					--pollResult;
 					Client *client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client && HTTP::responseHandler(client) == false) {
+					if (client && HTTP::responseHandler(client) == 0) {
                         Webserv::removeClient(client);
                     }
-                    --pollResult;
                 }
             } catch (const int statusCode) {
                 errorHandler(statusCode, HTTP::getClientWithFd(fds[i].fd, this->clients));
