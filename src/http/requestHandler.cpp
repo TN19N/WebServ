@@ -89,8 +89,7 @@ static void __check_allowed_method_(const Context* location, std::string &method
 		throw 405;
 }
 
-static Client* __client_request_handler_(Client* client, const Context* const configuration)
-{
+static Client* __client_request_handler_(Client* client, const Context* const configuration) {
 	Client	*cgi = 0;
 	Request	*request;
 
@@ -110,9 +109,19 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		if (request->maxBodySize < request->contentLength) {
 			throw 413;
 		}
-		request->fullPath.append(request->location->getDirective(ROOT_DIRECTIVE).at(0));
-		request->fullPath.append("/" + request->path.substr(request->location->getArgs().at(0).size()));
-		// std::cerr << "fullPath: " << request->fullPath << std::endl;
+
+		char		absolutePath[PATH_MAX];
+		std::string	relativePath;
+		std::string root = request->location->getDirective(ROOT_DIRECTIVE).at(0);
+		relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
+		if (realpath(relativePath.c_str(), absolutePath) == 0)
+			throw 404;
+		if (relativePath.back() == '/')
+			request->fullPath.append(absolutePath).append("/");
+		else
+			request->fullPath.append(absolutePath);
+		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/')
+			throw 403;
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
 # endif
@@ -169,10 +178,7 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 		HTTP::readBodyFromBuffer(cgi);
 		HTTP::convertCgiResponseToClientResponse(cgi);
 		if (cgi->getState() == TO_CGI)
-		{
 			cgi->switchState();
-			cgi->getCgiToClient()->switchState();
-		}
 		return cgi;
 	}
 	return NULL;
@@ -181,8 +187,9 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
 	
-	if (__read_buffer_from_client_(client))
+	if (__read_buffer_from_client_(client)) {
 		cgiFinished = true;
+	}
 	client->updateLastEvent();
 	if (client->isCgi())
 		return __cgi_response_handler_(client, cgiFinished);

@@ -255,7 +255,7 @@ const Context* CORE::loadConfiguration(const std::string& configFilePath, Contex
         throw std::runtime_error("('" + configFilePath + "' line: " + lineStr.str() + "): " + e.what());
     }
 
-    if (token.find_first_not_of(WHITE_SPACE) != std::string::npos) {
+    if (token.find_first_not_of(WHITE_SPACE) != std::string::npos || currentContext->getName() != configuration->getName()) {
         std::stringstream lineStr;
         lineStr << line;
         throw std::runtime_error("('" + configFilePath + "' line: " + lineStr.str() + "): unexpected end of file");

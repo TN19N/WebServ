@@ -4,3 +4,4 @@ build/*.log
 build/*.o
 config/*.cfg
 config/*.types
+./.idea/

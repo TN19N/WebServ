@@ -103,7 +103,6 @@ Client* HTTP::getMethodHandler(Client *client)
 	directive = request->location->getDirectives().find(REDIRECT_DIRECTIVE);
 	if (directive != notFound) {
 		throw std::make_pair(std::strtol(directive->second[0].c_str(), NULL, 10), directive->second[1]);
-		// throw std::make_pair(std::stoi(directive->second[0]), directive->second[1]);
 	}
 
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
@@ -114,7 +113,7 @@ Client* HTTP::getMethodHandler(Client *client)
 	if (S_ISDIR(pathInfo.st_mode)) {
 		if (request->path.c_str()[request->path.size() - 1] != '/') {
 			// std::cerr << "redirecting to: " << request->path + '/' << std::endl;
-			throw std::make_pair(301, request->path + '/');
+			throw std::make_pair(301L, request->path + '/');
 		} else {
 			directive = request->location->getDirectives().find(INDEX_DIRECTIVE);
 			// std::cerr << "directive->second.size(): " << directive->second.size() << std::endl;
