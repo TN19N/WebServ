@@ -10,9 +10,9 @@
 # include <iostream>
 # endif
 
-# include "../../include/webserv/client.hpp"
-# include "../../include/webserv/core.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/client.hpp"
+# include "webserv/core.hpp"
+# include "webserv/http.hpp"
 
 // * Constructor ****************************************************************************************************
 Client::Client(const int *fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient)

@@ -1,8 +1,8 @@
 # include <string>
 # include <sstream>
 
-# include "../../include/webserv/response.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/response.hpp"
+# include "webserv/http.hpp"
 
 
 // * Constructor ****************************************************************************************************

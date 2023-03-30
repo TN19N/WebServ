@@ -1,6 +1,5 @@
-
-# include "../../include/webserv/IBase.hpp"
-# include "../../include/webserv/defines.hpp"
+# include "webserv/IBase.hpp"
+# include "webserv/defines.hpp"
 
 IBase::IBase() 
     : keepAlive(true),

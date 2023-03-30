@@ -3,7 +3,7 @@
 # include <iostream>
 # include <fcntl.h>
 
-# include "../../include/webserv/http.hpp"
+# include "webserv/http.hpp"
 
 void HTTP::acceptConnection(const int serverFd, std::vector<Client*>& clients) {
     int clientFd = 0;

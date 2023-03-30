@@ -8,10 +8,10 @@
 # include <map>
 # include <sstream>
 
-# include "../../include/webserv/webserv.hpp"
-# include "../../include/webserv/core.hpp"
-# include "../../include/webserv/configuration.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/webserv.hpp"
+# include "webserv/core.hpp"
+# include "webserv/configuration.hpp"
+# include "webserv/http.hpp"
 
 # define BIND_REPETITION 5
 
@@ -32,27 +32,62 @@ Webserv::Webserv(const std::string& configFilePath)
 // *************************************************************************************************************************************************************************************
 
 // * Static Tools **********************************************************************************************************************************************************************
-static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data) {
+static bool havSameName(int index, const std::vector<Context*>& contexts, const Context* context) {
+    int p = 0;
+    for (size_t i = 0; i < contexts.size(); ++i) {
+        if (contexts[i]->getName() == SERVER_CONTEXT) {
+            if (p == index) {
+                if (context->getDirectives().find(NAME_DIRECTIVE) == context->getDirectives().end() && contexts[i]->getDirectives().find(NAME_DIRECTIVE) == contexts[i]->getDirectives().end()) {
+                    return true;
+                } else if (context->getDirectives().find(NAME_DIRECTIVE) != context->getDirectives().end() && contexts[i]->getDirectives().find(NAME_DIRECTIVE) != contexts[i]->getDirectives().end()) {
+                    std::vector<std::string> contextName = context->getDirectives().find(NAME_DIRECTIVE)->second;
+                    std::vector<std::string> serverName = contexts[i]->getDirectives().find(NAME_DIRECTIVE)->second;
+                    if (contextName.size() == serverName.size()) {
+                        for (size_t j = 0; j < contextName.size(); ++j) {
+                            if (contextName[j] != serverName[j]) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+                break;
+            }
+            ++p;
+        }
+    }
+    return false;
+}
+
+static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data, const std::vector<Context*>& contexts, const Context* context) {
+    bool res = false;
+    (void)context;
     for (size_t i = 0; i < data.size(); ++i) {
         if (addr->sa_family == data[i]->ai_addr->sa_family) {
             if (addr->sa_family == AF_INET) {
                 const struct sockaddr_in* addr4 = reinterpret_cast<const struct sockaddr_in*>(addr);
                 const struct sockaddr_in* serverAddr4 = reinterpret_cast<const struct sockaddr_in*>(data[i]->ai_addr);
 
-                if (addr4->sin_addr.s_addr == serverAddr4->sin_addr.s_addr && addr4->sin_port == serverAddr4->sin_port) {
-                    return true;
+                if ((addr4->sin_addr.s_addr == serverAddr4->sin_addr.s_addr && addr4->sin_port == serverAddr4->sin_port)) {
+                    res = true;
+                    if (havSameName(i, contexts, context)) {
+                        throw std::runtime_error("Server names already used in another server block");
+                    }
                 }
             } else if (addr->sa_family == AF_INET6) {
                 const struct sockaddr_in6* addr6 = reinterpret_cast<const struct sockaddr_in6*>(addr);
                 const struct sockaddr_in6* serverAddr6 = reinterpret_cast<const struct sockaddr_in6*>(data[i]->ai_addr);
 
-                if (memcmp(&(addr6->sin6_addr), &(serverAddr6->sin6_addr), sizeof(addr6->sin6_addr)) == 0 && addr6->sin6_port == serverAddr6->sin6_port) {
-                    return true;
+                if ((memcmp(&(addr6->sin6_addr), &(serverAddr6->sin6_addr), sizeof(addr6->sin6_addr)) == 0 && addr6->sin6_port == serverAddr6->sin6_port)) {
+                    res = true;
+                    if (havSameName(i, contexts, context)) {
+                        throw std::runtime_error("Server names already used in another server block");
+                    }
                 }
             }
         }
     }
-    return false;
+    return res;
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
@@ -173,7 +208,7 @@ void Webserv::startServers() {
                         }
                     }
 
-                    if (isInRange(res->ai_addr, serversAddress)) {
+                    if (isInRange(res->ai_addr, serversAddress, contexts, (*context))) {
                         freeaddrinfo(res->ai_next);
 						serversAddress.push_back(res);
 						continue;
@@ -273,7 +308,7 @@ void Webserv::run() {
             try {
 				if (fds[i].revents & POLLHUP) {
 					Client* client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-					if (client->isCgi() == 0) {
+					if (client && client->isCgi() == 0) {
 						Webserv::removeClient(client);
 						--pollResult;
 						continue;

@@ -1,10 +1,9 @@
-
 # include <iostream>
 # include <vector>
 # include <map>
 
-# include "../../include/webserv/client.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/client.hpp"
+# include "webserv/http.hpp"
 
 # ifdef DEBUG
 # include <arpa/inet.h>

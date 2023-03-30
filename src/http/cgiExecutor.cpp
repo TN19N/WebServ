@@ -1,9 +1,4 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 3/1/23 at 9:49 PM.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
-#include "../../include/webserv/http.hpp"
+#include "webserv/http.hpp"
 
 static char *__set_env__key_and_value_(const char *key, const char *val)
 {

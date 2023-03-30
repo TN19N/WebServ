@@ -1,7 +1,6 @@
 # include <unistd.h>
-# include <iostream> // TODO: remove this
-# include "../../include/webserv/response.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/response.hpp"
+# include "webserv/http.hpp"
 
 static bool __send_client_body_to_cgi_(Client *cgi) {
 	Request			*request = cgi->getCgiToClient()->getRequest();

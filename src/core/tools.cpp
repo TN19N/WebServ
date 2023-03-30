@@ -11,9 +11,9 @@
 # include <netdb.h>
 # endif
 
-# include "../../include/webserv/core.hpp"
-# include "../../include/webserv/webserv.hpp"
-# include "../../include/webserv/client.hpp"
+# include "webserv/core.hpp"
+# include "webserv/webserv.hpp"
+# include "webserv/client.hpp"
 
 // * DEBUG ****************************************************************************************************************************
 # ifdef DEBUG

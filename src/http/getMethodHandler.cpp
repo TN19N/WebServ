@@ -1,13 +1,8 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 2/23/23 at 3:01 PM.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
 # include <string.h>
 # include <sstream>
 
-# include "../../include/webserv/context.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/context.hpp"
+# include "webserv/http.hpp"
 
 static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::string &body)
 {
@@ -88,8 +83,6 @@ static void __read_file_content_to_do_response_(Client* client) {
 	response->addHeader("Content-Length", contentLengthStr.str());
 	response->buffer.append(CRLF);
 }
-
-# include <iostream> // TODO: remove
 
 Client* HTTP::getMethodHandler(Client *client)
 {

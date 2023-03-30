@@ -1,7 +1,7 @@
 # include <iostream>
 # include <wordexp.h>
 
-# include "../../include/webserv/webserv.hpp"
+# include "webserv/webserv.hpp"
 
 # define DEFAULT_CONFIG_FILE_PATH "./config/config.cfg"
 

@@ -6,11 +6,11 @@
 # include <iostream>
 # include <string.h>
 
-# include "../../include/webserv/configuration.hpp"
-# include "../../include/webserv/request.hpp"
-# include "../../include/webserv/client.hpp"
-# include "../../include/webserv/context.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/configuration.hpp"
+# include "webserv/request.hpp"
+# include "webserv/client.hpp"
+# include "webserv/context.hpp"
+# include "webserv/http.hpp"
 
 static void isValidServer(const Context* context,  const Client* client, std::vector<const Context*>& servers) {
 	const std::string host = context->getDirective("host").at(0);

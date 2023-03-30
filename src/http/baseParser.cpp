@@ -1,11 +1,6 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 2/21/23 at 1:37 PM.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
-# include "../../include/webserv/request.hpp"
-# include "../../include/webserv/response.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/request.hpp"
+# include "webserv/response.hpp"
+# include "webserv/http.hpp"
 
 static bool __is_space_(char c)
 {

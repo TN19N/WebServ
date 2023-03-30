@@ -1,10 +1,5 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 3/10/23 at 2:05 PM.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
-# include "../../include/webserv/client.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/client.hpp"
+# include "webserv/http.hpp"
 
 static void __read_content_length_body_(Client* client, IBase *base)
 {

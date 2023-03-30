@@ -1,12 +1,7 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 12/03/2023 at 16:11.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
-
 #include <string.h>
 
-# include "../../include/webserv/context.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/context.hpp"
+# include "webserv/http.hpp"
 
 static void __check_if_ready_to_remove_this_directory_(const std::string &dir)
 {

@@ -1,10 +1,6 @@
-// -------------------------------------------------------------------------------
-//   Created by Jaouad Chakir (jchakir@student.1337.ma) on 12/03/2023 at 18:22.
-//   Copyright (c) 2023  1337.ma(@1337FIL) . All rights reserved.
-// -------------------------------------------------------------------------------
 # include <iostream>
-# include "../../include/webserv/context.hpp"
-# include "../../include/webserv/http.hpp"
+# include "webserv/context.hpp"
+# include "webserv/http.hpp"
 
 static void __create_file_to_upload_content_(Client *client, const char *filepath) {
 	Request	*request = client->getRequest();

@@ -5,7 +5,7 @@
 # include <sstream>
 # include <string.h>
 
-# include "../../include/webserv/http.hpp"
+# include "webserv/http.hpp"
 
 // * Functions *************************************************************************************************************************
 
@@ -24,8 +24,7 @@ static int __get_status_code_from_cgi_status_(const char *status)
 
 static bool __is_forbidden_to_send_this_header_to_client_(const char *key)
 {
-	const char *headers[6] = {"Connection", "Content-Length",
-							  "Date", "Server", "Status", NULL};
+	const char *headers[6] = {"Connection", "Content-Length", "Date", "Server", "Status", NULL};
 
 	for (int i = 0; headers[i]; ++i) {
 		if (HTTP::strcmp(key, headers[i]) == 0) {
