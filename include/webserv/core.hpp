@@ -16,7 +16,7 @@ namespace CORE {
 const Context* loadConfiguration(const std::string& configFilePath, Context* configuration, const size_t depth);
 
 // * Tools *****************************************************************************************************
-const std::vector<pollfd> fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients);
+void fillFds(const std::vector<int> &serversSocketFd, const std::vector<Client*> &clients, std::vector<pollfd> &fds);
 const std::vector<std::string> split(const std::string& str, const std::string& delimiters);
 void listenToSignals();
 

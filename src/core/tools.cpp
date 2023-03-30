@@ -130,8 +130,8 @@ void CORE::listenToSignals() {
 	}
 }
 
-const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients) {
-    std::vector<pollfd> fds(serversSocketFd.size() + clients.size());
+void CORE::fillFds(const std::vector<int>& serversSocketFd, const std::vector<Client*>& clients, std::vector<pollfd> &fds) {
+	fds.resize(serversSocketFd.size() + clients.size());
 
     for (size_t i = 0; i < serversSocketFd.size(); ++i) {
         fds[i].fd = serversSocketFd[i];
@@ -163,7 +163,5 @@ const std::vector<pollfd> CORE::fillFds(const std::vector<int>& serversSocketFd,
                 break;
         }
     }
-
-    return fds;
 }
 // *************************************************************************************************************************************

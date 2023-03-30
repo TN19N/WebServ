@@ -97,8 +97,9 @@ Client* HTTP::deleteMethodHandler(Client *client)
 			__remove_this_directory_(request->fullPath);
 		}
 	} // this is a file, so remove it
-	else if (unlink(request->fullPath.c_str()) < 0)
+	else if (unlink(request->fullPath.c_str()) < 0) {
 		throw 403;
+	}
 	
 	client->setResponse(new Response(200, request->keepAlive));
 	client->getResponse()->addBody("<html>\n<body>\n<h1>Resource deleted successfully.</h1>\n</body>\n</html>");

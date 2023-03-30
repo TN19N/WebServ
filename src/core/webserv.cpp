@@ -56,6 +56,10 @@ static bool isInRange(const struct sockaddr* addr, const std::vector<struct addr
 }
 
 void Webserv::errorHandler(int statusCode, Client* client) {
+	if (client->getState() == TO_CLIENT && client->getResponse()) {
+		Webserv::removeClient(client);
+		return;
+	}
 	if (client->getClientToCgi() != NULL) {
 		Webserv::removeClient(client->getClientToCgi());
 	}
@@ -102,8 +106,6 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 		client->switchState();
 	}
 }
-
-# include <iostream> // TODO: remove
 
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
     client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
@@ -232,7 +234,10 @@ void Webserv::startServers() {
 }
 
 void Webserv::removeClient(const Client* client) {
-    this->clients.erase(std::find(this->clients.begin(), this->clients.end(), client));
+	if (client->getClientToCgi()) {
+		clients.erase(std::find(clients.begin(), clients.end(), client->getClientToCgi()));
+	}
+    clients.erase(std::find(clients.begin(), clients.end(), client));
     delete client;
 }
 
@@ -250,12 +255,13 @@ void Webserv::run() {
     std::cerr << "**********************************" << std::endl;
     std::cerr << RESET;
 
-    int    pollResult;
+    int					pollResult;
+	std::vector<pollfd>	fds;
+
     while (Webserv::webservState == WEB_SERV_RUNNING) {
+		checkClientsTimeout();
 
-		checkClientsTimeout(); // this for check timeout of all client and its cgi
-
-        std::vector<pollfd> fds = CORE::fillFds(this->serversSocketFd, this->clients);
+		CORE::fillFds(this->serversSocketFd, this->clients, fds);
 
         if ((pollResult = poll(fds.data(), fds.size(), 1000)) == -1) {
             if (errno == EINTR) {
@@ -279,12 +285,14 @@ void Webserv::run() {
 						HTTP::acceptConnection(fds[i].fd, this->clients);
 					} else {
 						Client*	client = HTTP::getClientWithFd(fds[i].fd, this->clients);
-						Client*	cgi = HTTP::requestHandler(client, this->configuration);
-						if (cgi) {
-							if (cgi->getState() == TO_CGI) {
-								this->clients.push_back(cgi);
-							} else {
-								Webserv::removeClient(cgi);
+						if (client) {
+							Client*	cgi = HTTP::requestHandler(client, this->configuration);
+							if (cgi) {
+								if (cgi->getState() == TO_CGI) {
+									this->clients.push_back(cgi);
+								} else {
+									Webserv::removeClient(cgi);
+								}
 							}
 						}
 					}
