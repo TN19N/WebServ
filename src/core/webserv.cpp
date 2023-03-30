@@ -107,8 +107,6 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 	}
 }
 
-# include <iostream> // TODO: remove
-
 static void redirectTo(const std::pair<int, std::string>& redirect, Client* client) {
     client->setResponse(new Response(redirect.first, CLOSE_CONNECTION));
     client->getResponse()->addHeader("Location", redirect.second);
@@ -261,8 +259,7 @@ void Webserv::run() {
 	std::vector<pollfd>	fds;
 
     while (Webserv::webservState == WEB_SERV_RUNNING) {
-
-		checkClientsTimeout(); // this for check timeout of all clients and its cgi
+		checkClientsTimeout();
 
 		CORE::fillFds(this->serversSocketFd, this->clients, fds);
 

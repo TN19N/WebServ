@@ -99,7 +99,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		try {
 			client->getRequest()->keepAlive = (client->getRequest()->headers.at("Connection") != "close");
 		} catch (std::out_of_range&) {
-			// keepAlive = true;
+			// otherwise, keepAlive is true
 		}
 
 		request->location = HTTP::blockMatchAlgorithm(client, configuration);
@@ -113,15 +113,29 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		char		absolutePath[PATH_MAX];
 		std::string	relativePath;
 		std::string root = request->location->getDirective(ROOT_DIRECTIVE).at(0);
+	
+		bool isUpload = false;
+		try {
+			root = request->location->getDirective(UPLOAD_DIRECTIVE).at(0);
+			isUpload = true;
+		} catch (std::out_of_range&) {
+			// do nothing
+		}
+
 		relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
+
 		if (realpath(relativePath.c_str(), absolutePath) == 0)
 			throw 404;
+		
 		if (relativePath.back() == '/')
 			request->fullPath.append(absolutePath).append("/");
 		else
 			request->fullPath.append(absolutePath);
-		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/')
+		
+		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/' && isUpload == false) {
 			throw 403;
+		}
+		
 		request->path = request->fullPath.c_str() + root.size();
 		
 # ifdef DEBUG
