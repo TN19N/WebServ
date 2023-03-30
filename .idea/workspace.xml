@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f493ea11-bbde-435d-b7e0-232a0964dc01" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/www/error/404.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/error/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/error/404.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/debug/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/debug/debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/webserv/core.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/webserv/core.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/tools.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/tools.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/webserv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/webserv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/http/requestHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/requestHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/template/config.cfg" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MakefileLocalSettings">
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="webserv" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="webserv" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="3.2" />
+  </component>
+  <component name="ProjectId" id="2NClszJtaVYL5Ssmw0sP38fUbsF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/jchakir/projs/webserv/www/login&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/www/login" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/www/error" />
+      <recent name="$PROJECT_DIR$/www/login" />
+      <recent name="$PROJECT_DIR$/www" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f493ea11-bbde-435d-b7e0-232a0964dc01" name="Changes" comment="" />
+      <created>1679176155753</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679176155753</updated>
+      <workItem from="1679176157159" duration="1767000" />
+      <workItem from="1679178331235" duration="9536000" />
+      <workItem from="1679233186633" duration="133000" />
+      <workItem from="1679233328847" duration="15176000" />
+      <workItem from="1679255418802" duration="9330000" />
+      <workItem from="1679335354873" duration="3121000" />
+      <workItem from="1679341618265" duration="18318000" />
+      <workItem from="1679404947173" duration="4000" />
+      <workItem from="1679407367147" duration="21962000" />
+      <workItem from="1679474412624" duration="11978000" />
+      <workItem from="1679493268955" duration="15885000" />
+      <workItem from="1679515543339" duration="12092000" />
+      <workItem from="1679530422466" duration="276000" />
+      <workItem from="1679586853185" duration="5193000" />
+      <workItem from="1679599719039" duration="1882000" />
+      <workItem from="1679606994736" duration="11465000" />
+      <workItem from="1679680907747" duration="747000" />
+      <workItem from="1679685975786" duration="1052000" />
+      <workItem from="1679693092838" duration="10238000" />
+      <workItem from="1679759134672" duration="7615000" />
+      <workItem from="1679772686818" duration="786000" />
+      <workItem from="1679778803679" duration="732000" />
+      <workItem from="1679782276311" duration="1578000" />
+      <workItem from="1679790561744" duration="4000" />
+      <workItem from="1679793322362" duration="3000" />
+      <workItem from="1679798871761" duration="2662000" />
+      <workItem from="1679847918938" duration="2000" />
+      <workItem from="1679859574949" duration="806000" />
+      <workItem from="1679866331431" duration="15445000" />
+      <workItem from="1679946174820" duration="587000" />
+      <workItem from="1679952785285" duration="17334000" />
+      <workItem from="1679980963758" duration="2000" />
+      <workItem from="1680027383005" duration="717000" />
+      <workItem from="1680033158820" duration="335000" />
+      <workItem from="1680037432495" duration="18525000" />
+      <workItem from="1680118942521" duration="861000" />
+      <workItem from="1680129555398" duration="9002000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.cfg" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.ini" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

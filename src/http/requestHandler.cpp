@@ -122,6 +122,8 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 			request->fullPath.append(absolutePath);
 		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/')
 			throw 403;
+		request->path = request->fullPath.c_str() + root.size();
+		
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
 # endif
