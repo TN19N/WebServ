@@ -113,29 +113,23 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 		std::string	relativePath;
 		std::string root = request->location->getDirective(ROOT_DIRECTIVE).at(0);
 	
-		bool isUpload = false;
-		try {
-			root = request->location->getDirective(UPLOAD_DIRECTIVE).at(0);
-			isUpload = true;
-		} catch (std::out_of_range&) {
-			// do nothing
-		}
+		if (request->location->getDirectives().find(UPLOAD_DIRECTIVE) == request->location->getDirectives().find(REDIRECT_DIRECTIVE)) {
+			relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
 
-		relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
-
-		if (realpath(relativePath.c_str(), absolutePath) == 0)
-			throw 404;
-		
-		if (relativePath.back() == '/')
-			request->fullPath.append(absolutePath).append("/");
-		else
-			request->fullPath.append(absolutePath);
-		
-		if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/' && isUpload == false) {
-			throw 403;
+			if (realpath(relativePath.c_str(), absolutePath) == 0)
+				throw 404;
+			
+			if (relativePath.back() == '/')
+				request->fullPath.append(absolutePath).append("/");
+			else
+				request->fullPath.append(absolutePath);
+			
+			if (HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/') {
+				throw 403;
+			}
+			
+			request->path = request->fullPath.c_str() + root.size();
 		}
-		
-		request->path = request->fullPath.c_str() + root.size();
 		
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
