@@ -3,10 +3,10 @@
 
 # include <string>
 # include <map>
-#include <sys/time.h>
+# include <sys/time.h>
 
-#include "defines.hpp"
-# include "IBase.hpp"
+# include "webserv/defines.hpp"
+# include "webserv/IBase.hpp"
 
 struct Response : public IBase {
     public :

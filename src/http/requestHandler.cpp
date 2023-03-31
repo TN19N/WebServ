@@ -34,18 +34,6 @@ static void __print_request_data_for_debug_(Request *request)
 	}
 	std::cout << "=============== END ===============\n" ;
 }
-
-// static void __print_response_data_for_debug_(Response *response) {
-// 	std::cout << "===================== Response =============================\n" ;
-// 	std::cout << "Status: " << response->statusCode << std::endl;
-// 	std::cout << "download_file_fd: " << response->download_file_fd << std::endl;
-// 	std::cout << "keepAlive: " << response->keepAlive << std::endl;
-// 	std::cout << "contentLength: " << response->contentLength << std::endl;
-// 	std::cout << "	--------- headers ---------	 " << std::endl;
-// 	for (IBase::Headers::const_iterator b = response->headers.begin(), e = response->headers.end(); b != e; ++b) {
-// 		std::cout << '\t' << b->first << ": " << b->second << std::endl;
-// 	}
-// }
 # endif
 
 static unsigned long long __calc_max_body_size_(const Context::Directives::const_iterator& maxSize)

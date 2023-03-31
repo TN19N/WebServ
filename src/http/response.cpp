@@ -6,14 +6,13 @@
 
 
 // * Constructor ****************************************************************************************************
-// this is for cgi response
 Response::Response() : download_file_fd(-1), statusCode(0) {}
 
 Response::Response(bool keepAlive) : download_file_fd(-1), statusCode(0)
 {
 	this->keepAlive = keepAlive;
 }
-// this is for client response
+
 Response::Response(const int statusCode, const bool keepAlive)
     : download_file_fd(-1), 
         statusCode(statusCode)

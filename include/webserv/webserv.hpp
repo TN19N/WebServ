@@ -5,9 +5,9 @@
 # include <vector>
 # include <poll.h>
 
-# include "defines.hpp"
-# include "context.hpp"
-# include "client.hpp"
+# include "webserv/defines.hpp"
+# include "webserv/context.hpp"
+# include "webserv/client.hpp"
 
 class Webserv {
     private:
