@@ -80,6 +80,9 @@ Client* HTTP::deleteMethodHandler(Client *client)
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
 	}
+	if (HTTP::strcmp(request->fullPath.c_str(), request->location->getDirective(ROOT_DIRECTIVE)[0].c_str()) != '/') {
+		throw 403;
+	}
 	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode)) {
 		if (request->path.c_str()[request->path.size()-1] != '/') {
@@ -97,6 +100,6 @@ Client* HTTP::deleteMethodHandler(Client *client)
 	}
 	
 	client->setResponse(new Response(200, request->keepAlive));
-	client->getResponse()->addBody("<html>\n<body>\n<h1>Resource deleted successfully.</h1>\n</body>\n</html>");
+	client->getResponse()->addBody("Resource deleted successfully");
 	return 0;
 }
