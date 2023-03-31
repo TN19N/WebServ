@@ -67,7 +67,7 @@ debug: $(TARGET)
 release: $(TARGET)
 
 .PHONY: run
-run: debug
+run: generate debug
 	@ ./$(TARGET) $(ARGS) > $(DEBUG_LOG_FILE)
 
 .PHONY: generate
