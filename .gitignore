@@ -6,3 +6,4 @@ config/*.cfg
 config/*.types
 .idea/
 .DS_Store
+CMakeLists.txt

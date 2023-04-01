@@ -56,6 +56,7 @@ namespace HTTP
 	const std::string 	urlDecoding(const std::string& url);
 	void 				convertCgiResponseToClientResponse(Client *cgi);
 	size_t				getCurrentTimeOnMilliSecond();
+	void 				realpath(const char *rel, char *abs);
 
 } // namespace HTTP
 

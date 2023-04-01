@@ -32,6 +32,8 @@ Client* HTTP::postMethodHandler(Client *client) {
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
+		std::cerr << request->fullPath << ": " << request->path << '\n' ;
+		
 		std::string fileName;
 		try {
 			fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");
@@ -49,11 +51,7 @@ Client* HTTP::postMethodHandler(Client *client) {
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
 	}
-
-	if (HTTP::strcmp(request->fullPath.c_str(), request->location->getDirective(ROOT_DIRECTIVE)[0].c_str()) != '/') {
-		throw 403;
-	}
-
+	// Check is directory
 	if (S_ISDIR(pathInfo.st_mode))
 	{
 		if (request->path.c_str()[request->path.size() - 1] != '/') {
