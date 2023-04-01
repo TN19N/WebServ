@@ -1,6 +1,6 @@
 .vscode/
 build/*.exe
-build/*.log
+build/debug/debug.log
 build/*.o
 config/*.cfg
 config/*.types
