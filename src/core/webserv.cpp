@@ -61,7 +61,7 @@ static bool havSameName(int index, const std::vector<Context*>& contexts, const 
 
 static bool isInRange(const struct sockaddr* addr, const std::vector<struct addrinfo*>& data, const std::vector<Context*>& contexts, const Context* context) {
     bool res = false;
-    (void)context;
+
     for (size_t i = 0; i < data.size(); ++i) {
         if (addr->sa_family == data[i]->ai_addr->sa_family) {
             if (addr->sa_family == AF_INET) {
@@ -95,6 +95,7 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 		Webserv::removeClient(client);
 		return;
 	}
+
 	if (client->getClientToCgi() != NULL) {
 		Webserv::removeClient(client->getClientToCgi());
 	}
@@ -102,8 +103,9 @@ void Webserv::errorHandler(int statusCode, Client* client) {
 	if (client->isCgi()) {
 		client = client->getCgiToClient();
 		Webserv::removeClient(client->getClientToCgi());
-		if (statusCode < 500)
+		if (statusCode < 500) {
 			statusCode = 502;
+        }
 	}
 	client->setResponse(new Response(statusCode, KEEP_ALIVE));
 	std::stringstream statusCodeString;
@@ -153,8 +155,7 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
 
 void Webserv::checkClientsTimeout()
 {
-	for (int i = clients.size() - 1; i >= 0; --i)
-	{
+	for (int i = clients.size() - 1; i >= 0; --i) {
 		if (HTTP::getCurrentTimeOnMilliSecond() - TIMEOUT > clients[i]->getLastEvent()) {
 			if (clients[i]->isCgi() || clients[i]->getClientToCgi())
 				errorHandler(504, clients[i]);
@@ -163,7 +164,6 @@ void Webserv::checkClientsTimeout()
 		}
 	}
 }
-
 // *************************************************************************************************************************************************************************************
 
 // * Methods ***************************************************************************************************************************************************************************

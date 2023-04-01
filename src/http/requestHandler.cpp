@@ -34,18 +34,6 @@ static void __print_request_data_for_debug_(Request *request)
 	}
 	std::cout << "=============== END ===============\n" ;
 }
-
-// static void __print_response_data_for_debug_(Response *response) {
-// 	std::cout << "===================== Response =============================\n" ;
-// 	std::cout << "Status: " << response->statusCode << std::endl;
-// 	std::cout << "download_file_fd: " << response->download_file_fd << std::endl;
-// 	std::cout << "keepAlive: " << response->keepAlive << std::endl;
-// 	std::cout << "contentLength: " << response->contentLength << std::endl;
-// 	std::cout << "	--------- headers ---------	 " << std::endl;
-// 	for (IBase::Headers::const_iterator b = response->headers.begin(), e = response->headers.end(); b != e; ++b) {
-// 		std::cout << '\t' << b->first << ": " << b->second << std::endl;
-// 	}
-// }
 # endif
 
 static unsigned long long __calc_max_body_size_(const Context::Directives::const_iterator& maxSize)
@@ -122,11 +110,11 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 		HTTP::realpath(relativePath.c_str(), absolutePath);
 		request->fullPath = absolutePath;
+		request->path = request->fullPath.c_str() + root.size();
 
 		if (request->fullPath != root && HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/') {
 			throw 403;
 		}
-//		request->path = request->fullPath.c_str() + root.size(); // todo add it some where
 		if (request->method == "GET") {
 			cgi = HTTP::getMethodHandler(client);
 			client->switchState();
@@ -156,9 +144,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 				throw 500;
 			}
 			request->body.clear();
-			
 			if (request->state == READY) {
-			std::cerr << request->fullPath << ": " << request->path << '\n' ; // todo remove
 				client->setResponse(new Response(201, request->keepAlive));
 				client->getResponse()->addBody("Created with success");
 				client->switchState();
@@ -188,7 +174,7 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
-	
+
 	if (__read_buffer_from_client_(client)) {
 		cgiFinished = true;
 	}

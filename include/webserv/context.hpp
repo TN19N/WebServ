@@ -6,7 +6,7 @@
 # include <map>
 # include <sys/socket.h>
 
-#include "defines.hpp"
+#include "webserv/defines.hpp"
 
 class Context {
 	public:

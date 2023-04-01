@@ -4,7 +4,7 @@
 
 static void __create_file_to_upload_content_(Client *client, const char *filepath) {
 	Request	*request = client->getRequest();
-	
+
 	if (access(filepath, F_OK) == 0) {
 		throw 403;
 	}
@@ -32,19 +32,22 @@ Client* HTTP::postMethodHandler(Client *client) {
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
+		std::cerr << request->fullPath << ": " << request->path << '\n' ;
+		
 		std::string fileName;
 		try {
 			fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");
 		} catch (std::out_of_range &e) {
 			throw 400;
 		}
+
 		if (request->headers.at("FILE-NAME").find('/') != std::string::npos) {
 			throw 403;
 		}
 		__create_file_to_upload_content_(client, fileName.c_str());
 		return 0;
 	}
-	// check is exist whatever file or directory
+
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
 	}
@@ -70,7 +73,7 @@ Client* HTTP::postMethodHandler(Client *client) {
 			}
 		}
 	}
-	// Check for CGI
+
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound)
 	{
@@ -82,6 +85,6 @@ Client* HTTP::postMethodHandler(Client *client) {
 				return HTTP::cgiExecutor(client, begin->c_str(), directive->second[0].c_str());
 			}
 	}
-	// no CGI just a simple file
+
 	throw 403;
 }

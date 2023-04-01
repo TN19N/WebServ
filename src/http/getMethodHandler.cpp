@@ -4,15 +4,16 @@
 # include "webserv/context.hpp"
 # include "webserv/http.hpp"
 
-static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::string &body)
-{
+static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::string &body) {
 	const char *last = path + len - 2; // -2 for skipp / at the end
 	
 	while (path < last && *last != '/')
 		--last;
-	if (last > path)
-		while (path < last)
-			body.append(1, *path++) ;
+	if (last > path) {
+		while (path < last) {
+			body.append(1, *path++);
+		}
+	}
 	body.append(1, '/') ;
 }
 
@@ -29,6 +30,7 @@ static void __do_response_with_directory_content_(Client* client)
 	
 	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == NULL)
 		throw 403;
+
 	body = " <!DOCTYPE html>\n<html>\n<head>\n<title>";
 	body.append(path);
 	body.append("</title>\n</head>\n<body>\n<h1>Directory Content</h1>\n");
@@ -137,7 +139,7 @@ Client* HTTP::getMethodHandler(Client *client)
 				return HTTP::cgiExecutor(client, begin->c_str(), directive->second[0].c_str());
 			}
 	}
-	// no CGI just a simple file
+
 	__read_file_content_to_do_response_(client);
 	return 0;
 }

@@ -7,6 +7,6 @@ IBase::IBase()
 	state(CREATING),
 	contentLength(0),
 	maxBodySize(ULLONG_MAX)
-	
-	{}
+{}
+
 IBase::~IBase() {}

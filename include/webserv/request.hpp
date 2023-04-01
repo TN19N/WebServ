@@ -1,14 +1,13 @@
 # ifndef REQUEST_HPP
 # define REQUEST_HPP
 
-
 # include <string>
 # include <map>
 # include <unistd.h>
 
-# include "defines.hpp"
-# include "context.hpp"
-# include "IBase.hpp"
+# include "webserv/defines.hpp"
+# include "webserv/context.hpp"
+# include "webserv/IBase.hpp"
 
 struct Request : public IBase {
     public :
@@ -22,7 +21,6 @@ struct Request : public IBase {
         std::string     extension;
     public :
         Request();
-
         ~Request();
 };
 

@@ -58,16 +58,21 @@ END := \033[0m
 .PHONY: all
 all: debug
 
+startCmp: 
+	@ echo "$(GREEN)Compiling ...$(END)"
+endCmp  : 
+	@ echo "$(GREEN)Done!$(END)"
+
 .PHONY: debug
 debug: CFLAGS += -g3 -fsanitize=address
 debug: CFLAGS += -D DEBUG
-debug: $(TARGET)
+debug: startCmp $(TARGET) endCmp
 
 .PHONY: release
-release: $(TARGET)
+release: startCmp $(TARGET) endCmp
 
 .PHONY: run
-run: debug
+run: generate debug
 	@ ./$(TARGET) $(ARGS) > $(DEBUG_LOG_FILE)
 
 .PHONY: generate
@@ -75,9 +80,7 @@ generate: $(CONFIGS)
 	@ echo "$(GREEN)Generate config Done!$(END)"
 
 $(TARGET) : $(OBJS)
-	@ echo "$(GREEN)Compiling ...$(END)"
 	@ $(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-	@ echo "$(GREEN)Done!$(END)"
 
 $(OBJ_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT)
 	@ $(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)

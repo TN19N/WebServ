@@ -8,7 +8,6 @@
 # include "webserv/http.hpp"
 
 // * Functions *************************************************************************************************************************
-
 static int __get_status_code_from_cgi_status_(const char *status)
 {
 	int statusCode = 0;
@@ -173,7 +172,7 @@ Client* HTTP::getClientWithFd(const int fd, const std::vector<Client*>& clients)
 			}
 		}
     }
-    return NULL; // never be reached (I hope so :D)
+    return NULL;
 }
 
 const std::string HTTP::getDefaultErrorPage(const int statusCode) {

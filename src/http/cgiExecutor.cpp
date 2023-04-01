@@ -86,14 +86,18 @@ Client* HTTP::cgiExecutor(Client* client, const char *cgiPath, const char *rootD
 		__run_cgi_script_(client, _write[0], _read[1], cgiPath);
 	}
 
-	if (close(_read[1]) < 0 || close(_write[0]) < 0)
+	if (close(_read[1]) < 0 || close(_write[0]) < 0) {
 		throw 500;
-//	if (fcntl(_read[0], F_SETFL, O_NONBLOCK) == -1) {
-//		throw 500;
-//	}
+	}
+
+	if (fcntl(_read[0], F_SETFL, O_NONBLOCK) == -1) {
+		throw 500;
+	}
+
 	if (fcntl(_write[1], F_SETFL, O_NONBLOCK) == -1) {
 		throw 500;
 	}
+
 	cgi = new Client(_read[0], _write[1], pid, client);
 	client->setClientToCgi(cgi);
 	cgi->updateLastEvent();

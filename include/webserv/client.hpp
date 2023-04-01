@@ -6,10 +6,10 @@
 # include <string>
 # include <poll.h>
 
-#include "defines.hpp"
-# include "request.hpp"
-# include "response.hpp"
-#include "context.hpp"
+# include "webserv/defines.hpp"
+# include "webserv/request.hpp"
+# include "webserv/response.hpp"
+# include "webserv/context.hpp"
 
 class Client {
     private:
@@ -31,7 +31,7 @@ class Client {
 		
 		size_t							lastEvent;
     public:
-		Client(int read, int write, int pid, Client* client); // for create cgi client
+		Client(int read, int write, int pid, Client* client);
         Client(const int* fd, const struct sockaddr_storage& clientAddr, const struct sockaddr_storage& peerAddr, Client* cgiToClient = NULL);
 
         int                             getSocketFd() const;
