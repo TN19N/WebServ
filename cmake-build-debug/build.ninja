@@ -1,0 +1,273 @@
+## This file contains all the build statements describing the
+# compilation DAG.
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# 
+# Which is the root file.
+# =============================================================================
+
+# =============================================================================
+# Project: webserv
+# Configurations: Debug
+# =============================================================================
+
+#############################################
+# Minimal version of Ninja required by this file
+
+ninja_required_version = 1.5
+
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
+# =============================================================================
+# Include auxiliary files.
+
+
+#############################################
+# Include rules file.
+
+include CMakeFiles/rules.ninja
+
+# =============================================================================
+
+#############################################
+# Logical path to working directory; prefix for absolute paths.
+
+cmake_ninja_workdir = /Users/jchakir/projs/webserv/cmake-build-debug/
+# =============================================================================
+# Object build statements for EXECUTABLE target webserv
+
+
+#############################################
+# Order-only phony target for webserv
+
+build cmake_object_order_depends_target_webserv: phony || CMakeFiles/webserv.dir
+
+build CMakeFiles/webserv.dir/src/core/context.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/core/context.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/core/context.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/core
+
+build CMakeFiles/webserv.dir/src/core/loadConfiguration.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/core/loadConfiguration.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/core/loadConfiguration.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/core
+
+build CMakeFiles/webserv.dir/src/core/luncher.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/core/luncher.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/core/luncher.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/core
+
+build CMakeFiles/webserv.dir/src/core/tools.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/core/tools.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/core/tools.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/core
+
+build CMakeFiles/webserv.dir/src/core/webserv.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/core/webserv.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/core/webserv.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/core
+
+build CMakeFiles/webserv.dir/src/http/baseParser.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/baseParser.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/baseParser.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/blockMatchAlgorithm.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/blockMatchAlgorithm.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/blockMatchAlgorithm.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/cgiExecutor.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/cgiExecutor.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/cgiExecutor.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/client.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/client.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/client.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/connectionHandler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/connectionHandler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/connectionHandler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/deleteMethodHundler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/deleteMethodHundler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/deleteMethodHundler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/getMethodHandler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/getMethodHandler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/getMethodHandler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/IBase.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/IBase.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/IBase.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/postMethodHundler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/postMethodHundler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/postMethodHundler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/readBodyFromBuffer.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/readBodyFromBuffer.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/readBodyFromBuffer.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/request.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/request.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/request.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/requestHandler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/requestHandler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/requestHandler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/response.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/response.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/response.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/responseHandler.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/responseHandler.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/responseHandler.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+build CMakeFiles/webserv.dir/src/http/tools.cpp.o: CXX_COMPILER__webserv_Debug /Users/jchakir/projs/webserv/src/http/tools.cpp || cmake_object_order_depends_target_webserv
+  DEP_FILE = CMakeFiles/webserv.dir/src/http/tools.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14 -fcolor-diagnostics -std=gnu++14
+  INCLUDES = -I/Users/jchakir/projs/webserv/include -I/Users/jchakir/projs/webserv/include/webserv
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  OBJECT_FILE_DIR = CMakeFiles/webserv.dir/src/http
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target webserv
+
+
+#############################################
+# Link the executable webserv
+
+build webserv: CXX_EXECUTABLE_LINKER__webserv_Debug CMakeFiles/webserv.dir/src/core/context.cpp.o CMakeFiles/webserv.dir/src/core/loadConfiguration.cpp.o CMakeFiles/webserv.dir/src/core/luncher.cpp.o CMakeFiles/webserv.dir/src/core/tools.cpp.o CMakeFiles/webserv.dir/src/core/webserv.cpp.o CMakeFiles/webserv.dir/src/http/baseParser.cpp.o CMakeFiles/webserv.dir/src/http/blockMatchAlgorithm.cpp.o CMakeFiles/webserv.dir/src/http/cgiExecutor.cpp.o CMakeFiles/webserv.dir/src/http/client.cpp.o CMakeFiles/webserv.dir/src/http/connectionHandler.cpp.o CMakeFiles/webserv.dir/src/http/deleteMethodHundler.cpp.o CMakeFiles/webserv.dir/src/http/getMethodHandler.cpp.o CMakeFiles/webserv.dir/src/http/IBase.cpp.o CMakeFiles/webserv.dir/src/http/postMethodHundler.cpp.o CMakeFiles/webserv.dir/src/http/readBodyFromBuffer.cpp.o CMakeFiles/webserv.dir/src/http/request.cpp.o CMakeFiles/webserv.dir/src/http/requestHandler.cpp.o CMakeFiles/webserv.dir/src/http/response.cpp.o CMakeFiles/webserv.dir/src/http/responseHandler.cpp.o CMakeFiles/webserv.dir/src/http/tools.cpp.o
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.14
+  OBJECT_DIR = CMakeFiles/webserv.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = webserv
+  TARGET_PDB = webserv.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/jchakir/projs/webserv/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/jchakir/projs/webserv/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/jchakir/projs/webserv -B/Users/jchakir/projs/webserv/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Target aliases.
+
+# =============================================================================
+# Folder targets.
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/jchakir/projs/webserv/cmake-build-debug
+
+build all: phony webserv
+
+# =============================================================================
+# Built-in targets
+
+
+#############################################
+# Re-run CMake if any of its inputs changed.
+
+build build.ninja: RERUN_CMAKE | /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /Users/jchakir/projs/webserv/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
+  pool = console
+
+
+#############################################
+# A missing CMake input file is not an error.
+
+build /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /Users/jchakir/projs/webserv/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
+
+
+#############################################
+# Clean all the built files.
+
+build clean: CLEAN
+
+
+#############################################
+# Print all primary targets available.
+
+build help: HELP
+
+
+#############################################
+# Make the all target the default.
+
+default all

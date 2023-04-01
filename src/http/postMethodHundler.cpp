@@ -49,6 +49,10 @@ Client* HTTP::postMethodHandler(Client *client) {
 		throw 404;
 	}
 
+	if (HTTP::strcmp(request->fullPath.c_str(), request->location->getDirective(ROOT_DIRECTIVE)[0].c_str()) != '/') {
+		throw 403;
+	}
+
 	if (S_ISDIR(pathInfo.st_mode))
 	{
 		if (request->path.c_str()[request->path.size() - 1] != '/') {

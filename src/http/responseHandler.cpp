@@ -57,8 +57,8 @@ static bool __send_response_to_client_(Client *client)
 
 bool HTTP::responseHandler(Client *client)
 {
-	client->updateLastEvent();
 	if (client->isCgi()) {
+		client->updateLastEvent();
 		if (__send_client_body_to_cgi_(client)) {
 			client->switchState();
 		}

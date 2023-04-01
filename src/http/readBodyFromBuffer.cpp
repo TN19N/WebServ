@@ -8,12 +8,13 @@ static void __read_content_length_body_(Client* client, IBase *base)
 	// contentLength always decrement until 0.
 	base->body.append(client->getBuffer(), 0, base->contentLength);
 	if (client->getBuffer().size() < base->contentLength) {
+		client->getBuffer().clear();
 		base->contentLength -= client->getBuffer().size();
 	} else {
+		client->getBuffer().erase(0, base->contentLength);
 		base->state = READY;
 		base->contentLength = 0;
 	}
-	client->getBuffer().clear();
 }
 
 static bool __read_chunked_body_(Client* client, IBase *base)
@@ -35,7 +36,8 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 		base->contentLength = HTTP::parseContentLength(Buffer.c_str());
 		if (base->contentLength == 0 && *buffer == '\r' && *(buffer + 1) == '\n') {
 			base->state = READY;
-			Buffer.clear();
+			buffer += 2; // for bypass '\r\n'
+			Buffer.erase(0,buffer - Buffer.c_str());
 			return false;
 		}
 
@@ -48,13 +50,10 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 		Buffer.erase(0,buffer - Buffer.c_str());
 	} else {
 		base->body.append(Buffer, 0, base->contentLength - 2); // -2 for '\r\n'
-		if (Buffer.size() > base->contentLength)
-		{
+		if (Buffer.size() > base->contentLength) {
 			Buffer.erase(0, base->contentLength);
 			base->contentLength = 0;
-		}
-		else
-		{
+		} else {
 			base->contentLength -= Buffer.size();
 			Buffer.clear();
 		}

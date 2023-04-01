@@ -155,17 +155,13 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
 
 void Webserv::checkClientsTimeout()
 {
-	std::vector<Client*>::iterator	begin, end;
-	Client							*client;
-	
-	for (begin = clients.begin(), end = clients.end(); begin != end; ++begin) {
-		client = *begin;
-		if (HTTP::getCurrentTimeOnMilliSecond() - TIMEOUT > client->getLastEvent()) {
-			if (client->isCgi() || client->getClientToCgi())
-				errorHandler(504, client);
+	for (int i = clients.size(); i >= 0; --i)
+	{
+		if (HTTP::getCurrentTimeOnMilliSecond() - TIMEOUT > clients[i]->getLastEvent()) {
+			if (clients[i]->isCgi() || clients[i]->getClientToCgi())
+				errorHandler(504, clients[i]);
 			else
-				errorHandler(408, client);
-			begin = clients.begin(), end = clients.end();
+				errorHandler(408, clients[i]);
 		}
 	}
 }
