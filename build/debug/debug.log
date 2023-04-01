@@ -489,7 +489,7 @@
 				(index) : entryPoint.py 
 				(name) : www.webserv.com www.web-serv.com 
 				(port) : 8080 
-				(root) : /Users/jchakir/projs/webserv/www 
+				(root) : /Users/jchakir/projs/webserv/www/cookie 
 			[location] :: /app 
 				(.3gp) : video/3gpp 
 				(.3gpp) : video/3gpp 
@@ -2113,89 +2113,9 @@ ai_next: 1
 -------------------------- new Client --------------------------
 client type: USER_CLIENT
 ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 50640
-	sin6_flowinfo: 0
-	sin6_addr: ::1
-	sin6_scope_id: 0
-connected to: 
-ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 8080
-	sin6_flowinfo: 0
-	sin6_addr: ::
-	sin6_scope_id: 0
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 50641
-	sin6_flowinfo: 0
-	sin6_addr: ::1
-	sin6_scope_id: 0
-connected to: 
-ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 8080
-	sin6_flowinfo: 0
-	sin6_addr: ::
-	sin6_scope_id: 0
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 50640
-	sin6_flowinfo: 0
-	sin6_addr: ::1
-	sin6_scope_id: 0
-===================== Request Parser =============================
-Method: POST
-Path  : /upload/
-fullPath  : 
-Ext   : 
-Query : 
-          --------- headers ---------
-Accept: */*
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Content-Length: 887720
-Content-Type: video/mp4
-FILE-NAME: testtest.mp4
-Host: localhost
-Postman-Token: 82bf4d67-43e9-4bb7-b7f9-7d2f2fa7dffe
-User-Agent: PostmanRuntime/7.31.3
-===================== Location =============================
-Location: /
-allowed_method: GET POST DELETE 
-autoindex: off 
-client_max_body_size: 1M 
-host: :: 
-include: /Users/jchakir/projs/webserv/config/mime.types 
-index: index.html index.htm index.php 
-port: 8080 
-redirect: 301 http://127.0.0.1:8080 
-root: /var/www/html 
-=============== END ===============
--------------------------- client disconnected --------------------------
-client type: USER_CLIENT
-ai_addr: 
-	sin6_len: 28
-	sin6_family: 30
-	sin6_port: 50641
-	sin6_flowinfo: 0
-	sin6_addr: ::1
-	sin6_scope_id: 0
--------------------------- new Client --------------------------
-client type: USER_CLIENT
-ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50642
+	sin_port: 50075
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 connected to: 
@@ -2207,70 +2127,967 @@ ai_addr:
 	sin_zero: [8]
 ===================== Request Parser =============================
 Method: GET
-Path  : /
+Path  : /dir/
 fullPath  : 
 Ext   : 
 Query : 
           --------- headers ---------
-Accept: */*
-Accept-Encoding: gzip, deflate, br
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
 Connection: keep-alive
-FILE-NAME: testtest.mp4
-Host: 127.0.0.1
-Postman-Token: 82bf4d67-43e9-4bb7-b7f9-7d2f2fa7dffe
-Referer: http://localhost:8080/upload/
-User-Agent: PostmanRuntime/7.31.3
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/dir
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
 ===================== Location =============================
-Location: /
+Location: /dir
 404: /error/40x.html 
 500: /error/50x.html 
 allowed_method: GET POST DELETE 
-autoindex: off 
+autoindex: on 
 client_max_body_size: 1M 
 host: 0.0.0.0 
 include: /Users/jchakir/projs/webserv/config/mime.types 
 index: index.html index.htm index.php 
 name: www.webserv.com www.web-serv.com 
 port: 8080 
-root: /Users/jchakir/projs/webserv/www/app 
-=============== END ===============
-===================== Request Parser =============================
-Method: POST
-Path  : /upload/
-fullPath  : 
-Ext   : 
-Query : 
-          --------- headers ---------
-Accept: */*
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Content-Length: 887720
-Content-Type: video/mp4
-FILE-NAME: testtest.mp4
-Host: 127.0.0.1
-Postman-Token: 8fa2ff53-0bec-4498-bf83-d574c3314f69
-User-Agent: PostmanRuntime/7.31.3
-===================== Location =============================
-Location: /upload
-404: /error/40x.html 
-500: /error/50x.html 
-allowed_method: POST DELETE GET 
-autoindex: off 
-client_max_body_size: 750M 
-host: 0.0.0.0 
-include: /Users/jchakir/projs/webserv/config/mime.types 
-index: index.html index.htm index.php 
-name: www.webserv.com www.web-serv.com 
-port: 8080 
-root: /var/www/html 
-upload_path: /Users/jchakir/projs/webserv/www/upload 
+root: /Users/jchakir/projs/webserv 
 =============== END ===============
 -------------------------- client disconnected --------------------------
 client type: USER_CLIENT
 ai_addr: 
 	sin_len: 16
 	sin_family: 2
-	sin_port: 50642
+	sin_port: 50075
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50078
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50078
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50078
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50078
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50079
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50079
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50079
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50079
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50080
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50081
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50081
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50081
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50081
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50082
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50082
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50082
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50082
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50084
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50084
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50084
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50084
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50088
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50088
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50088
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50088
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50089
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50089
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50089
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50089
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50091
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=dywUiQtutyfbEetdMXUChgBTb
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50091
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50091
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50091
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50095
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=ZBzTtXtRziUnmXz
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50095
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50095
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50095
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50107
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=ZBzTtXtRziUnmXz
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50107
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50107
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50107
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- new Client --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50109
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+connected to: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 8080
+	sin_addr: 0.0.0.0
+	sin_zero: [8]
+===================== Request Parser =============================
+Method: GET
+Path  : /cookie/
+fullPath  : 
+Ext   : 
+Query : 
+          --------- headers ---------
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Connection: keep-alive
+Cookie: session=ZBzTtXtRziUnmXz
+Host: www.1337.ma
+Referer: http://127.0.0.1:8080/login
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Sec-GPC: 1
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:109.0) Gecko/20100101 Firefox/110.0
+===================== Location =============================
+Location: /cookie
+404: /error/40x.html 
+500: /error/50x.html 
+allowed_method: GET POST DELETE 
+autoindex: off 
+cgi: /usr/bin/python3 .py 
+client_max_body_size: 1M 
+host: 0.0.0.0 
+include: /Users/jchakir/projs/webserv/config/mime.types 
+index: entryPoint.py 
+name: www.webserv.com www.web-serv.com 
+port: 8080 
+root: /Users/jchakir/projs/webserv/www/cookie 
+=============== END ===============
+-------------------------- new Client --------------------------
+client type: CGI_CLIENT
+created to handle client: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50109
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: CGI_CLIENT
+cgiToClient: 
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50109
+	sin_addr: 127.0.0.1
+	sin_zero: [8]
+-------------------------- client disconnected --------------------------
+client type: USER_CLIENT
+ai_addr: 
+	sin_len: 16
+	sin_family: 2
+	sin_port: 50109
 	sin_addr: 127.0.0.1
 	sin_zero: [8]
 -------------------------- Leaks --------------------------
