@@ -12,7 +12,7 @@ and open your browser and go to http://127.0.0.1:8080
 (add or change config files in template folder)
 ## Features
 
-- GET, POST and HEAD methods Support
+- GET, POST and DELETE methods Support
 - Multiple CGI Support (php, python)
 - Multiple servers block Support
 - Multiple locations block Support
