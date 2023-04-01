@@ -89,29 +89,32 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 		request->location = HTTP::blockMatchAlgorithm(client, configuration);
 
+# ifdef DEBUG
+		__print_request_data_for_debug_(request);
+# endif
+
 		__check_allowed_method_(request->location, request->method);
 		request->maxBodySize = __calc_max_body_size_(request->location->getDirectives().find(SIZE_DIRECTIVE));
 		if (request->maxBodySize < request->contentLength) {
 			throw 413;
 		}
 
-		char		absolutePath[PATH_MAX];
-		std::string	relativePath;
-		std::string root = request->location->getDirective(ROOT_DIRECTIVE).at(0);
+		const std::string	&root = request->location->getDirective(ROOT_DIRECTIVE).at(0);
+		std::string			relativePath;
+		char				absolutePath[PATH_MAX];
 
-		relativePath.append(root).append("/").append(request->path.substr(request->location->getArgs().at(0).size()));
-		realpath(relativePath.c_str(), absolutePath);
-		if (relativePath.back() == '/')
-			request->fullPath.append(absolutePath).append("/");
-		else
-			request->fullPath.append(absolutePath);
+		relativePath.append(root);
+		if (request->location->getArgs().at(0) == "/")
+			relativePath.append(1, '/');
+		relativePath.append(request->path.substr(request->location->getArgs().at(0).size()));
 
+		HTTP::realpath(relativePath.c_str(), absolutePath);
+		request->fullPath = absolutePath;
 		request->path = request->fullPath.c_str() + root.size();
 
-# ifdef DEBUG
-		__print_request_data_for_debug_(request);
-# endif
-
+		if (request->fullPath != root && HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/') {
+			throw 403;
+		}
 		if (request->method == "GET") {
 			cgi = HTTP::getMethodHandler(client);
 			client->switchState();
@@ -141,7 +144,6 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 				throw 500;
 			}
 			request->body.clear();
-			
 			if (request->state == READY) {
 				client->setResponse(new Response(201, request->keepAlive));
 				client->getResponse()->addBody("Created with success");
