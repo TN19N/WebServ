@@ -44,14 +44,15 @@ Client* HTTP::postMethodHandler(Client *client) {
 		__create_file_to_upload_content_(client, fileName.c_str());
 		return 0;
 	}
-	// check is exist whatever file or directory
+
 	if (stat(request->fullPath.c_str(), &pathInfo) < 0) {
 		throw 404;
 	}
+
 	if (HTTP::strcmp(request->fullPath.c_str(), request->location->getDirective(ROOT_DIRECTIVE)[0].c_str()) != '/') {
 		throw 403;
 	}
-	// Check is directory
+
 	if (S_ISDIR(pathInfo.st_mode))
 	{
 		if (request->path.c_str()[request->path.size() - 1] != '/') {
@@ -73,7 +74,7 @@ Client* HTTP::postMethodHandler(Client *client) {
 			}
 		}
 	}
-	// Check for CGI
+
 	directive = request->location->getDirectives().find(CGI_DIRECTIVE);
 	if (directive != notFound)
 	{
@@ -85,6 +86,6 @@ Client* HTTP::postMethodHandler(Client *client) {
 				return HTTP::cgiExecutor(client, begin->c_str(), directive->second[0].c_str());
 			}
 	}
-	// no CGI just a simple file
+
 	throw 403;
 }
