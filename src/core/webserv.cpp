@@ -155,8 +155,7 @@ static void redirectTo(const std::pair<int, std::string>& redirect, Client* clie
 
 void Webserv::checkClientsTimeout()
 {
-	for (int i = clients.size(); i >= 0; --i)
-	{
+	for (int i = clients.size() - 1; i >= 0; --i) {
 		if (HTTP::getCurrentTimeOnMilliSecond() - TIMEOUT > clients[i]->getLastEvent()) {
 			if (clients[i]->isCgi() || clients[i]->getClientToCgi())
 				errorHandler(504, clients[i]);

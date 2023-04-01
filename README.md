@@ -7,4 +7,4 @@ HTTP is one of the most used protocols on the internet.
 ```bash
 make run
 ```
-and open your browser and go to http://localhost:8080
+and open your browser and go to http://127.0.0.1:8080

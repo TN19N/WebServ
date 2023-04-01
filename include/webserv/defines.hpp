@@ -1,4 +1,5 @@
-#pragma once
+# ifndef DEFINES_HPP
+# define DEFINES_HPP
 
 # define BUFFER_SIZE 		5120 // should not bypass (MAX_SIZE_OF_PIPE / 5) = (65536 / 5 = 13107)
 
@@ -30,3 +31,5 @@ enum {
 # define END_CHUNKED 	"0\r\n\r\n"
 # define END_HEADERS 	"\r\n\r\n"
 # define CRLF 			"\r\n"
+
+# endif
