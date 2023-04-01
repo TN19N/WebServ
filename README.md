@@ -1,7 +1,8 @@
 # Webserv
 This project is about writing My own HTTP server (HTTP/1.1).
 and be able to test it with an actual browser.
-HTTP is one of the most used protocols on the internet.
+
+this project is done with teammate [Sagittariu5A](https://github.com/Sagittariu5A) a great programmer.
 
 ### run demo
 ```bash
