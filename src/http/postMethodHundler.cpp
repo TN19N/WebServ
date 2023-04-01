@@ -4,7 +4,7 @@
 
 static void __create_file_to_upload_content_(Client *client, const char *filepath) {
 	Request	*request = client->getRequest();
-	
+
 	if (access(filepath, F_OK) == 0) {
 		throw 403;
 	}
@@ -38,6 +38,7 @@ Client* HTTP::postMethodHandler(Client *client) {
 		} catch (std::out_of_range &e) {
 			throw 400;
 		}
+
 		if (request->headers.at("FILE-NAME").find('/') != std::string::npos) {
 			throw 403;
 		}

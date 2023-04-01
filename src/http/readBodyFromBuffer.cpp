@@ -1,24 +1,23 @@
 # include "webserv/client.hpp"
 # include "webserv/http.hpp"
 
-static void __read_content_length_body_(Client* client, IBase *base)
-{
-	if (client->isCgi())
+static void __read_content_length_body_(Client* client, IBase *base) {
+	if (client->isCgi()) {
 		base->contentLength = client->getBuffer().size();
-	// contentLength always decrement until 0.
-	base->body.append(client->getBuffer(), 0, base->contentLength);
-	if (client->getBuffer().size() < base->contentLength) {
-		client->getBuffer().clear();
-		base->contentLength -= client->getBuffer().size();
-	} else {
-		client->getBuffer().erase(0, base->contentLength);
+	}
+
+	size_t size = std::min(base->contentLength, client->getBuffer().size());
+
+	base->body.append(client->getBuffer(), 0, size);
+	client->getBuffer().erase(0, size);
+	base->contentLength -= size;
+
+	if (base->contentLength == 0) {
 		base->state = READY;
-		base->contentLength = 0;
 	}
 }
 
-static bool __read_chunked_body_(Client* client, IBase *base)
-{
+static bool __read_chunked_body_(Client* client, IBase *base) {
 	std::string&	Buffer = client->getBuffer();
 	const char		*buffer = Buffer.c_str();
 
@@ -61,8 +60,7 @@ static bool __read_chunked_body_(Client* client, IBase *base)
 	return Buffer.size() != 0;
 }
 
-void HTTP::readBodyFromBuffer(Client *client)
-{
+void HTTP::readBodyFromBuffer(Client *client) {
 	IBase *base;
 	
 	if (client->isCgi())

@@ -107,7 +107,7 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 			request->fullPath.append(absolutePath);
 
 		request->path = request->fullPath.c_str() + root.size();
-		
+
 # ifdef DEBUG
 		__print_request_data_for_debug_(request);
 # endif
@@ -172,7 +172,7 @@ static Client* __cgi_response_handler_(Client* cgi, bool cgiFinished) {
 
 Client* HTTP::requestHandler(Client* client, const Context* const configuration) {
 	bool	cgiFinished = false;
-	
+
 	if (__read_buffer_from_client_(client)) {
 		cgiFinished = true;
 	}
