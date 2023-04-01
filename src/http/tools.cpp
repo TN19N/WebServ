@@ -88,6 +88,39 @@ int HTTP::strcmp(const char *s1, const char *s2) {
 	return *s1 - *s2;
 }
 
+void HTTP::realpath(const char *rel, char *abs)
+{
+	const char *abs_base = abs;
+	
+	memset(abs, 0, PATH_MAX);
+	for (; *rel; ) {
+		switch (*rel) {
+			case '/':
+				++rel;
+				*abs = '/';
+				if (*rel == '.' && *(rel+1) == '.' && (*(rel+2) == '/' || *(rel+2) == '\0')) {
+					rel += 2;
+					if (abs > abs_base)
+						--abs;
+					while (*abs != '/' && abs > abs_base) {
+						--abs;
+					}
+				} else if (*rel == '.' && (*(rel+1) == '/' || *(rel+1) == '\0')) {
+					rel += 1;
+				} else if (*rel != '/') {
+					++abs;
+				}
+				break;
+			default:
+				*abs++ = *rel++;
+		}
+	}
+	if (abs == abs_base) {
+		*abs++ = '/';
+	}
+	*abs = '\0';
+}
+
 const char * HTTP::getExtensionFromPath(const char *path) {
 	while (*path)
 		++path;
