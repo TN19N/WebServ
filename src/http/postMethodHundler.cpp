@@ -32,8 +32,6 @@ Client* HTTP::postMethodHandler(Client *client) {
 	directive = request->location->getDirectives().find(UPLOAD_DIRECTIVE);
 	if (directive != notFound)
 	{
-		std::cerr << request->fullPath << ": " << request->path << '\n' ;
-		
 		std::string fileName;
 		try {
 			fileName = directive->second[0] + "/" + request->headers.at("FILE-NAME");

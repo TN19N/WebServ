@@ -110,7 +110,6 @@ static Client* __client_request_handler_(Client* client, const Context* const co
 
 		HTTP::realpath(relativePath.c_str(), absolutePath);
 		request->fullPath = absolutePath;
-		request->path = request->fullPath.c_str() + root.size();
 
 		if (request->fullPath != root && HTTP::strcmp(request->fullPath.c_str(), root.c_str()) != '/') {
 			throw 403;
