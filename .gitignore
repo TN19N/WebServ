@@ -8,3 +8,4 @@ config/*.types
 .idea/
 .DS_Store
 CMakeLists.txt
+/Users/mannouao/Desktop/WebServ/www/cookie/__pycache__/
