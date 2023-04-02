@@ -1,7 +1,8 @@
 .vscode/
-build/*.exe
+build/obj/core/*.o
+build/obj/http/*.o
 build/debug/debug.log
-build/*.o
+build/bin/webserv.exe
 config/*.cfg
 config/*.types
 .idea/
