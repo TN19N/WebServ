@@ -8,4 +8,5 @@ config/*.types
 .idea/
 .DS_Store
 CMakeLists.txt
-/Users/mannouao/Desktop/WebServ/www/cookie/__pycache__/
+www/cookie/__pycache__
+www/upload/Studio _ Office Tour! (early 2023)-(1080p).mp4
