@@ -92,7 +92,7 @@ Client* HTTP::deleteMethodHandler(Client *client)
 			__remove_this_directory_(request->fullPath);
 		}
 	} // this is a file, so remove it
-	else if (unlink(request->fullPath.c_str()) < 0) {
+	else if (access(request->fullPath.c_str(), W_OK) < 0 || unlink(request->fullPath.c_str()) < 0) {
 		throw 403;
 	}
 	
