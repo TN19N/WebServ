@@ -4,30 +4,17 @@
 # include "webserv/context.hpp"
 # include "webserv/http.hpp"
 
-static void __dot_dot_handler_last_dir_(const char *path, size_t len, std::string &body) {
-	const char *last = path + len - 2; // -2 for skipp / at the end
-	
-	while (path < last && *last != '/')
-		--last;
-	if (last > path) {
-		while (path < last) {
-			body.append(1, *path++);
-		}
-	}
-	body.append(1, '/') ;
-}
-
 static void __do_response_with_directory_content_(Client* client)
 {
-	Response		*response;
+	Response*		response;
 	std::string		body;
-	std::string		&path = client->getRequest()->path;
 	DIR* 			dir;
 	struct dirent*	ent;
+	std::string&	path = client->getRequest()->path;
 
 	response = new Response(200, client->getRequest()->keepAlive);
 	client->setResponse(response);
-	
+
 	if ((dir = opendir(client->getRequest()->fullPath.c_str())) == NULL)
 		throw 403;
 
@@ -36,13 +23,20 @@ static void __do_response_with_directory_content_(Client* client)
 	body.append("</title>\n</head>\n<body>\n<h1>Directory Content</h1>\n");
 	while ((ent = readdir(dir)))
 	{
-		body.append("<p><a href=\"");
-		if (strcmp(ent->d_name, ".") == 0)
+		body.append("<h4><a href=\"");
+		if (strcmp(ent->d_name, ".") == 0) {
 			body.append(path) ;
-		else if (strcmp(ent->d_name, "..") == 0)
-			__dot_dot_handler_last_dir_(path.c_str(), path.size(), body);
-		else
-		{
+		}
+		else if (strcmp(ent->d_name, "..") == 0) {
+			int	i;
+			int	loc_size = client->getRequest()->location->getArgs().at(0).size();
+
+			for (i = path.size() - 2; path[i] != '/' && loc_size < i; --i) {}
+			if (i <= loc_size) {
+				i = loc_size == 1 ? 0 : loc_size;
+			}
+			body.append(path, 0, i + 1);
+		} else {
 			body.append(path);
 			body.append(ent->d_name) ;
 			if (ent->d_type == DT_DIR)
@@ -52,7 +46,7 @@ static void __do_response_with_directory_content_(Client* client)
 		body.append(ent->d_name);
 		if (ent->d_type == DT_DIR)
 			body.append(1, '/');
-		body.append("</a></p>\n");
+		body.append("</a></h4>\n");
 	}
 	body.append("</body>\n</html>\n");
 	closedir(dir);
