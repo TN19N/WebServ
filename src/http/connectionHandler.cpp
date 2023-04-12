@@ -30,4 +30,10 @@ void HTTP::acceptConnection(const int serverFd, std::vector<Client*>& clients) {
         std::cerr << "webserv: fcntl(): " << strerror(errno) << std::endl;
         throw 500;
     }
+
+    int opt = 1;
+    if (setsockopt(clientFd, SOL_SOCKET, SO_NOSIGPIPE, &opt, sizeof(opt)) == -1) {
+        std::cerr << "webserv: setsockopt(): " << strerror(errno) << std::endl;
+        throw 500;
+    }
 }
