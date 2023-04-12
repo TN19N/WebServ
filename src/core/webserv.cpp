@@ -216,7 +216,9 @@ void Webserv::startServers() {
                     }
 
                     int yes = 1;
-                    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+			
+                    if (setsockopt(sockfd,  SOL_SOCKET,  SO_NOSIGPIPE, &yes, sizeof(int)) == -1 ||
+			setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
                         close(sockfd);
                         freeaddrinfo(res->ai_next);
                         throw std::runtime_error("setsockopt() : " + std::string(strerror(errno)));
